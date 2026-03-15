@@ -24,7 +24,7 @@ export function PopupPage() {
 	const { mode, switchToApi } = useStorageContext();
 	const queryClient = useQueryClient();
 	const { settings, isLoaded: isSettingsLoaded, updateSettings } = useAppSettings();
-	const chromeSyncService = useChromeSyncService(settings.syncMode);
+	const chromeSyncService = useChromeSyncService(settings.syncMode !== 'off');
 
 	const [currentTab, setCurrentTab] = useState({ url: '', title: '' });
 	const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);

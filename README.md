@@ -1,135 +1,112 @@
-# Turborepo starter
+# mark.
 
-This Turborepo starter is maintained by the Turborepo core team.
+새 탭을 북마크 허브로 바꿔주는 Chrome 확장 프로그램
 
-## Using this example
+![Glass 뷰](./screenshots/01-glass-view.png)
 
-Run the following command:
+---
 
-```sh
-npx create-turbo@latest
-```
+## 주요 기능
 
-## What's inside?
+- **새 탭 오버라이드** — 새 탭을 열면 바로 북마크 대시보드
+- **3가지 뷰 모드** — Glass / 그리드 / 리스트
+- **폴더 & 태그** — 북마크를 체계적으로 분류
+- **빠른 검색** — 제목·URL로 즉시 필터링
+- **Chrome 북마크 동기화** — 단방향·양방향 실시간 동기화
+- **팝업 퀵 추가** — 현재 탭을 툴바에서 바로 저장
 
-This Turborepo includes the following packages/apps:
+---
 
-### Apps and Packages
+## 스크린샷
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+| Glass 뷰 | 리스트 + 사이드바 |
+|---|---|
+| ![](./screenshots/01-glass-view.png) | ![](./screenshots/02-list-sidebar.png) |
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+| 그리드 뷰 | 북마크 추가 |
+|---|---|
+| ![](./screenshots/03-grid-view.png) | ![](./screenshots/04-add-dialog.png) |
 
-### Utilities
+| 태그 필터 |
+|---|
+| ![](./screenshots/05-tag-filter.png) |
 
-This Turborepo has some additional tools already setup for you:
+---
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## 프로젝트 구조
 
 ```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+apps/
+  web/        # 새 탭 페이지 (React + Vite)
+  extension/  # Chrome 확장 프로그램 (팝업 + newtab 번들)
+  api/        # 백엔드 API (NestJS)
+packages/
+  ui/         # 공통 컴포넌트 (shadcn/ui 기반)
+  types/      # 공유 타입 정의
+  api-client/ # Axios 클라이언트 + ChromeStorageAdapter
 ```
 
-### Develop
+**아키텍처:** FSD (Feature-Sliced Design)
 
-To develop all apps and packages, run the following command:
+---
 
-```
-cd my-turborepo
+## 기술 스택
 
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+| 영역 | 스택 |
+|---|---|
+| Frontend | React 19, Tailwind CSS v4, shadcn/ui |
+| 상태 관리 | Zustand, TanStack Query |
+| 빌드 | Vite, Turborepo, pnpm workspaces |
+| 코드 품질 | TypeScript, Biome (lint/format) |
+| 테스트 | Vitest, Playwright |
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+---
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## 시작하기
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+```bash
+# 의존성 설치
+pnpm install
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+# 개발 서버 (web + extension 동시)
+pnpm dev
 
-### Remote Caching
+# 타입 체크
+pnpm check-types
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+# 린트 & 포맷
+pnpm check
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+# 테스트
+pnpm --filter @repo/web test
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+---
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## Chrome 확장 프로그램 빌드
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+```bash
+# 전체 빌드 + extension.zip 생성
+pnpm build:ext
 ```
 
-## Useful Links
+생성된 `extension.zip`을 [Chrome Web Store 개발자 대시보드](https://chrome.google.com/webstore/devconsole)에 업로드하세요.
 
-Learn more about the power of Turborepo:
+**개발자 모드로 로컬 로드:**
 
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+1. Chrome → `chrome://extensions` → 개발자 모드 ON
+2. `앱 압축해제하여 로드` → `apps/extension/dist` 선택
+
+---
+
+## 스크린샷 갱신
+
+```bash
+node scripts/capture-screenshots.mjs
+```
+
+---
+
+## 데이터 저장
+
+기본 모드에서는 모든 데이터를 **Chrome 로컬 스토리지**에만 저장합니다. 외부 서버로 데이터가 전송되지 않습니다.
