@@ -8,5 +8,10 @@
 	"chrome_url_overrides": {
 		"newtab": "index.html"
 	},
+	"icons": {
+		"16": "icons/icon16.svg",
+		"48": "icons/icon48.svg",
+		"128": "icons/icon128.svg"
+	},
 	"permissions": ["storage", "identity", "tabs", "activeTab", "bookmarks"]
 }
