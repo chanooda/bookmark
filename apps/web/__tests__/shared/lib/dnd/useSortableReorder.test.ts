@@ -129,10 +129,9 @@ describe('useSortableReorder', () => {
 	// ──────────────────────────────────────────────
 	it('serverItems에 새 항목 추가 시 items가 서버 데이터로 리셋된다', () => {
 		let serverItems = makeItems(['a', 'b']);
-		const { result, rerender } = renderHook(
-			({ items }) => useSortableReorder(items, onReorder),
-			{ initialProps: { items: serverItems } },
-		);
+		const { result, rerender } = renderHook(({ items }) => useSortableReorder(items, onReorder), {
+			initialProps: { items: serverItems },
+		});
 
 		// Simulate drag to change local order
 		act(() => {
@@ -149,10 +148,9 @@ describe('useSortableReorder', () => {
 
 	it('serverItems에서 항목 제거 시 items가 서버 데이터로 리셋된다', () => {
 		let serverItems = makeItems(['a', 'b', 'c']);
-		const { result, rerender } = renderHook(
-			({ items }) => useSortableReorder(items, onReorder),
-			{ initialProps: { items: serverItems } },
-		);
+		const { result, rerender } = renderHook(({ items }) => useSortableReorder(items, onReorder), {
+			initialProps: { items: serverItems },
+		});
 
 		// Remove an item from server
 		serverItems = makeItems(['a', 'c']);
@@ -163,10 +161,9 @@ describe('useSortableReorder', () => {
 
 	it('serverItems의 순서만 바뀌고 멤버십이 동일하면 로컬 낙관적 순서가 유지된다', () => {
 		const serverItems = makeItems(['a', 'b', 'c']);
-		const { result, rerender } = renderHook(
-			({ items }) => useSortableReorder(items, onReorder),
-			{ initialProps: { items: serverItems } },
-		);
+		const { result, rerender } = renderHook(({ items }) => useSortableReorder(items, onReorder), {
+			initialProps: { items: serverItems },
+		});
 
 		// User drags 'a' to end
 		act(() => {

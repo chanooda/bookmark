@@ -97,7 +97,10 @@ export class ChromeSyncService {
 			await chrome.bookmarks.move(chromeId, { parentId: targetParentId, index: appBookmark.order });
 		} catch (error) {
 			// Chrome node may have been manually deleted — fall back to create
-			console.error('[ChromeSyncService] syncUpdateBookmark failed, falling back to create:', error);
+			console.error(
+				'[ChromeSyncService] syncUpdateBookmark failed, falling back to create:',
+				error,
+			);
 			await this.syncCreateBookmark(appBookmark, allFolders);
 		} finally {
 			ChromeSyncGuard.pendingUpdates.delete(chromeId);

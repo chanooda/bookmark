@@ -43,3 +43,6 @@ yarn-error.log*
 
 docs/requirements
 .npmrc
+
+# Extension zip output
+extension.zip

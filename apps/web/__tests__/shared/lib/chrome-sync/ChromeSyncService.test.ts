@@ -88,11 +88,13 @@ describe('syncCreateBookmark', () => {
 		const bookmark = makeBookmark({ id: 'b1', title: 'Test', url: 'https://test.com' });
 		await service.syncCreateBookmark(bookmark, []);
 
-		expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({
-			parentId: '1',
-			title: 'Test',
-			url: 'https://test.com',
-		}));
+		expect(mockCreate).toHaveBeenCalledWith(
+			expect.objectContaining({
+				parentId: '1',
+				title: 'Test',
+				url: 'https://test.com',
+			}),
+		);
 		expect(storage.syncMap).toMatchObject({ bookmarks: { b1: 'chrome-id-1' } });
 	});
 
@@ -115,7 +117,10 @@ describe('syncCreateBookmark', () => {
 		await service.syncCreateBookmark(bookmark, [folder]);
 
 		expect(mockCreate).toHaveBeenCalledTimes(2);
-		expect(mockCreate).toHaveBeenNthCalledWith(1, expect.objectContaining({ parentId: '1', title: 'New Folder' }));
+		expect(mockCreate).toHaveBeenNthCalledWith(
+			1,
+			expect.objectContaining({ parentId: '1', title: 'New Folder' }),
+		);
 		expect(mockCreate).toHaveBeenNthCalledWith(
 			2,
 			expect.objectContaining({ parentId: 'chrome-folder-1' }),
@@ -135,11 +140,17 @@ describe('syncCreateBookmark', () => {
 		await service.syncCreateBookmark(bookmark, [parent, child]);
 
 		expect(mockCreate).toHaveBeenCalledTimes(3);
-		expect(mockCreate).toHaveBeenNthCalledWith(1, expect.objectContaining({ parentId: '1', title: 'Parent' }));
-		expect(mockCreate).toHaveBeenNthCalledWith(2, expect.objectContaining({
-			parentId: 'chrome-parent-1',
-			title: 'Child',
-		}));
+		expect(mockCreate).toHaveBeenNthCalledWith(
+			1,
+			expect.objectContaining({ parentId: '1', title: 'Parent' }),
+		);
+		expect(mockCreate).toHaveBeenNthCalledWith(
+			2,
+			expect.objectContaining({
+				parentId: 'chrome-parent-1',
+				title: 'Child',
+			}),
+		);
 		expect(mockCreate).toHaveBeenNthCalledWith(
 			3,
 			expect.objectContaining({ parentId: 'chrome-child-1' }),
@@ -197,7 +208,10 @@ describe('syncUpdateBookmark', () => {
 
 		await service.syncUpdateBookmark(bookmark, [makeFolder({ id: 'f1' })]);
 
-		expect(mockMove).toHaveBeenCalledWith('chrome-b1', expect.objectContaining({ parentId: 'chrome-f1' }));
+		expect(mockMove).toHaveBeenCalledWith(
+			'chrome-b1',
+			expect.objectContaining({ parentId: 'chrome-f1' }),
+		);
 	});
 
 	it('chrome id가 없으면 syncCreateBookmark를 호출한다(폴백)', async () => {
@@ -300,7 +314,9 @@ describe('syncCreateFolder', () => {
 		const folder = makeFolder({ id: 'f1', name: 'New Folder', parentId: null });
 		await service.syncCreateFolder(folder, [folder]);
 
-		expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({ parentId: '1', title: 'New Folder' }));
+		expect(mockCreate).toHaveBeenCalledWith(
+			expect.objectContaining({ parentId: '1', title: 'New Folder' }),
+		);
 		expect(storage.syncMap).toMatchObject({ folders: { f1: 'chrome-id-1' } });
 	});
 
@@ -345,7 +361,9 @@ describe('syncCreateFolder', () => {
 
 		await service.syncCreateFolder(child, [parent, child]);
 
-		expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({ parentId: 'chrome-parent', title: 'Child' }));
+		expect(mockCreate).toHaveBeenCalledWith(
+			expect.objectContaining({ parentId: 'chrome-parent', title: 'Child' }),
+		);
 	});
 });
 
@@ -423,7 +441,10 @@ describe('동시 폴더 생성 deduplication', () => {
 		// folder create once + 2 bookmark creates = 3 total
 		expect(mockCreate).toHaveBeenCalledTimes(3);
 		// First call must be the folder
-		expect(mockCreate).toHaveBeenNthCalledWith(1, expect.objectContaining({ parentId: '1', title: 'Shared Folder' }));
+		expect(mockCreate).toHaveBeenNthCalledWith(
+			1,
+			expect.objectContaining({ parentId: '1', title: 'Shared Folder' }),
+		);
 	});
 });
 

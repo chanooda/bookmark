@@ -6,13 +6,17 @@
     "dev": "turbo run dev",
     "check": "turbo run check",
     "check-types": "turbo run check-types",
-    "ci-check": "turbo run ci-check"
+    "ci-check": "turbo run ci-check",
+    "build:ext": "turbo run build --filter=@repo/extension && node scripts/zip-extension.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.2",
     "@chanooda/biome-config-frontend": "0.0.2",
     "@chanooda/typescript-config-frontend": "^0.0.7",
+    "@types/archiver": "^7.0.0",
+    "archiver": "^7.0.1",
     "lefthook": "^2.1.1",
+    "sharp": "^0.34.5",
     "turbo": "^2.8.7",
     "typescript": "5.9.2"
   },
