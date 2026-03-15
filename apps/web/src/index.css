@@ -1,0 +1,46 @@
+/* Tailwind and shadcn globals are imported via @repo/ui/styles/globals.css in main.tsx */
+
+/* ── Warm Void: Override dark theme color tokens ── */
+html.dark {
+	--background: oklch(0.11 0.01 55);
+	--foreground: oklch(0.92 0.018 78);
+	--card: oklch(0.15 0.009 55);
+	--card-foreground: oklch(0.92 0.018 78);
+	--popover: oklch(0.17 0.009 55);
+	--popover-foreground: oklch(0.92 0.018 78);
+	--primary: oklch(0.68 0.175 40);
+	--primary-foreground: oklch(0.11 0.01 55);
+	--secondary: oklch(0.19 0.008 55);
+	--secondary-foreground: oklch(0.92 0.018 78);
+	--muted: oklch(0.19 0.008 55);
+	--muted-foreground: oklch(0.52 0.014 65);
+	--accent: oklch(0.2 0.009 55);
+	--accent-foreground: oklch(0.92 0.018 78);
+	--destructive: oklch(0.45 0.18 22);
+	--destructive-foreground: oklch(0.72 0.22 25);
+	--border: oklch(0.23 0.01 55);
+	--input: oklch(0.2 0.009 55);
+	--ring: oklch(0.68 0.175 40);
+}
+
+@layer base {
+	body {
+		font-family: "IBM Plex Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+}
+
+@layer utilities {
+	.font-brand {
+		font-family: "Fraunces", Georgia, serif;
+	}
+	.font-url {
+		font-family: "DM Mono", "Courier New", monospace;
+		font-size: 0.68rem;
+		letter-spacing: -0.01em;
+	}
+	.font-label {
+		font-family: "DM Mono", "Courier New", monospace;
+	}
+}

@@ -1,0 +1,5 @@
+{
+  "$schema": "https://biomejs.dev/schemas/latest/biome.json",
+  "root": true,
+  "extends": ["@chanooda/biome-config-frontend/common"]
+}

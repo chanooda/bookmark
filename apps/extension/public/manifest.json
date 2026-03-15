@@ -1,0 +1,15 @@
+{
+	"manifest_version": 3,
+	"name": "Bookmark App",
+	"version": "0.0.1",
+	"description": "Easily add and manage bookmarks",
+	"action": {
+		"default_popup": "popup.html",
+		"default_title": "Bookmark App"
+	},
+	"chrome_url_overrides": {
+		"newtab": "newtab/index.html"
+	},
+	"permissions": ["storage", "identity", "tabs", "activeTab", "bookmarks"],
+	"host_permissions": ["http://localhost:3000/*"]
+}

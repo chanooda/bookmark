@@ -1,0 +1,7 @@
+{
+	"extends": "@chanooda/typescript-config-frontend/base.json",
+	"compilerOptions": {
+		"outDir": "dist"
+	},
+	"include": ["src"]
+}

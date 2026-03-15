@@ -1,0 +1,33 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "apps/api"
+		},
+		{
+			"path": "apps/web"
+		},
+		{
+			"path": "apps/extension"
+		},
+		{
+			"path": "packages/ui"
+		},
+		{
+			"path": "packages/api-client"
+		},
+		{
+			"path": "packages/types"
+		}
+	],
+	"settings": {
+		"typescript.tsdk": "new-project/node_modules/typescript/lib",
+		"editor.codeActionsOnSave": {
+			"source.biome": "always",
+			"source.fixAll.biome": "always",
+			"source.organizeImports.biome": "always"
+		}
+	}
+}

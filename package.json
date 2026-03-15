@@ -1,0 +1,23 @@
+{
+  "name": "new-project",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "check": "turbo run check",
+    "check-types": "turbo run check-types",
+    "ci-check": "turbo run ci-check"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.2",
+    "@chanooda/biome-config-frontend": "0.0.2",
+    "@chanooda/typescript-config-frontend": "^0.0.7",
+    "lefthook": "^2.1.1",
+    "turbo": "^2.8.7",
+    "typescript": "5.9.2"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18"
+  }
+}

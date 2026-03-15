@@ -1,0 +1,6 @@
+pre-commit:
+  commands:
+    check:
+      run: pnpm check
+    check-types:
+      run: pnpm check-types

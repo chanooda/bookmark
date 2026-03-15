@@ -1,0 +1,8 @@
+{
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.codeActionsOnSave": {
+        "source.biome": "always",
+        "source.fixAll.biome": "always",
+        "source.organizeImports.biome": "always"
+    }
+}
