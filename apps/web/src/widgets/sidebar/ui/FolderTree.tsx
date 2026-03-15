@@ -273,6 +273,7 @@ export function FolderTree() {
 	const [editingNodeName, setEditingNodeName] = useState('');
 
 	function handleDelete(id: string) {
+		if (!window.confirm('폴더를 삭제하시겠습니까? 하위 폴더와 북마크도 함께 삭제됩니다.')) return;
 		deleteFolder(id, {
 			onSuccess: () => {
 				if (chromeSyncService) {
@@ -285,6 +286,7 @@ export function FolderTree() {
 					setSelectedTagId(undefined);
 				}
 			},
+			onError: () => toast.error('폴더 삭제에 실패했습니다.'),
 		});
 	}
 

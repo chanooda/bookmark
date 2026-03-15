@@ -31,6 +31,7 @@ function makeFolder(overrides: Partial<Folder> = {}): Folder {
 		userId: 'u1',
 		name: 'My Folder',
 		parentId: null,
+		order: 0,
 		createdAt: new Date(),
 		...overrides,
 	};
@@ -45,6 +46,7 @@ function makeBookmark(overrides: Partial<Bookmark> = {}): Bookmark {
 		description: null,
 		favicon: null,
 		folderId: null,
+		order: 0,
 		createdAt: new Date(),
 		updatedAt: new Date(),
 		tags: [],
@@ -86,11 +88,11 @@ describe('syncCreateBookmark', () => {
 		const bookmark = makeBookmark({ id: 'b1', title: 'Test', url: 'https://test.com' });
 		await service.syncCreateBookmark(bookmark, []);
 
-		expect(mockCreate).toHaveBeenCalledWith({
+		expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({
 			parentId: '1',
 			title: 'Test',
 			url: 'https://test.com',
-		});
+		}));
 		expect(storage.syncMap).toMatchObject({ bookmarks: { b1: 'chrome-id-1' } });
 	});
 
@@ -113,7 +115,7 @@ describe('syncCreateBookmark', () => {
 		await service.syncCreateBookmark(bookmark, [folder]);
 
 		expect(mockCreate).toHaveBeenCalledTimes(2);
-		expect(mockCreate).toHaveBeenNthCalledWith(1, { parentId: '1', title: 'New Folder' });
+		expect(mockCreate).toHaveBeenNthCalledWith(1, expect.objectContaining({ parentId: '1', title: 'New Folder' }));
 		expect(mockCreate).toHaveBeenNthCalledWith(
 			2,
 			expect.objectContaining({ parentId: 'chrome-folder-1' }),
@@ -133,11 +135,11 @@ describe('syncCreateBookmark', () => {
 		await service.syncCreateBookmark(bookmark, [parent, child]);
 
 		expect(mockCreate).toHaveBeenCalledTimes(3);
-		expect(mockCreate).toHaveBeenNthCalledWith(1, { parentId: '1', title: 'Parent' });
-		expect(mockCreate).toHaveBeenNthCalledWith(2, {
+		expect(mockCreate).toHaveBeenNthCalledWith(1, expect.objectContaining({ parentId: '1', title: 'Parent' }));
+		expect(mockCreate).toHaveBeenNthCalledWith(2, expect.objectContaining({
 			parentId: 'chrome-parent-1',
 			title: 'Child',
-		});
+		}));
 		expect(mockCreate).toHaveBeenNthCalledWith(
 			3,
 			expect.objectContaining({ parentId: 'chrome-child-1' }),
@@ -183,7 +185,7 @@ describe('syncUpdateBookmark', () => {
 			title: 'Updated',
 			url: 'https://new.com',
 		});
-		expect(mockMove).toHaveBeenCalledWith('chrome-b1', { parentId: '1' });
+		expect(mockMove).toHaveBeenCalledWith('chrome-b1', expect.objectContaining({ parentId: '1' }));
 	});
 
 	it('folder가 있는 북마크 업데이트 시 올바른 parentId로 move한다', async () => {
@@ -195,7 +197,7 @@ describe('syncUpdateBookmark', () => {
 
 		await service.syncUpdateBookmark(bookmark, [makeFolder({ id: 'f1' })]);
 
-		expect(mockMove).toHaveBeenCalledWith('chrome-b1', { parentId: 'chrome-f1' });
+		expect(mockMove).toHaveBeenCalledWith('chrome-b1', expect.objectContaining({ parentId: 'chrome-f1' }));
 	});
 
 	it('chrome id가 없으면 syncCreateBookmark를 호출한다(폴백)', async () => {
@@ -298,7 +300,7 @@ describe('syncCreateFolder', () => {
 		const folder = makeFolder({ id: 'f1', name: 'New Folder', parentId: null });
 		await service.syncCreateFolder(folder, [folder]);
 
-		expect(mockCreate).toHaveBeenCalledWith({ parentId: '1', title: 'New Folder' });
+		expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({ parentId: '1', title: 'New Folder' }));
 		expect(storage.syncMap).toMatchObject({ folders: { f1: 'chrome-id-1' } });
 	});
 
@@ -343,7 +345,7 @@ describe('syncCreateFolder', () => {
 
 		await service.syncCreateFolder(child, [parent, child]);
 
-		expect(mockCreate).toHaveBeenCalledWith({ parentId: 'chrome-parent', title: 'Child' });
+		expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({ parentId: 'chrome-parent', title: 'Child' }));
 	});
 });
 
@@ -421,6 +423,161 @@ describe('동시 폴더 생성 deduplication', () => {
 		// folder create once + 2 bookmark creates = 3 total
 		expect(mockCreate).toHaveBeenCalledTimes(3);
 		// First call must be the folder
-		expect(mockCreate).toHaveBeenNthCalledWith(1, { parentId: '1', title: 'Shared Folder' });
+		expect(mockCreate).toHaveBeenNthCalledWith(1, expect.objectContaining({ parentId: '1', title: 'Shared Folder' }));
+	});
+});
+
+// ============================================================
+// syncReorderBookmarks
+// ============================================================
+describe('syncReorderBookmarks', () => {
+	it('syncMap에 있는 항목을 오름차순 order로 chrome.bookmarks.move 호출한다', async () => {
+		storage.syncMap = {
+			folders: {},
+			bookmarks: { b1: 'chrome-b1', b2: 'chrome-b2', b3: 'chrome-b3' },
+		};
+
+		await service.syncReorderBookmarks([
+			{ id: 'b3', order: 2 },
+			{ id: 'b1', order: 0 },
+			{ id: 'b2', order: 1 },
+		]);
+
+		// Should be called 3 times total, in ascending order (b1=0, b2=1, b3=2)
+		expect(mockMove).toHaveBeenCalledTimes(3);
+		expect(mockMove).toHaveBeenNthCalledWith(1, 'chrome-b1', { index: 0 });
+		expect(mockMove).toHaveBeenNthCalledWith(2, 'chrome-b2', { index: 1 });
+		expect(mockMove).toHaveBeenNthCalledWith(3, 'chrome-b3', { index: 2 });
+	});
+
+	it('syncMap에 없는 항목은 건너뛴다', async () => {
+		storage.syncMap = { folders: {}, bookmarks: { b1: 'chrome-b1' } };
+
+		await service.syncReorderBookmarks([
+			{ id: 'b1', order: 0 },
+			{ id: 'b_unknown', order: 1 },
+		]);
+
+		expect(mockMove).toHaveBeenCalledOnce();
+		expect(mockMove).toHaveBeenCalledWith('chrome-b1', { index: 0 });
+	});
+
+	it('빈 배열 입력 시 move를 호출하지 않는다', async () => {
+		await service.syncReorderBookmarks([]);
+		expect(mockMove).not.toHaveBeenCalled();
+	});
+
+	it('move 호출 중 ChromeSyncGuard.pendingUpdates에 chrome id가 포함된다', async () => {
+		storage.syncMap = { folders: {}, bookmarks: { b1: 'chrome-b1' } };
+		let capturedIds = new Set<string>();
+		mockMove.mockImplementation(async () => {
+			capturedIds = new Set(ChromeSyncGuard.pendingUpdates);
+			return undefined;
+		});
+
+		await service.syncReorderBookmarks([{ id: 'b1', order: 0 }]);
+
+		expect(capturedIds.has('chrome-b1')).toBe(true);
+	});
+
+	it('move 완료 후 ChromeSyncGuard.pendingUpdates가 비워진다', async () => {
+		storage.syncMap = { folders: {}, bookmarks: { b1: 'chrome-b1' } };
+		await service.syncReorderBookmarks([{ id: 'b1', order: 0 }]);
+		expect(ChromeSyncGuard.pendingUpdates.size).toBe(0);
+	});
+
+	it('move 실패 후에도 ChromeSyncGuard.pendingUpdates가 비워진다', async () => {
+		storage.syncMap = { folders: {}, bookmarks: { b1: 'chrome-b1' } };
+		mockMove.mockRejectedValue(new Error('Node not found'));
+
+		await service.syncReorderBookmarks([{ id: 'b1', order: 0 }]);
+
+		expect(ChromeSyncGuard.pendingUpdates.size).toBe(0);
+	});
+});
+
+// ============================================================
+// syncReorderFolders
+// ============================================================
+describe('syncReorderFolders', () => {
+	it('syncMap에 있는 폴더를 오름차순 order로 chrome.bookmarks.move 호출한다', async () => {
+		storage.syncMap = {
+			folders: { f1: 'chrome-f1', f2: 'chrome-f2' },
+			bookmarks: {},
+		};
+
+		await service.syncReorderFolders([
+			{ id: 'f2', order: 1 },
+			{ id: 'f1', order: 0 },
+		]);
+
+		expect(mockMove).toHaveBeenCalledTimes(2);
+		expect(mockMove).toHaveBeenNthCalledWith(1, 'chrome-f1', { index: 0 });
+		expect(mockMove).toHaveBeenNthCalledWith(2, 'chrome-f2', { index: 1 });
+	});
+
+	it('syncMap에 없는 폴더는 건너뛴다', async () => {
+		storage.syncMap = { folders: { f1: 'chrome-f1' }, bookmarks: {} };
+
+		await service.syncReorderFolders([
+			{ id: 'f1', order: 0 },
+			{ id: 'f_unknown', order: 1 },
+		]);
+
+		expect(mockMove).toHaveBeenCalledOnce();
+	});
+
+	it('move 실패 후에도 ChromeSyncGuard.pendingUpdates가 비워진다', async () => {
+		storage.syncMap = { folders: { f1: 'chrome-f1' }, bookmarks: {} };
+		mockMove.mockRejectedValue(new Error('Node not found'));
+
+		await service.syncReorderFolders([{ id: 'f1', order: 0 }]);
+
+		expect(ChromeSyncGuard.pendingUpdates.size).toBe(0);
+	});
+});
+
+// ============================================================
+// syncUpdateFolder
+// ============================================================
+describe('syncUpdateFolder', () => {
+	it('syncMap에 chrome id가 있으면 update를 호출한다', async () => {
+		storage.syncMap = { folders: { f1: 'chrome-f1' }, bookmarks: {} };
+		await service.syncUpdateFolder('f1', 'New Name');
+
+		expect(mockUpdate).toHaveBeenCalledWith('chrome-f1', { title: 'New Name' });
+	});
+
+	it('syncMap에 chrome id가 없으면 update를 호출하지 않는다', async () => {
+		await service.syncUpdateFolder('f_unknown', 'Name');
+		expect(mockUpdate).not.toHaveBeenCalled();
+	});
+
+	it('update 호출 중 ChromeSyncGuard.pendingUpdates에 chrome id가 포함된다', async () => {
+		storage.syncMap = { folders: { f1: 'chrome-f1' }, bookmarks: {} };
+		let capturedIds = new Set<string>();
+		mockUpdate.mockImplementation(async () => {
+			capturedIds = new Set(ChromeSyncGuard.pendingUpdates);
+			return undefined;
+		});
+
+		await service.syncUpdateFolder('f1', 'Name');
+
+		expect(capturedIds.has('chrome-f1')).toBe(true);
+	});
+
+	it('update 완료 후 ChromeSyncGuard.pendingUpdates가 비워진다', async () => {
+		storage.syncMap = { folders: { f1: 'chrome-f1' }, bookmarks: {} };
+		await service.syncUpdateFolder('f1', 'Name');
+		expect(ChromeSyncGuard.pendingUpdates.size).toBe(0);
+	});
+
+	it('update 실패 후에도 ChromeSyncGuard.pendingUpdates가 비워진다', async () => {
+		storage.syncMap = { folders: { f1: 'chrome-f1' }, bookmarks: {} };
+		mockUpdate.mockRejectedValue(new Error('Node not found'));
+
+		await service.syncUpdateFolder('f1', 'Name');
+
+		expect(ChromeSyncGuard.pendingUpdates.size).toBe(0);
 	});
 });

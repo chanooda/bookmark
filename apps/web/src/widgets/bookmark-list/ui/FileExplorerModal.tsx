@@ -473,6 +473,7 @@ export function FileExplorerModal({
 	);
 
 	function handleDeleteFolder(folder: Folder) {
+		if (!window.confirm('폴더를 삭제하시겠습니까? 하위 폴더와 북마크도 함께 삭제됩니다.')) return;
 		deleteFolder(folder.id, {
 			onSuccess: () => {
 				if (chromeSyncService) {

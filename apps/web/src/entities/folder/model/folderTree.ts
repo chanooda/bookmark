@@ -12,6 +12,7 @@ export function buildFolderTree(
 ): FolderNode[] {
 	return folders
 		.filter((f) => f.parentId === parentId)
+		.sort((a, b) => a.order - b.order)
 		.map((f) => ({
 			...f,
 			depth,

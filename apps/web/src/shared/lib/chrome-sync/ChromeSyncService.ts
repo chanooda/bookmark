@@ -95,8 +95,9 @@ export class ChromeSyncService {
 				url: appBookmark.url,
 			});
 			await chrome.bookmarks.move(chromeId, { parentId: targetParentId, index: appBookmark.order });
-		} catch {
+		} catch (error) {
 			// Chrome node may have been manually deleted — fall back to create
+			console.error('[ChromeSyncService] syncUpdateBookmark failed, falling back to create:', error);
 			await this.syncCreateBookmark(appBookmark, allFolders);
 		} finally {
 			ChromeSyncGuard.pendingUpdates.delete(chromeId);
@@ -111,8 +112,9 @@ export class ChromeSyncService {
 		ChromeSyncGuard.pendingRemoves.add(chromeId);
 		try {
 			await chrome.bookmarks.remove(chromeId);
-		} catch {
+		} catch (error) {
 			// Chrome node may have been manually deleted — ignore
+			console.error('[ChromeSyncService] syncDeleteBookmark failed (node may be gone):', error);
 		} finally {
 			ChromeSyncGuard.pendingRemoves.delete(chromeId);
 		}
@@ -136,8 +138,9 @@ export class ChromeSyncService {
 		ChromeSyncGuard.pendingUpdates.add(chromeId);
 		try {
 			await chrome.bookmarks.update(chromeId, { title: name });
-		} catch {
+		} catch (error) {
 			// Chrome node may have been manually deleted — ignore
+			console.error('[ChromeSyncService] syncUpdateFolder failed (node may be gone):', error);
 		} finally {
 			ChromeSyncGuard.pendingUpdates.delete(chromeId);
 		}
@@ -156,8 +159,9 @@ export class ChromeSyncService {
 			ChromeSyncGuard.pendingUpdates.add(chromeId);
 			try {
 				await chrome.bookmarks.move(chromeId, { index: item.order });
-			} catch {
+			} catch (error) {
 				// Chrome node may have been manually deleted — ignore
+				console.error('[ChromeSyncService] syncReorderBookmarks: move failed for', item.id, error);
 			} finally {
 				ChromeSyncGuard.pendingUpdates.delete(chromeId);
 			}
@@ -173,8 +177,9 @@ export class ChromeSyncService {
 			ChromeSyncGuard.pendingUpdates.add(chromeId);
 			try {
 				await chrome.bookmarks.move(chromeId, { index: item.order });
-			} catch {
+			} catch (error) {
 				// Chrome node may have been manually deleted — ignore
+				console.error('[ChromeSyncService] syncReorderFolders: move failed for', item.id, error);
 			} finally {
 				ChromeSyncGuard.pendingUpdates.delete(chromeId);
 			}
@@ -189,8 +194,9 @@ export class ChromeSyncService {
 		ChromeSyncGuard.pendingRemoves.add(chromeId);
 		try {
 			await chrome.bookmarks.removeTree(chromeId);
-		} catch {
+		} catch (error) {
 			// Chrome node may have been manually deleted — ignore
+			console.error('[ChromeSyncService] syncDeleteFolder failed (node may be gone):', error);
 		} finally {
 			ChromeSyncGuard.pendingRemoves.delete(chromeId);
 		}

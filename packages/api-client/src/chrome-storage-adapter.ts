@@ -29,7 +29,6 @@ function extractFavicon(url: string): string | null {
 }
 
 function assertChromeStorage(): void {
-	console.log(chrome.storage);
 	if (typeof chrome === 'undefined' || !chrome.storage?.local) {
 		throw new Error(
 			'Chrome Storage API를 사용할 수 없습니다. Chrome 확장 프로그램 페이지에서 실행해 주세요.',

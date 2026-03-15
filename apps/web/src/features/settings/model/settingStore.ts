@@ -12,6 +12,12 @@ interface SettingState {
 	setSettingsOpen: (open: boolean) => void;
 }
 
+const SYNC_MODES: SyncMode[] = ['off', 'chrome-to-web', 'web-to-chrome', 'bidirectional'];
+
+function isSyncMode(v: unknown): v is SyncMode {
+	return SYNC_MODES.includes(v as SyncMode);
+}
+
 const chromeLocalStorage = {
 	getItem: async (name: string): Promise<string | null> => {
 		if (typeof chrome === 'undefined' || !chrome.storage?.local) {
@@ -62,7 +68,11 @@ export const useSettingStore = create<SettingState>()(
 						syncMode: old.realtimeSync ? ('bidirectional' as SyncMode) : ('off' as SyncMode),
 					};
 				}
-				return persistedState as { viewMode: ViewMode; syncMode: SyncMode };
+				const state = persistedState as { viewMode?: ViewMode; syncMode?: unknown };
+				return {
+					viewMode: state.viewMode ?? 'glass',
+					syncMode: isSyncMode(state.syncMode) ? state.syncMode : DEFAULT_APP_SETTINGS.syncMode,
+				};
 			},
 		},
 	),

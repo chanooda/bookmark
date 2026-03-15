@@ -24,7 +24,7 @@ export function PopupPage() {
 	const { mode, switchToApi } = useStorageContext();
 	const queryClient = useQueryClient();
 	const { settings, isLoaded: isSettingsLoaded, updateSettings } = useAppSettings();
-	const chromeSyncService = useChromeSyncService(settings.syncMode !== 'off');
+	const chromeSyncService = useChromeSyncService(settings.syncMode);
 
 	const [currentTab, setCurrentTab] = useState({ url: '', title: '' });
 	const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
@@ -154,11 +154,13 @@ export function PopupPage() {
 		setAuthToken(token);
 		const apiAdapter = new ApiAdapter();
 		migrateLocalToApi(apiAdapter)
-			.catch(() => {})
-			.finally(() => {
+			.then(() => {
 				switchToApi();
 				queryClient.invalidateQueries({ queryKey: bookmarkKeys.all });
 				queryClient.invalidateQueries({ queryKey: tagKeys.all });
+			})
+			.catch(() => {
+				toast.error('데이터 마이그레이션에 실패했습니다. 다시 시도해 주세요.');
 			});
 	}
 

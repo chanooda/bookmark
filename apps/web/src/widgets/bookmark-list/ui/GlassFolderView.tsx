@@ -217,6 +217,7 @@ export function GlassFolderView() {
 							.catch(() => toast.error('Chrome 북마크 동기화에 실패했습니다.'));
 					}
 				},
+				onError: () => toast.error('북마크 삭제에 실패했습니다.'),
 			});
 		},
 		[deleteBookmark, queryClient, chromeSyncService],
@@ -243,6 +244,7 @@ export function GlassFolderView() {
 
 	const handleDeleteFolder = useCallback(
 		(id: string) => {
+			if (!window.confirm('폴더를 삭제하시겠습니까? 하위 폴더와 북마크도 함께 삭제됩니다.')) return;
 			deleteFolder(id, {
 				onSuccess: () => {
 					if (chromeSyncService) {
