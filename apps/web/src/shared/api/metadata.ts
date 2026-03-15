@@ -1,5 +1,5 @@
-import { apiClient } from '@repo/api-client';
-import type { UrlMetadata } from '@repo/types';
+import { apiClient } from '@bookmark/api-client';
+import type { UrlMetadata } from '@bookmark/types';
 
 export async function fetchUrlMetadata(url: string): Promise<UrlMetadata> {
 	// extension 빌드에서는 API 서버 없음 → 즉시 빈 값 반환

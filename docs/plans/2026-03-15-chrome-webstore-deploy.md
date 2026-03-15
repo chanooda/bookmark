@@ -13,6 +13,7 @@
 ### Task 1: 아이콘 생성 스크립트 작성 및 실행
 
 **Files:**
+
 - Create: `scripts/generate-icons.mjs`
 - Create: `apps/extension/public/icons/icon16.png` (생성됨)
 - Create: `apps/extension/public/icons/icon48.png` (생성됨)
@@ -27,6 +28,7 @@ pnpm add -D sharp -w
 **Step 2: 아이콘 생성 스크립트 작성**
 
 `scripts/generate-icons.mjs`:
+
 ```js
 import { mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
@@ -76,6 +78,7 @@ git commit -m "feat: add extension icon assets (16/48/128px)"
 ### Task 2: manifest.json 완성
 
 **Files:**
+
 - Modify: `apps/extension/public/manifest.json`
 
 **Step 1: manifest.json 수정**
@@ -108,6 +111,7 @@ git commit -m "feat: add extension icon assets (16/48/128px)"
 ```
 
 변경 사항:
+
 - `icons` 필드 추가 (웹스토어 필수)
 - `action.default_icon` 추가 (툴바 아이콘)
 - `host_permissions` 제거 (API 서버 없음)
@@ -126,13 +130,14 @@ git commit -m "feat: complete manifest.json for Chrome Web Store"
 ### Task 3: extension 모드에서 fetchUrlMetadata 비활성화
 
 **Files:**
+
 - Modify: `apps/web/src/shared/api/metadata.ts`
 
 **Step 1: 코드 수정**
 
 ```ts
-import { apiClient } from '@repo/api-client';
-import type { UrlMetadata } from '@repo/types';
+import { apiClient } from '@bookmark/api-client';
+import type { UrlMetadata } from '@bookmark/types';
 
 export async function fetchUrlMetadata(url: string): Promise<UrlMetadata> {
   // extension 빌드에서는 API 서버 없음 → 즉시 빈 값 반환
@@ -150,7 +155,7 @@ export async function fetchUrlMetadata(url: string): Promise<UrlMetadata> {
 **Step 2: 타입 체크**
 
 ```bash
-pnpm --filter @repo/web check-types
+pnpm --filter @bookmark/web check-types
 ```
 
 Expected: 에러 없음
@@ -167,6 +172,7 @@ git commit -m "feat: disable metadata API fetch in extension mode"
 ### Task 4: build:zip 스크립트 추가
 
 **Files:**
+
 - Create: `scripts/zip-extension.mjs`
 - Modify: `package.json` (루트)
 - Modify: `.gitignore` (루트)
@@ -180,6 +186,7 @@ pnpm add -D archiver @types/archiver -w
 **Step 2: zip 스크립트 작성**
 
 `scripts/zip-extension.mjs`:
+
 ```js
 import archiver from 'archiver';
 import { createWriteStream, existsSync, rmSync } from 'node:fs';
@@ -210,12 +217,13 @@ console.log(`✓ extension.zip 생성 완료 (${archive.pointer()} bytes)`);
 **Step 3: 루트 package.json scripts에 추가**
 
 ```json
-"build:ext": "turbo run build --filter=@repo/extension && node scripts/zip-extension.mjs"
+"build:ext": "turbo run build --filter=@bookmark/extension && node scripts/zip-extension.mjs"
 ```
 
 **Step 4: .gitignore에 zip 추가**
 
 루트 `.gitignore` 끝에 추가:
+
 ```
 extension.zip
 ```
@@ -227,14 +235,15 @@ pnpm build:ext
 ```
 
 Expected:
-1. `@repo/web` build:ext 실행
-2. `@repo/extension` build 실행 (newtab 복사 포함)
+
+1. `@bookmark/web` build:ext 실행
+2. `@bookmark/extension` build 실행 (newtab 복사 포함)
 3. `extension.zip` 생성
 
 **Step 6: zip 검증**
 
 ```bash
-pnpm check && pnpm check-types && pnpm --filter @repo/web test
+pnpm check && pnpm check-types && pnpm --filter @bookmark/web test
 ```
 
 **Step 7: 커밋**

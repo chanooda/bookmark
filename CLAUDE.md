@@ -17,7 +17,7 @@ All four steps are mandatory after every code change. **NO EXCEPTIONS — you MU
 
 1. `pnpm check` — lint and format check
 2. `pnpm check-types` — TypeScript type check
-3. `pnpm --filter @repo/web test` — run tests (all must pass; fix failures before finishing)
+3. `pnpm --filter @bookmark/web test` — run tests (all must pass; fix failures before finishing)
 4. **MANDATORY: verify no runtime errors occur. If any runtime error is found, you MUST fix it before finishing. Never consider a task done while runtime errors exist.**
 
 ## worktree path

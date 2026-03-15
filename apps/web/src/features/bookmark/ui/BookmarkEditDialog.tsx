@@ -1,8 +1,9 @@
-import type { UpdateBookmarkDto } from '@repo/types';
-import { Button } from '@repo/ui/components/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/dialog';
+import type { UpdateBookmarkDto } from '@bookmark/types';
+import { Button } from '@bookmark/ui/components/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@bookmark/ui/components/dialog';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { bookmarkKeys, useEditBookmark } from '@/entities/bookmark';
 import { useFolders } from '@/entities/folder';
@@ -14,6 +15,7 @@ import { useBookmarkForm } from '../model/useBookmarkForm';
 import { BookmarkFormFields } from './BookmarkFormFields';
 
 export function BookmarkEditDialog() {
+	const { t } = useTranslation();
 	const { editTarget, setEditTarget } = useBookmarkDialogStore();
 
 	const queryClient = useQueryClient();
@@ -68,7 +70,7 @@ export function BookmarkEditDialog() {
 					if (chromeSyncService) {
 						chromeSyncService
 							.syncUpdateBookmark(bookmark, folders)
-							.catch(() => toast.error('Chrome 북마크 동기화에 실패했습니다.'));
+							.catch(() => toast.error(t('bookmark.syncError')));
 					}
 					setEditTarget(null);
 				},
@@ -85,7 +87,7 @@ export function BookmarkEditDialog() {
 		>
 			<DialogContent className='sm:max-w-md'>
 				<DialogHeader>
-					<DialogTitle>북마크 수정</DialogTitle>
+					<DialogTitle>{t('bookmark.edit')}</DialogTitle>
 				</DialogHeader>
 				<form className='flex flex-col gap-4' onSubmit={handleSubmit}>
 					<BookmarkFormFields
@@ -103,10 +105,10 @@ export function BookmarkEditDialog() {
 					/>
 					<div className='flex justify-end gap-2 pt-2'>
 						<Button onClick={() => setEditTarget(null)} type='button' variant='outline'>
-							취소
+							{t('common.cancel')}
 						</Button>
 						<Button disabled={isPending} type='submit'>
-							{isPending ? '수정 중...' : '수정'}
+							{isPending ? t('bookmark.editing') : t('common.edit')}
 						</Button>
 					</div>
 				</form>

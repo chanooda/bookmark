@@ -1,5 +1,5 @@
 {
-  "name": "new-project",
+  "name": "bookmark",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -7,7 +7,7 @@
     "check": "turbo run check",
     "check-types": "turbo run check-types",
     "ci-check": "turbo run ci-check",
-    "build:ext": "turbo run build --filter=@repo/extension && node scripts/zip-extension.mjs"
+    "build:web": "turbo run build --filter=@bookmark/web && node scripts/zip-web.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.2",

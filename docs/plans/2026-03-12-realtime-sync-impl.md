@@ -42,6 +42,7 @@
 ## Task 1: FileExplorerModal - syncDeleteFolder 추가
 
 **Files:**
+
 - Modify: `apps/web/src/widgets/bookmark-list/ui/FileExplorerModal.tsx`
 
 ### Step 1: 현재 deleteFolder 코드 위치 확인
@@ -120,6 +121,7 @@ git commit -m "fix: add missing syncDeleteFolder in FileExplorerModal"
 ## Task 2: SyncMode 모드 격리 검증
 
 **Files:**
+
 - Read: `apps/web/src/shared/lib/chrome-sync/useChromeSyncService.ts`
 - Read: `apps/web/src/shared/lib/chrome-sync/useChromeBrowserSync.ts`
 
@@ -160,6 +162,7 @@ if (syncMode === 'chrome-to-web' || syncMode === 'bidirectional') {
 ## Task 3: Guard 패턴 검증
 
 **Files:**
+
 - Read: `apps/web/src/shared/lib/chrome-sync/ChromeSyncService.ts`
 
 ### Step 1: 각 메서드의 Guard try/finally 확인
@@ -215,6 +218,7 @@ git commit -m "fix: ensure Guard try/finally pattern in ChromeSyncService"
 ## Task 4: 테스트 작성
 
 **Files:**
+
 - Create: `apps/web/__tests__/chrome-sync/syncRules.test.ts`
 
 ### Step 1: 테스트 파일 생성
@@ -313,7 +317,7 @@ describe('useChromeSyncService - 모드 격리', () => {
 ### Step 4: 테스트 실행
 
 ```bash
-pnpm --filter @repo/web test
+pnpm --filter @bookmark/web test
 ```
 
 Expected: 모든 테스트 통과
@@ -332,7 +336,7 @@ git commit -m "test: add Chrome sync Guard and mode isolation tests"
 ### Step 1: 전체 체크 실행
 
 ```bash
-pnpm check && pnpm check-types && pnpm --filter @repo/web test
+pnpm check && pnpm check-types && pnpm --filter @bookmark/web test
 ```
 
 Expected: 모든 단계 통과

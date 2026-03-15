@@ -1,0 +1,14 @@
+{
+	"appName": {
+		"message": "mark.",
+		"description": "应用名称"
+	},
+	"appShortName": {
+		"message": "mark.",
+		"description": "应用短名称"
+	},
+	"appDescription": {
+		"message": "轻松添加和管理您的书签",
+		"description": "应用描述"
+	}
+}

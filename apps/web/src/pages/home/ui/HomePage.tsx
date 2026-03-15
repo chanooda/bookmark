@@ -1,4 +1,4 @@
-import { cn } from '@repo/ui/lib/utils';
+import { cn } from '@bookmark/ui/lib/utils';
 import { LoginDialog } from '@/features/auth';
 import { BookmarkCreateDialog, BookmarkEditDialog } from '@/features/bookmark';
 import { FolderCreateDialog, FolderEditDialog } from '@/features/folder-manage';

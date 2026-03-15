@@ -1,4 +1,4 @@
-import { DEFAULT_APP_SETTINGS, type SyncMode } from '@repo/types';
+import { DEFAULT_APP_SETTINGS, type SyncMode } from '@bookmark/types';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import type { ViewMode } from '@/entities/bookmark';

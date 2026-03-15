@@ -1,0 +1,179 @@
+{
+	"settings": {
+		"title": "Settings",
+		"description": "App settings and data management",
+		"sections": {
+			"viewMode": {
+				"label": "View",
+				"description": "Choose the layout for displaying the bookmark list."
+			},
+			"theme": {
+				"label": "Theme",
+				"description": "Choose the color theme for the app."
+			},
+			"realtimeSync": {
+				"label": "Sync",
+				"description": "Set the direction of real-time sync with Chrome bookmarks."
+			},
+			"chromeImport": {
+				"label": "Chrome Import",
+				"description": "Import bookmarks from Chrome browser into the app."
+			},
+			"language": {
+				"label": "Language",
+				"description": "Choose the display language for the app."
+			}
+		}
+	},
+	"theme": {
+		"label": "Theme",
+		"light": "Light",
+		"dark": "Dark",
+		"system": "System",
+		"switchToLight": "Switch to light mode",
+		"switchToDark": "Switch to dark mode"
+	},
+	"viewMode": {
+		"label": "View Mode",
+		"glass": "Glass",
+		"grid": "Grid",
+		"list": "List"
+	},
+	"sync": {
+		"label": "Real-time Sync",
+		"save": "Save",
+		"warning": "⚠ Depending on sync settings, Chrome bookmarks may be deleted. We recommend exporting your Chrome bookmarks first ({{path}}).",
+		"warningPath": "Chrome Settings → Bookmarks → Export bookmarks",
+		"options": {
+			"off": {
+				"label": "No Sync",
+				"description": "Automatic sync between Chrome bookmarks and app is disabled.",
+				"warning": ""
+			},
+			"chromeToWeb": {
+				"label": "Chrome → Web",
+				"description": "Chrome bookmark changes are automatically reflected in the app.",
+				"warning": "⚠ Bookmarks deleted in Chrome will also be permanently deleted in the app."
+			},
+			"webToChrome": {
+				"label": "Web → Chrome",
+				"description": "App bookmark changes are automatically reflected in Chrome bookmarks.",
+				"warning": "⚠ Bookmarks deleted in the app will also be permanently deleted in Chrome."
+			},
+			"bidirectional": {
+				"label": "Bidirectional",
+				"description": "App and Chrome bookmarks sync automatically in both directions.",
+				"warning": "⚠ Deleting from either side permanently deletes from both."
+			}
+		}
+	},
+	"chromeImport": {
+		"title": "Import Chrome Bookmarks",
+		"description": "Import bookmarks from your current Chrome browser into the app. Existing URLs will be skipped.",
+		"progress": "{{current}} / {{total}} processing...",
+		"done": "Done — {{current}} of {{total}} processed",
+		"error": "Error: {{message}}",
+		"unknownError": "Unknown error",
+		"importing": "Importing... ({{percent}}%)",
+		"reimport": "Re-import",
+		"import": "Import Chrome Bookmarks"
+	},
+	"language": {
+		"label": "Language",
+		"languages": {
+			"en": "English",
+			"ko": "한국어",
+			"zh": "中文",
+			"ja": "日本語"
+		}
+	},
+	"bookmark": {
+		"add": "Add Bookmark",
+		"edit": "Edit Bookmark",
+		"adding": "Adding...",
+		"editing": "Editing...",
+		"url": "URL",
+		"title": "Title",
+		"titlePlaceholder": "Title",
+		"description": "Description",
+		"descriptionPlaceholder": "Description (optional)",
+		"folder": "Folder",
+		"tag": "Tag",
+		"syncError": "Chrome bookmark sync failed."
+	},
+	"tag": {
+		"add": "Add Tag",
+		"edit": "Edit Tag",
+		"name": "Name",
+		"namePlaceholder": "Tag name",
+		"color": "Color",
+		"customColor": "Custom",
+		"preview": "Preview",
+		"adding": "Adding...",
+		"saving": "Saving...",
+		"delete": "Delete"
+	},
+	"folder": {
+		"new": "New Folder",
+		"rename": "Rename Folder",
+		"name": "Name",
+		"namePlaceholder": "Folder name",
+		"createInside": "Will be created inside",
+		"adding": "Adding...",
+		"saving": "Saving...",
+		"addChild": "Add subfolder",
+		"rename_action": "Rename",
+		"delete": "Delete",
+		"deleteConfirm": "Delete this folder? Subfolders and bookmarks will also be deleted.",
+		"syncError": "Chrome folder sync failed.",
+		"deleteError": "Failed to delete folder.",
+		"saveEnter": "Save (Enter)",
+		"cancelEsc": "Cancel (Esc)",
+		"collapse": "Collapse",
+		"expand": "Expand"
+	},
+	"sidebar": {
+		"folders": "Folders",
+		"addFolder": "Add folder",
+		"tags": "Tags",
+		"addTag": "Add tag",
+		"all": "All",
+		"editTag": "Edit"
+	},
+	"header": {
+		"addBookmark": "Add Bookmark",
+		"settings": "Settings"
+	},
+	"bookmarkList": {
+		"loadError": "An error occurred while loading bookmarks",
+		"unknownError": "Unknown error",
+		"empty": "No bookmarks",
+		"reorderSyncError": "Chrome bookmark order sync failed.",
+		"reorderError": "Failed to reorder bookmarks."
+	},
+	"filterBar": {
+		"folders": "Folders",
+		"tags": "Tags",
+		"all": "All",
+		"addFolder": "Add folder",
+		"addTag": "Add tag"
+	},
+	"search": {
+		"bookmarkLabel": "Bookmark",
+		"bookmarkPlaceholder": "Search saved bookmarks...",
+		"bookmarkAriaLabel": "Search bookmarks",
+		"clearAriaLabel": "Clear search",
+		"googleAriaLabel": "Search Google or enter URL",
+		"googlePlaceholder": "Search or enter URL...",
+		"googleHomeAriaLabel": "Go to Google homepage",
+		"googleHomeTitle": "Go to google.com",
+		"searchButton": "Search",
+		"go": "Go"
+	},
+	"common": {
+		"cancel": "Cancel",
+		"save": "Save",
+		"add": "Add",
+		"edit": "Edit"
+	}
+}

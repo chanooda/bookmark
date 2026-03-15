@@ -1,4 +1,4 @@
-import { type ApiAdapter, ChromeStorageAdapter } from '@repo/api-client';
+import { type ApiAdapter, ChromeStorageAdapter } from '@bookmark/api-client';
 
 export async function migrateLocalToApi(apiAdapter: ApiAdapter): Promise<void> {
 	const localAdapter = new ChromeStorageAdapter();

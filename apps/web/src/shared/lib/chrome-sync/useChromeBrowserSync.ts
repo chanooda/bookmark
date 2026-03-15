@@ -4,7 +4,7 @@ import type {
 	CreateFolderDto,
 	Folder,
 	StorageAdapter,
-} from '@repo/types';
+} from '@bookmark/types';
 import { type QueryClient, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';

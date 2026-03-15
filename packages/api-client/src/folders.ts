@@ -1,4 +1,4 @@
-import type { CreateFolderDto, Folder, ReorderItemDto, UpdateFolderDto } from '@repo/types';
+import type { CreateFolderDto, Folder, ReorderItemDto, UpdateFolderDto } from '@bookmark/types';
 import { apiClient } from './client';
 
 export const foldersApi = {

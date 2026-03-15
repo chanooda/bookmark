@@ -24,11 +24,13 @@
 ### Task 1: Header에 glass view 버튼 추가
 
 **Files:**
+
 - Modify: `apps/web/src/widgets/header/ui/Header.tsx:44-95`
 
 **Step 1: glass 버튼을 grid/list 버튼 앞에 추가**
 
 현재 뷰모드 토글 영역 (line 44-95):
+
 ```tsx
 <div className='mr-0.5 flex items-center gap-0.5 rounded-lg bg-muted/70 p-0.5'>
   {/* 기존: grid, list 버튼 */}
@@ -36,6 +38,7 @@
 ```
 
 glass 버튼을 가장 앞에 추가. 아이콘은 4개의 큰 사각형(glass grid 느낌):
+
 ```tsx
 <button
   className={`rounded-md p-2 transition-all ${
@@ -57,11 +60,13 @@ glass 버튼을 가장 앞에 추가. 아이콘은 4개의 큰 사각형(glass g
 ```
 
 **Step 2: 검증**
+
 ```bash
 pnpm check && pnpm check-types
 ```
 
 **Step 3: Commit**
+
 ```bash
 git add apps/web/src/widgets/header/ui/Header.tsx
 git commit -m "feat(header): add glass view toggle button"
@@ -72,6 +77,7 @@ git commit -m "feat(header): add glass view toggle button"
 ### Task 2: Settings 뷰 모드 옵션에 미리보기 SVG 추가
 
 **Files:**
+
 - Modify: `apps/web/src/features/settings/ui/SettingsDialog.tsx:24-78`
 
 **Step 1: VIEW_MODE_OPTIONS에 preview SVG 추가**
@@ -145,6 +151,7 @@ const VIEW_MODE_OPTIONS: { value: ViewMode; label: string; icon: ReactNode; prev
 **Step 2: 버튼 렌더링에 preview 추가**
 
 기존 버튼을 세로로 확장하여 preview 포함:
+
 ```tsx
 <button
   className={`flex flex-1 flex-col items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-xs transition-all ${
@@ -167,11 +174,13 @@ const VIEW_MODE_OPTIONS: { value: ViewMode; label: string; icon: ReactNode; prev
 ```
 
 **Step 3: 검증**
+
 ```bash
 pnpm check && pnpm check-types
 ```
 
 **Step 4: Commit**
+
 ```bash
 git add apps/web/src/features/settings/ui/SettingsDialog.tsx
 git commit -m "feat(settings): add view mode preview thumbnails"
@@ -182,11 +191,13 @@ git commit -m "feat(settings): add view mode preview thumbnails"
 ### Task 3: HomePage glass view full-width 레이아웃
 
 **Files:**
+
 - Modify: `apps/web/src/pages/home/ui/HomePage.tsx:72-87`
 
 **Step 1: glass 모드일 때 max-width 제거 및 px 조정**
 
 현재:
+
 ```tsx
 <div className='mx-auto flex w-full max-w-[1400px] flex-1 flex-col overflow-hidden px-6'>
   <SearchHub />
@@ -200,6 +211,7 @@ git commit -m "feat(settings): add view mode preview thumbnails"
 ```
 
 변경:
+
 ```tsx
 <div className={cn(
   'mx-auto flex w-full flex-1 flex-col overflow-hidden',
@@ -220,14 +232,16 @@ git commit -m "feat(settings): add view mode preview thumbnails"
 </div>
 ```
 
-`cn` import 추가 필요: `import { cn } from '@repo/ui/lib/utils';`
+`cn` import 추가 필요: `import { cn } from '@bookmark/ui/lib/utils';`
 
 **Step 2: 검증**
+
 ```bash
 pnpm check && pnpm check-types
 ```
 
 **Step 3: Commit**
+
 ```bash
 git add apps/web/src/pages/home/ui/HomePage.tsx
 git commit -m "feat(home): glass view full-width layout"
@@ -238,9 +252,11 @@ git commit -m "feat(home): glass view full-width layout"
 ### Task 4: GlassFolderView - 전면 개선
 
 **Files:**
+
 - Rewrite: `apps/web/src/widgets/bookmark-list/ui/GlassFolderView.tsx`
 
 이 Task는 아래 5가지 Design 요구사항을 한 파일에서 모두 처리한다:
+
 - D1: full-width (Task 3에서 레이아웃 처리, 여기선 grid 패딩 제거)
 - D2: 폴더/태그 선택·추가·수정 패널
 - D3: 카드 크기 축소 + 5열 + 위에서부터 채우기
@@ -251,6 +267,7 @@ git commit -m "feat(home): glass view full-width layout"
 **Step 1: imports 및 타입 확인**
 
 사용할 hooks:
+
 - `useBookmarkFilterStore` → `selectedTagId, setSelectedTagId, selectedFolderId, setSelectedFolderId, search`
 - `useFolders` → folders 목록
 - `useTags` → tags 목록
@@ -356,6 +373,7 @@ function GlassFilterBar() {
 **Step 3: GlassFolderCard 카드 크기 축소**
 
 현재 `aspectRatio: '1'` + `p-3.5` + 4개 북마크 표시 → 더 작게:
+
 - `p-2.5` 로 축소
 - `aspectRatio: '1'` 유지 (정사각형)
 - `rounded-[16px]` (기존 20px에서 축소)
@@ -437,6 +455,7 @@ const panelStyle = {
 모달 내부 텍스트, 헤더, 구분선 등도 Tailwind 클래스(text-foreground, border-border 등)로 교체.
 
 BookmarkCard 내 description 추가:
+
 ```tsx
 {bookmark.description && (
   <p className='mt-1 line-clamp-2 text-[11px] leading-relaxed text-muted-foreground/70'>
@@ -446,11 +465,13 @@ BookmarkCard 내 description 추가:
 ```
 
 **Step 7: 검증**
+
 ```bash
 pnpm check && pnpm check-types
 ```
 
 **Step 8: Commit**
+
 ```bash
 git add apps/web/src/widgets/bookmark-list/ui/GlassFolderView.tsx
 git commit -m "feat(glass-view): full-width grid, filter bar, smaller cards, light theme modal, description, uncategorized cards"

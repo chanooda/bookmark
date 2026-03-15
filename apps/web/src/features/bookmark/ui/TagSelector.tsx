@@ -1,4 +1,4 @@
-import type { Tag } from '@repo/types';
+import type { Tag } from '@bookmark/types';
 import { useMemo } from 'react';
 
 interface TagSelectorProps {

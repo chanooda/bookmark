@@ -1,4 +1,4 @@
-import { Button } from '@repo/ui/components/button';
+import { Button } from '@bookmark/ui/components/button';
 import { type FormEvent, useState } from 'react';
 
 function detectInputType(input: string): 'url' | 'search' {

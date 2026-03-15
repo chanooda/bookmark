@@ -1,3 +1,4 @@
+import type { Bookmark, Folder } from '@bookmark/types';
 import { closestCenter, DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import {
 	rectSortingStrategy,
@@ -6,7 +7,6 @@ import {
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import type { Bookmark, Folder } from '@repo/types';
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toast } from 'sonner';

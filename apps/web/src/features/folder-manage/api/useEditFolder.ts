@@ -1,4 +1,4 @@
-import type { UpdateFolderDto } from '@repo/types';
+import type { UpdateFolderDto } from '@bookmark/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { folderKeys } from '@/entities/folder';
 import { useStorageAdapter } from '@/shared/lib/storage';

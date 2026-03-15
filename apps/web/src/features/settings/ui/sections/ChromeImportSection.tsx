@@ -1,5 +1,6 @@
-import { Button } from '@repo/ui/components/button';
+import { Button } from '@bookmark/ui/components/button';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSettingStore } from '../../model/settingStore';
 import { useChromeBookmarkImport } from '../../model/useChromeBookmarkImport';
 import { useSettingsDialogContext } from '../SettingsDialogContext';
@@ -9,6 +10,7 @@ export function ChromeImportSection() {
 		useChromeBookmarkImport();
 	const { setBlocking } = useSettingsDialogContext();
 	const { settingsOpen } = useSettingStore();
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		setBlocking(progress.status === 'importing');
@@ -29,10 +31,8 @@ export function ChromeImportSection() {
 	return (
 		<div className='flex flex-col gap-3'>
 			<div>
-				<h3 className='text-sm font-medium'>Chrome 북마크 가져오기</h3>
-				<p className='mt-0.5 text-xs text-muted-foreground'>
-					현재 Chrome 브라우저의 북마크를 앱으로 가져옵니다. 이미 있는 URL은 건너뜁니다.
-				</p>
+				<h3 className='text-sm font-medium'>{t('chromeImport.title')}</h3>
+				<p className='mt-0.5 text-xs text-muted-foreground'>{t('chromeImport.description')}</p>
 			</div>
 
 			{(isImporting || isDone) && progress.total > 0 && (
@@ -45,14 +45,18 @@ export function ChromeImportSection() {
 					</div>
 					<p className='text-xs text-muted-foreground'>
 						{isDone
-							? `완료 — ${progress.total}개 중 ${progress.current}개 처리됨`
-							: `${progress.current} / ${progress.total} 처리 중...`}
+							? t('chromeImport.done', { current: progress.current, total: progress.total })
+							: t('chromeImport.progress', { current: progress.current, total: progress.total })}
 					</p>
 				</div>
 			)}
 
 			{isError && (
-				<p className='text-xs text-destructive'>오류: {progress.error ?? '알 수 없는 오류'}</p>
+				<p className='text-xs text-destructive'>
+					{t('chromeImport.error', {
+						message: progress.error ?? t('chromeImport.unknownError'),
+					})}
+				</p>
 			)}
 
 			<Button
@@ -75,10 +79,10 @@ export function ChromeImportSection() {
 					<line strokeWidth={2} x1='10.88' x2='15.46' y1='21.94' y2='14' />
 				</svg>
 				{isImporting
-					? `가져오는 중... (${progressPercent}%)`
+					? t('chromeImport.importing', { percent: progressPercent })
 					: isDone
-						? '다시 가져오기'
-						: 'Chrome 북마크 가져오기'}
+						? t('chromeImport.reimport')
+						: t('chromeImport.import')}
 			</Button>
 		</div>
 	);

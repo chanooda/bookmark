@@ -1,4 +1,5 @@
 import { type FormEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useBookmarkFilterStore } from '@/features/bookmark';
 
 function detectInputType(input: string): 'url' | 'search' {
@@ -33,6 +34,7 @@ function GoogleIcon() {
 }
 
 export function SearchHub() {
+	const { t } = useTranslation();
 	const { search, setSearch } = useBookmarkFilterStore();
 	const [googleQuery, setGoogleQuery] = useState('');
 
@@ -70,21 +72,21 @@ export function SearchHub() {
 							<path d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z' />
 						</svg>
 						<span className='font-label text-[9px] uppercase tracking-[0.13em] text-primary/50 transition-colors duration-200 group-focus-within/bm:text-primary/80'>
-							북마크
+							{t('search.bookmarkLabel')}
 						</span>
 					</div>
 					{/* Input */}
 					<input
-						aria-label='북마크 검색'
+						aria-label={t('search.bookmarkAriaLabel')}
 						className='h-11 flex-1 bg-transparent px-3.5 text-sm text-foreground placeholder:text-muted-foreground/35 outline-none'
 						onChange={(e) => setSearch(e.target.value)}
-						placeholder='저장한 북마크 검색...'
+						placeholder={t('search.bookmarkPlaceholder')}
 						value={search}
 					/>
 					{/* Clear button — appears when there's text */}
 					{search && (
 						<button
-							aria-label='검색어 지우기'
+							aria-label={t('search.clearAriaLabel')}
 							className='mr-3 flex h-5 w-5 shrink-0 items-center justify-center rounded text-muted-foreground/35 transition-colors duration-150 hover:text-foreground/60'
 							onClick={() => setSearch('')}
 							type='button'
@@ -114,10 +116,10 @@ export function SearchHub() {
 				>
 					{/* Label badge — clickable link to google.com */}
 					<a
-						aria-label='Google 홈으로 이동'
+						aria-label={t('search.googleHomeAriaLabel')}
 						className='flex shrink-0 items-center gap-1.5 border-r border-border/40 px-3.5 py-3 transition-all duration-200 group-focus-within/gl:border-blue-400/25 hover:bg-blue-500/5'
 						href='https://www.google.com'
-						title='google.com으로 이동'
+						title={t('search.googleHomeTitle')}
 					>
 						<GoogleIcon />
 						<span className='font-label text-[9px] uppercase tracking-[0.13em] text-blue-400/50 transition-colors duration-200 group-focus-within/gl:text-blue-400/85'>
@@ -126,16 +128,16 @@ export function SearchHub() {
 					</a>
 					{/* Input */}
 					<input
-						aria-label='Google 검색 또는 URL 입력'
+						aria-label={t('search.googleAriaLabel')}
 						className='h-11 flex-1 bg-transparent px-3.5 text-sm text-foreground placeholder:text-muted-foreground/35 outline-none'
 						onChange={(e) => setGoogleQuery(e.target.value)}
-						placeholder='검색어 또는 URL 입력...'
+						placeholder={t('search.googlePlaceholder')}
 						value={googleQuery}
 					/>
 					{/* Submit button */}
 					<button
 						className='mr-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-muted-foreground/25 transition-all duration-200 hover:bg-blue-500/12 hover:text-blue-400 group-focus-within/gl:bg-blue-500/8 group-focus-within/gl:text-blue-400/70'
-						title='검색'
+						title={t('search.searchButton')}
 						type='submit'
 					>
 						<svg

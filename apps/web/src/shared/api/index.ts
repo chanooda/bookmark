@@ -1,1 +1,1 @@
-export { apiClient, bookmarksApi, setAuthToken, tagsApi } from '@repo/api-client';
+export { apiClient, bookmarksApi, setAuthToken, tagsApi } from '@bookmark/api-client';

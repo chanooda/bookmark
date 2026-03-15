@@ -29,6 +29,7 @@
 웹 앱의 `ChromeSyncService`가 Chrome API 호출 시 표시를 남기는 모듈 레벨 싱글톤.
 
 **Files:**
+
 - Create: `apps/web/src/shared/lib/chrome-sync/ChromeSyncGuard.ts`
 
 **Step 1: 파일 생성**
@@ -46,9 +47,9 @@
  *   pendingUpdates — Chrome node ID
  */
 export const ChromeSyncGuard = {
-	pendingCreates: new Set<string>(),
-	pendingRemoves: new Set<string>(),
-	pendingUpdates: new Set<string>(),
+ pendingCreates: new Set<string>(),
+ pendingRemoves: new Set<string>(),
+ pendingUpdates: new Set<string>(),
 };
 ```
 
@@ -74,142 +75,143 @@ git commit -m "feat: add ChromeSyncGuard for deduplication"
 `ChromeSyncService`의 Chrome API 호출마다 Guard에 표시를 남겨, `useChromeBrowserSync` 리스너가 우리 자신의 변경을 무시하도록 한다.
 
 **Files:**
+
 - Modify: `apps/web/src/shared/lib/chrome-sync/ChromeSyncService.ts`
 
 **Step 1: 파일 전체 교체**
 
 ```ts
 // apps/web/src/shared/lib/chrome-sync/ChromeSyncService.ts
-import type { Bookmark, Folder } from '@repo/types';
+import type { Bookmark, Folder } from '@bookmark/types';
 import { ChromeSyncGuard } from './ChromeSyncGuard';
 import { readSyncMap, updateSyncMap, writeSyncMap } from './syncMap';
 
 const BOOKMARKS_BAR_ID = '1';
 
 export class ChromeSyncService {
-	private readonly _pendingFolders = new Map<string, Promise<string>>();
+ private readonly _pendingFolders = new Map<string, Promise<string>>();
 
-	private async ensureFolderSynced(appFolderId: string, allFolders: Folder[]): Promise<string> {
-		const pending = this._pendingFolders.get(appFolderId);
-		if (pending) return pending;
+ private async ensureFolderSynced(appFolderId: string, allFolders: Folder[]): Promise<string> {
+  const pending = this._pendingFolders.get(appFolderId);
+  if (pending) return pending;
 
-		const promise = this._doEnsureFolder(appFolderId, allFolders).finally(() => {
-			this._pendingFolders.delete(appFolderId);
-		});
-		this._pendingFolders.set(appFolderId, promise);
-		return promise;
-	}
+  const promise = this._doEnsureFolder(appFolderId, allFolders).finally(() => {
+   this._pendingFolders.delete(appFolderId);
+  });
+  this._pendingFolders.set(appFolderId, promise);
+  return promise;
+ }
 
-	private async _doEnsureFolder(appFolderId: string, allFolders: Folder[]): Promise<string> {
-		const map = await readSyncMap();
-		if (map.folders[appFolderId]) {
-			return map.folders[appFolderId] as string;
-		}
+ private async _doEnsureFolder(appFolderId: string, allFolders: Folder[]): Promise<string> {
+  const map = await readSyncMap();
+  if (map.folders[appFolderId]) {
+   return map.folders[appFolderId] as string;
+  }
 
-		const appFolder = allFolders.find((f) => f.id === appFolderId);
-		if (!appFolder) throw new Error(`Folder not found in app: ${appFolderId}`);
+  const appFolder = allFolders.find((f) => f.id === appFolderId);
+  if (!appFolder) throw new Error(`Folder not found in app: ${appFolderId}`);
 
-		const parentChromeId = await this.getChromeFolderParent(appFolder, allFolders);
+  const parentChromeId = await this.getChromeFolderParent(appFolder, allFolders);
 
-		const key = `folder|||${appFolder.name}`;
-		ChromeSyncGuard.pendingCreates.add(key);
-		const chromeNode = await chrome.bookmarks
-			.create({ parentId: parentChromeId, title: appFolder.name })
-			.finally(() => ChromeSyncGuard.pendingCreates.delete(key));
+  const key = `folder|||${appFolder.name}`;
+  ChromeSyncGuard.pendingCreates.add(key);
+  const chromeNode = await chrome.bookmarks
+   .create({ parentId: parentChromeId, title: appFolder.name })
+   .finally(() => ChromeSyncGuard.pendingCreates.delete(key));
 
-		await updateSyncMap({ folders: { [appFolderId]: chromeNode.id } });
-		return chromeNode.id;
-	}
+  await updateSyncMap({ folders: { [appFolderId]: chromeNode.id } });
+  return chromeNode.id;
+ }
 
-	private async getChromeFolderParent(appFolder: Folder, allFolders: Folder[]): Promise<string> {
-		if (appFolder.parentId === null) return BOOKMARKS_BAR_ID;
-		return this.ensureFolderSynced(appFolder.parentId, allFolders);
-	}
+ private async getChromeFolderParent(appFolder: Folder, allFolders: Folder[]): Promise<string> {
+  if (appFolder.parentId === null) return BOOKMARKS_BAR_ID;
+  return this.ensureFolderSynced(appFolder.parentId, allFolders);
+ }
 
-	async syncCreateBookmark(appBookmark: Bookmark, allFolders: Folder[]): Promise<void> {
-		let parentId = BOOKMARKS_BAR_ID;
-		if (appBookmark.folderId) {
-			parentId = await this.ensureFolderSynced(appBookmark.folderId, allFolders);
-		}
+ async syncCreateBookmark(appBookmark: Bookmark, allFolders: Folder[]): Promise<void> {
+  let parentId = BOOKMARKS_BAR_ID;
+  if (appBookmark.folderId) {
+   parentId = await this.ensureFolderSynced(appBookmark.folderId, allFolders);
+  }
 
-		const key = `${appBookmark.title}|||${appBookmark.url}`;
-		ChromeSyncGuard.pendingCreates.add(key);
-		const chromeNode = await chrome.bookmarks
-			.create({ parentId, title: appBookmark.title, url: appBookmark.url })
-			.finally(() => ChromeSyncGuard.pendingCreates.delete(key));
+  const key = `${appBookmark.title}|||${appBookmark.url}`;
+  ChromeSyncGuard.pendingCreates.add(key);
+  const chromeNode = await chrome.bookmarks
+   .create({ parentId, title: appBookmark.title, url: appBookmark.url })
+   .finally(() => ChromeSyncGuard.pendingCreates.delete(key));
 
-		await updateSyncMap({ bookmarks: { [appBookmark.id]: chromeNode.id } });
-	}
+  await updateSyncMap({ bookmarks: { [appBookmark.id]: chromeNode.id } });
+ }
 
-	async syncUpdateBookmark(appBookmark: Bookmark, allFolders: Folder[]): Promise<void> {
-		const map = await readSyncMap();
-		const chromeId = map.bookmarks[appBookmark.id];
+ async syncUpdateBookmark(appBookmark: Bookmark, allFolders: Folder[]): Promise<void> {
+  const map = await readSyncMap();
+  const chromeId = map.bookmarks[appBookmark.id];
 
-		if (!chromeId) {
-			await this.syncCreateBookmark(appBookmark, allFolders);
-			return;
-		}
+  if (!chromeId) {
+   await this.syncCreateBookmark(appBookmark, allFolders);
+   return;
+  }
 
-		let targetParentId = BOOKMARKS_BAR_ID;
-		if (appBookmark.folderId) {
-			targetParentId = await this.ensureFolderSynced(appBookmark.folderId, allFolders);
-		}
+  let targetParentId = BOOKMARKS_BAR_ID;
+  if (appBookmark.folderId) {
+   targetParentId = await this.ensureFolderSynced(appBookmark.folderId, allFolders);
+  }
 
-		ChromeSyncGuard.pendingUpdates.add(chromeId);
-		try {
-			await chrome.bookmarks.update(chromeId, {
-				title: appBookmark.title,
-				url: appBookmark.url,
-			});
-			await chrome.bookmarks.move(chromeId, { parentId: targetParentId });
-		} catch {
-			await this.syncCreateBookmark(appBookmark, allFolders);
-		} finally {
-			ChromeSyncGuard.pendingUpdates.delete(chromeId);
-		}
-	}
+  ChromeSyncGuard.pendingUpdates.add(chromeId);
+  try {
+   await chrome.bookmarks.update(chromeId, {
+    title: appBookmark.title,
+    url: appBookmark.url,
+   });
+   await chrome.bookmarks.move(chromeId, { parentId: targetParentId });
+  } catch {
+   await this.syncCreateBookmark(appBookmark, allFolders);
+  } finally {
+   ChromeSyncGuard.pendingUpdates.delete(chromeId);
+  }
+ }
 
-	async syncDeleteBookmark(appBookmarkId: string): Promise<void> {
-		const map = await readSyncMap();
-		const chromeId = map.bookmarks[appBookmarkId];
-		if (!chromeId) return;
+ async syncDeleteBookmark(appBookmarkId: string): Promise<void> {
+  const map = await readSyncMap();
+  const chromeId = map.bookmarks[appBookmarkId];
+  if (!chromeId) return;
 
-		ChromeSyncGuard.pendingRemoves.add(chromeId);
-		try {
-			await chrome.bookmarks.remove(chromeId);
-		} catch {
-			// Chrome node may have been manually deleted — ignore
-		} finally {
-			ChromeSyncGuard.pendingRemoves.delete(chromeId);
-		}
+  ChromeSyncGuard.pendingRemoves.add(chromeId);
+  try {
+   await chrome.bookmarks.remove(chromeId);
+  } catch {
+   // Chrome node may have been manually deleted — ignore
+  } finally {
+   ChromeSyncGuard.pendingRemoves.delete(chromeId);
+  }
 
-		const updatedBookmarks = { ...map.bookmarks };
-		delete updatedBookmarks[appBookmarkId];
-		await writeSyncMap({ folders: map.folders, bookmarks: updatedBookmarks });
-	}
+  const updatedBookmarks = { ...map.bookmarks };
+  delete updatedBookmarks[appBookmarkId];
+  await writeSyncMap({ folders: map.folders, bookmarks: updatedBookmarks });
+ }
 
-	async syncCreateFolder(appFolder: Folder, allFolders: Folder[]): Promise<void> {
-		await this.ensureFolderSynced(appFolder.id, allFolders);
-	}
+ async syncCreateFolder(appFolder: Folder, allFolders: Folder[]): Promise<void> {
+  await this.ensureFolderSynced(appFolder.id, allFolders);
+ }
 
-	async syncDeleteFolder(appFolderId: string): Promise<void> {
-		const map = await readSyncMap();
-		const chromeId = map.folders[appFolderId];
-		if (!chromeId) return;
+ async syncDeleteFolder(appFolderId: string): Promise<void> {
+  const map = await readSyncMap();
+  const chromeId = map.folders[appFolderId];
+  if (!chromeId) return;
 
-		ChromeSyncGuard.pendingRemoves.add(chromeId);
-		try {
-			await chrome.bookmarks.removeTree(chromeId);
-		} catch {
-			// Chrome node may have been manually deleted — ignore
-		} finally {
-			ChromeSyncGuard.pendingRemoves.delete(chromeId);
-		}
+  ChromeSyncGuard.pendingRemoves.add(chromeId);
+  try {
+   await chrome.bookmarks.removeTree(chromeId);
+  } catch {
+   // Chrome node may have been manually deleted — ignore
+  } finally {
+   ChromeSyncGuard.pendingRemoves.delete(chromeId);
+  }
 
-		const updatedFolders = { ...map.folders };
-		delete updatedFolders[appFolderId];
-		await writeSyncMap({ folders: updatedFolders, bookmarks: map.bookmarks });
-	}
+  const updatedFolders = { ...map.folders };
+  delete updatedFolders[appFolderId];
+  await writeSyncMap({ folders: updatedFolders, bookmarks: map.bookmarks });
+ }
 }
 ```
 
@@ -235,13 +237,14 @@ git commit -m "feat: apply ChromeSyncGuard to web app ChromeSyncService"
 크롬 북마크 이벤트를 수신해 앱 스토리지를 갱신하는 React hook.
 
 **Files:**
+
 - Create: `apps/web/src/shared/lib/chrome-sync/useChromeBrowserSync.ts`
 
 **Step 1: 파일 생성**
 
 ```ts
 // apps/web/src/shared/lib/chrome-sync/useChromeBrowserSync.ts
-import type { CreateBookmarkDto, CreateFolderDto } from '@repo/types';
+import type { CreateBookmarkDto, CreateFolderDto } from '@bookmark/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
@@ -256,7 +259,7 @@ import { readSyncMap, updateSyncMap, writeSyncMap } from './syncMap';
  * Returns the app-side ID (key) whose synced Chrome ID (value) matches `chromeId`.
  */
 function findAppId(chromeId: string, map: Record<string, string>): string | undefined {
-	return Object.entries(map).find(([, v]) => v === chromeId)?.[0];
+ return Object.entries(map).find(([, v]) => v === chromeId)?.[0];
 }
 
 /**
@@ -269,139 +272,139 @@ function findAppId(chromeId: string, map: Record<string, string>): string | unde
  * - Cross-page guard: 150ms delay + syncMap re-check for changes from the popup
  */
 export function useChromeBrowserSync(): void {
-	const { realtimeSync } = useSettingStore();
-	const adapter = useStorageAdapter();
-	const queryClient = useQueryClient();
+ const { realtimeSync } = useSettingStore();
+ const adapter = useStorageAdapter();
+ const queryClient = useQueryClient();
 
-	useEffect(() => {
-		if (!realtimeSync || typeof chrome === 'undefined' || !chrome.bookmarks) return;
+ useEffect(() => {
+  if (!realtimeSync || typeof chrome === 'undefined' || !chrome.bookmarks) return;
 
-		const handleCreated = async (
-			id: string,
-			node: chrome.bookmarks.BookmarkTreeNode,
-		): Promise<void> => {
-			if (node.url) {
-				// ── Bookmark ──
-				const key = `${node.title}|||${node.url}`;
-				if (ChromeSyncGuard.pendingCreates.has(key)) return;
+  const handleCreated = async (
+   id: string,
+   node: chrome.bookmarks.BookmarkTreeNode,
+  ): Promise<void> => {
+   if (node.url) {
+    // ── Bookmark ──
+    const key = `${node.title}|||${node.url}`;
+    if (ChromeSyncGuard.pendingCreates.has(key)) return;
 
-				// Check syncMap immediately, then after 150ms to catch cross-page race
-				let syncMap = await readSyncMap();
-				if (findAppId(id, syncMap.bookmarks)) return;
+    // Check syncMap immediately, then after 150ms to catch cross-page race
+    let syncMap = await readSyncMap();
+    if (findAppId(id, syncMap.bookmarks)) return;
 
-				await new Promise<void>((resolve) => setTimeout(resolve, 150));
-				syncMap = await readSyncMap();
-				if (findAppId(id, syncMap.bookmarks)) return;
+    await new Promise<void>((resolve) => setTimeout(resolve, 150));
+    syncMap = await readSyncMap();
+    if (findAppId(id, syncMap.bookmarks)) return;
 
-				const appParentId = node.parentId
-					? findAppId(node.parentId, syncMap.folders)
-					: undefined;
+    const appParentId = node.parentId
+     ? findAppId(node.parentId, syncMap.folders)
+     : undefined;
 
-				try {
-					const dto: CreateBookmarkDto = {
-						url: node.url,
-						title: node.title,
-						folderId: appParentId,
-					};
-					const bookmark = await adapter.createBookmark(dto);
-					await updateSyncMap({ bookmarks: { [bookmark.id]: id } });
-					queryClient.invalidateQueries({ queryKey: bookmarkKeys.all });
-				} catch {
-					toast.error('Chrome 북마크 가져오기에 실패했습니다.');
-				}
-			} else {
-				// ── Folder ──
-				const key = `folder|||${node.title}`;
-				if (ChromeSyncGuard.pendingCreates.has(key)) return;
+    try {
+     const dto: CreateBookmarkDto = {
+      url: node.url,
+      title: node.title,
+      folderId: appParentId,
+     };
+     const bookmark = await adapter.createBookmark(dto);
+     await updateSyncMap({ bookmarks: { [bookmark.id]: id } });
+     queryClient.invalidateQueries({ queryKey: bookmarkKeys.all });
+    } catch {
+     toast.error('Chrome 북마크 가져오기에 실패했습니다.');
+    }
+   } else {
+    // ── Folder ──
+    const key = `folder|||${node.title}`;
+    if (ChromeSyncGuard.pendingCreates.has(key)) return;
 
-				let syncMap = await readSyncMap();
-				if (findAppId(id, syncMap.folders)) return;
+    let syncMap = await readSyncMap();
+    if (findAppId(id, syncMap.folders)) return;
 
-				await new Promise<void>((resolve) => setTimeout(resolve, 150));
-				syncMap = await readSyncMap();
-				if (findAppId(id, syncMap.folders)) return;
+    await new Promise<void>((resolve) => setTimeout(resolve, 150));
+    syncMap = await readSyncMap();
+    if (findAppId(id, syncMap.folders)) return;
 
-				const appParentId = node.parentId
-					? findAppId(node.parentId, syncMap.folders)
-					: undefined;
+    const appParentId = node.parentId
+     ? findAppId(node.parentId, syncMap.folders)
+     : undefined;
 
-				try {
-					const dto: CreateFolderDto = { name: node.title, parentId: appParentId };
-					const folder = await adapter.createFolder(dto);
-					await updateSyncMap({ folders: { [folder.id]: id } });
-					queryClient.invalidateQueries({ queryKey: folderKeys.all });
-				} catch {
-					toast.error('Chrome 폴더 가져오기에 실패했습니다.');
-				}
-			}
-		};
+    try {
+     const dto: CreateFolderDto = { name: node.title, parentId: appParentId };
+     const folder = await adapter.createFolder(dto);
+     await updateSyncMap({ folders: { [folder.id]: id } });
+     queryClient.invalidateQueries({ queryKey: folderKeys.all });
+    } catch {
+     toast.error('Chrome 폴더 가져오기에 실패했습니다.');
+    }
+   }
+  };
 
-		const handleRemoved = async (
-			id: string,
-			_removeInfo: chrome.bookmarks.BookmarkRemoveInfo,
-		): Promise<void> => {
-			if (ChromeSyncGuard.pendingRemoves.has(id)) return;
+  const handleRemoved = async (
+   id: string,
+   _removeInfo: chrome.bookmarks.BookmarkRemoveInfo,
+  ): Promise<void> => {
+   if (ChromeSyncGuard.pendingRemoves.has(id)) return;
 
-			const syncMap = await readSyncMap();
-			const appBookmarkId = findAppId(id, syncMap.bookmarks);
-			const appFolderId = findAppId(id, syncMap.folders);
+   const syncMap = await readSyncMap();
+   const appBookmarkId = findAppId(id, syncMap.bookmarks);
+   const appFolderId = findAppId(id, syncMap.folders);
 
-			if (appBookmarkId) {
-				try {
-					await adapter.deleteBookmark(appBookmarkId);
-				} catch {
-					// ignore — may already be deleted
-				}
-				const updatedBookmarks = { ...syncMap.bookmarks };
-				delete updatedBookmarks[appBookmarkId];
-				await writeSyncMap({ folders: syncMap.folders, bookmarks: updatedBookmarks });
-				queryClient.invalidateQueries({ queryKey: bookmarkKeys.all });
-			} else if (appFolderId) {
-				try {
-					await adapter.deleteFolder(appFolderId);
-				} catch {
-					// ignore — may already be deleted
-				}
-				const updatedFolders = { ...syncMap.folders };
-				delete updatedFolders[appFolderId];
-				await writeSyncMap({ folders: updatedFolders, bookmarks: syncMap.bookmarks });
-				queryClient.invalidateQueries({ queryKey: folderKeys.all });
-				queryClient.invalidateQueries({ queryKey: bookmarkKeys.all });
-			}
-			// Chrome ID not in syncMap → user's own Chrome bookmark, ignore
-		};
+   if (appBookmarkId) {
+    try {
+     await adapter.deleteBookmark(appBookmarkId);
+    } catch {
+     // ignore — may already be deleted
+    }
+    const updatedBookmarks = { ...syncMap.bookmarks };
+    delete updatedBookmarks[appBookmarkId];
+    await writeSyncMap({ folders: syncMap.folders, bookmarks: updatedBookmarks });
+    queryClient.invalidateQueries({ queryKey: bookmarkKeys.all });
+   } else if (appFolderId) {
+    try {
+     await adapter.deleteFolder(appFolderId);
+    } catch {
+     // ignore — may already be deleted
+    }
+    const updatedFolders = { ...syncMap.folders };
+    delete updatedFolders[appFolderId];
+    await writeSyncMap({ folders: updatedFolders, bookmarks: syncMap.bookmarks });
+    queryClient.invalidateQueries({ queryKey: folderKeys.all });
+    queryClient.invalidateQueries({ queryKey: bookmarkKeys.all });
+   }
+   // Chrome ID not in syncMap → user's own Chrome bookmark, ignore
+  };
 
-		const handleChanged = async (
-			id: string,
-			changeInfo: chrome.bookmarks.BookmarkChangeInfo,
-		): Promise<void> => {
-			if (ChromeSyncGuard.pendingUpdates.has(id)) return;
+  const handleChanged = async (
+   id: string,
+   changeInfo: chrome.bookmarks.BookmarkChangeInfo,
+  ): Promise<void> => {
+   if (ChromeSyncGuard.pendingUpdates.has(id)) return;
 
-			const syncMap = await readSyncMap();
-			const appBookmarkId = findAppId(id, syncMap.bookmarks);
-			if (!appBookmarkId) return;
+   const syncMap = await readSyncMap();
+   const appBookmarkId = findAppId(id, syncMap.bookmarks);
+   if (!appBookmarkId) return;
 
-			try {
-				await adapter.updateBookmark(appBookmarkId, {
-					title: changeInfo.title,
-					...(changeInfo.url !== undefined ? { url: changeInfo.url } : {}),
-				});
-				queryClient.invalidateQueries({ queryKey: bookmarkKeys.all });
-			} catch {
-				toast.error('Chrome 북마크 수정 반영에 실패했습니다.');
-			}
-		};
+   try {
+    await adapter.updateBookmark(appBookmarkId, {
+     title: changeInfo.title,
+     ...(changeInfo.url !== undefined ? { url: changeInfo.url } : {}),
+    });
+    queryClient.invalidateQueries({ queryKey: bookmarkKeys.all });
+   } catch {
+    toast.error('Chrome 북마크 수정 반영에 실패했습니다.');
+   }
+  };
 
-		chrome.bookmarks.onCreated.addListener(handleCreated);
-		chrome.bookmarks.onRemoved.addListener(handleRemoved);
-		chrome.bookmarks.onChanged.addListener(handleChanged);
+  chrome.bookmarks.onCreated.addListener(handleCreated);
+  chrome.bookmarks.onRemoved.addListener(handleRemoved);
+  chrome.bookmarks.onChanged.addListener(handleChanged);
 
-		return () => {
-			chrome.bookmarks.onCreated.removeListener(handleCreated);
-			chrome.bookmarks.onRemoved.removeListener(handleRemoved);
-			chrome.bookmarks.onChanged.removeListener(handleChanged);
-		};
-	}, [realtimeSync, adapter, queryClient]);
+  return () => {
+   chrome.bookmarks.onCreated.removeListener(handleCreated);
+   chrome.bookmarks.onRemoved.removeListener(handleRemoved);
+   chrome.bookmarks.onChanged.removeListener(handleChanged);
+  };
+ }, [realtimeSync, adapter, queryClient]);
 }
 ```
 
@@ -425,11 +428,13 @@ git commit -m "feat: add useChromeBrowserSync hook for Chrome→App sync"
 ## Task 4: index.ts 배럴 export 업데이트
 
 **Files:**
+
 - Modify: `apps/web/src/shared/lib/chrome-sync/index.ts`
 
 **Step 1: 파일 수정**
 
 현재:
+
 ```ts
 export { ChromeSyncService } from './ChromeSyncService';
 export type { SyncMap } from './syncMap';
@@ -438,6 +443,7 @@ export { useChromeSyncService } from './useChromeSyncService';
 ```
 
 수정 후:
+
 ```ts
 export { ChromeSyncGuard } from './ChromeSyncGuard';
 export { ChromeSyncService } from './ChromeSyncService';
@@ -469,6 +475,7 @@ git commit -m "chore: export ChromeSyncGuard and useChromeBrowserSync from barre
 새 탭 페이지가 열릴 때 이벤트 리스너를 자동으로 등록한다.
 
 **Files:**
+
 - Modify: `apps/web/src/pages/home/ui/HomePage.tsx`
 
 **Step 1: 현재 파일 읽기 후 수정**
@@ -476,11 +483,13 @@ git commit -m "chore: export ChromeSyncGuard and useChromeBrowserSync from barre
 `HomePage.tsx`를 먼저 읽어 내용을 확인한 후 아래 두 가지를 추가:
 
 1. import 추가:
+
 ```ts
 import { useChromeBrowserSync } from '@/shared/lib/chrome-sync';
 ```
 
-2. 컴포넌트 함수 본문 상단에 hook 호출 추가:
+1. 컴포넌트 함수 본문 상단에 hook 호출 추가:
+
 ```ts
 export function HomePage() {
   useChromeBrowserSync(); // Chrome → App 실시간 동기화

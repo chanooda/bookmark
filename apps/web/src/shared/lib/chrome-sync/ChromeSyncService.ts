@@ -1,4 +1,4 @@
-import type { Bookmark, Folder } from '@repo/types';
+import type { Bookmark, Folder } from '@bookmark/types';
 import { ChromeSyncGuard } from './ChromeSyncGuard';
 import { readSyncMap, updateSyncMap, writeSyncMap } from './syncMap';
 

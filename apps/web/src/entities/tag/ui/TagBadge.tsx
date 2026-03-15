@@ -1,5 +1,5 @@
-import type { Tag } from '@repo/types';
-import { Badge } from '@repo/ui/components/badge';
+import type { Tag } from '@bookmark/types';
+import { Badge } from '@bookmark/ui/components/badge';
 
 export function TagBadge({ tag }: { tag: Tag }) {
 	return (

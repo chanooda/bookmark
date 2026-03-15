@@ -1,4 +1,4 @@
-import type { SyncMode } from '@repo/types';
+import type { SyncMode } from '@bookmark/types';
 import { useRef } from 'react';
 import { ChromeSyncService } from './ChromeSyncService';
 

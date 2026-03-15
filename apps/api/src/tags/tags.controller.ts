@@ -1,8 +1,8 @@
+import type { CreateTagDto, UpdateTagDto } from '@bookmark/types';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import type { CreateTagDto, UpdateTagDto } from '@repo/types';
 import type { Request } from 'express';
-import { TagsService } from './tags.service';
+import type { TagsService } from './tags.service';
 
 @Controller('tags')
 @UseGuards(AuthGuard('jwt'))

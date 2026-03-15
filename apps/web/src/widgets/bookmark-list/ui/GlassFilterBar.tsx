@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useFolders } from '@/entities/folder';
 import { useTags } from '@/entities/tag';
 import { useBookmarkFilterStore } from '@/features/bookmark';
@@ -5,6 +6,7 @@ import { useFolderDialogStore } from '@/features/folder-manage';
 import { useTagDialogStore } from '@/features/tag-manage';
 
 export function GlassFilterBar() {
+	const { t } = useTranslation();
 	const {
 		selectedTagId,
 		setSelectedTagId,
@@ -22,7 +24,7 @@ export function GlassFilterBar() {
 			{/* 폴더 필터 */}
 			<div className='flex items-center gap-3'>
 				<span className='w-7 shrink-0 text-[9px] font-semibold uppercase tracking-[0.15em] text-white/35'>
-					폴더
+					{t('filterBar.folders')}
 				</span>
 				<div className='flex flex-1 items-center gap-1.5 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'>
 					<button
@@ -34,7 +36,7 @@ export function GlassFilterBar() {
 						onClick={clearSelectedFolderIds}
 						type='button'
 					>
-						전체
+						{t('filterBar.all')}
 					</button>
 					{folders.map((folder) => (
 						<button
@@ -53,7 +55,7 @@ export function GlassFilterBar() {
 					<button
 						className='flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/8 text-white/35 transition-all hover:bg-white/16 hover:text-white/65'
 						onClick={() => setFolderCreateOpen(true, 'root')}
-						title='폴더 추가'
+						title={t('filterBar.addFolder')}
 						type='button'
 					>
 						<svg
@@ -78,7 +80,7 @@ export function GlassFilterBar() {
 			{tags.length > 0 && (
 				<div className='flex items-center gap-3'>
 					<span className='w-7 shrink-0 text-[9px] font-semibold uppercase tracking-[0.15em] text-white/35'>
-						태그
+						{t('filterBar.tags')}
 					</span>
 					<div className='flex flex-1 items-center gap-1.5 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]'>
 						<button
@@ -90,7 +92,7 @@ export function GlassFilterBar() {
 							onClick={() => setSelectedTagId(undefined)}
 							type='button'
 						>
-							전체
+							{t('filterBar.all')}
 						</button>
 						{tags.map((tag) => (
 							<button
@@ -113,7 +115,7 @@ export function GlassFilterBar() {
 						<button
 							className='flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/8 text-white/35 transition-all hover:bg-white/16 hover:text-white/65'
 							onClick={() => setTagCreateOpen(true)}
-							title='태그 추가'
+							title={t('filterBar.addTag')}
 							type='button'
 						>
 							<svg
@@ -137,7 +139,7 @@ export function GlassFilterBar() {
 			{tags.length === 0 && (
 				<div className='flex items-center gap-3'>
 					<span className='w-7 shrink-0 text-[9px] font-semibold uppercase tracking-[0.15em] text-white/35'>
-						태그
+						{t('filterBar.tags')}
 					</span>
 					<button
 						className='flex items-center gap-1.5 rounded-full bg-white/8 px-3 py-1 text-[11px] text-white/40 transition-all hover:bg-white/16 hover:text-white/65'
@@ -158,7 +160,7 @@ export function GlassFilterBar() {
 								strokeWidth={2.5}
 							/>
 						</svg>
-						태그 추가
+						{t('filterBar.addTag')}
 					</button>
 				</div>
 			)}

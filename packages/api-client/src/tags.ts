@@ -1,4 +1,4 @@
-import type { CreateTagDto, Tag, UpdateTagDto } from '@repo/types';
+import type { CreateTagDto, Tag, UpdateTagDto } from '@bookmark/types';
 import { apiClient } from './client';
 
 export const tagsApi = {

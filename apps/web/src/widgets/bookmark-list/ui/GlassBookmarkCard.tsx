@@ -1,4 +1,4 @@
-import type { Bookmark } from '@repo/types';
+import type { Bookmark } from '@bookmark/types';
 import { useState } from 'react';
 import { stripProtocol } from '@/shared/lib/url';
 import { FaviconImg } from '@/shared/ui';

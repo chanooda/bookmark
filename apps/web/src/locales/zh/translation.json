@@ -1,0 +1,179 @@
+{
+	"settings": {
+		"title": "设置",
+		"description": "应用设置和数据管理",
+		"sections": {
+			"viewMode": {
+				"label": "视图",
+				"description": "选择显示书签列表的布局。"
+			},
+			"theme": {
+				"label": "主题",
+				"description": "选择应用的颜色主题。"
+			},
+			"realtimeSync": {
+				"label": "同步",
+				"description": "设置与 Chrome 书签的实时同步方向。"
+			},
+			"chromeImport": {
+				"label": "Chrome 导入",
+				"description": "将 Chrome 浏览器的书签导入到应用中。"
+			},
+			"language": {
+				"label": "语言",
+				"description": "选择应用的显示语言。"
+			}
+		}
+	},
+	"theme": {
+		"label": "主题",
+		"light": "浅色",
+		"dark": "深色",
+		"system": "系统",
+		"switchToLight": "切换到浅色模式",
+		"switchToDark": "切换到深色模式"
+	},
+	"viewMode": {
+		"label": "视图模式",
+		"glass": "磨砂",
+		"grid": "网格",
+		"list": "列表"
+	},
+	"sync": {
+		"label": "实时同步",
+		"save": "保存",
+		"warning": "⚠ 根据同步设置，Chrome 书签可能会被删除。建议先导出 Chrome 书签（{{path}}）。",
+		"warningPath": "Chrome 设置 → 书签 → 导出书签",
+		"options": {
+			"off": {
+				"label": "不同步",
+				"description": "禁用 Chrome 书签与应用之间的自动同步。",
+				"warning": ""
+			},
+			"chromeToWeb": {
+				"label": "Chrome → Web",
+				"description": "Chrome 书签变更时自动同步到应用。",
+				"warning": "⚠ 在 Chrome 中删除书签后，应用中也会永久删除。"
+			},
+			"webToChrome": {
+				"label": "Web → Chrome",
+				"description": "应用书签变更时自动同步到 Chrome 书签。",
+				"warning": "⚠ 在应用中删除书签后，Chrome 中也会永久删除。"
+			},
+			"bidirectional": {
+				"label": "双向",
+				"description": "应用和 Chrome 书签双向自动同步。",
+				"warning": "⚠ 任意一方删除都会在两端永久删除。"
+			}
+		}
+	},
+	"chromeImport": {
+		"title": "导入 Chrome 书签",
+		"description": "将当前 Chrome 浏览器的书签导入到应用中。已存在的 URL 将被跳过。",
+		"progress": "{{current}} / {{total}} 处理中...",
+		"done": "完成 — 已处理 {{total}} 个中的 {{current}} 个",
+		"error": "错误：{{message}}",
+		"unknownError": "未知错误",
+		"importing": "导入中... ({{percent}}%)",
+		"reimport": "重新导入",
+		"import": "导入 Chrome 书签"
+	},
+	"language": {
+		"label": "语言",
+		"languages": {
+			"en": "English",
+			"ko": "한국어",
+			"zh": "中文",
+			"ja": "日本語"
+		}
+	},
+	"bookmark": {
+		"add": "添加书签",
+		"edit": "编辑书签",
+		"adding": "添加中...",
+		"editing": "编辑中...",
+		"url": "URL",
+		"title": "标题",
+		"titlePlaceholder": "标题",
+		"description": "描述",
+		"descriptionPlaceholder": "描述（可选）",
+		"folder": "文件夹",
+		"tag": "标签",
+		"syncError": "Chrome 书签同步失败。"
+	},
+	"tag": {
+		"add": "添加标签",
+		"edit": "编辑标签",
+		"name": "名称",
+		"namePlaceholder": "标签名称",
+		"color": "颜色",
+		"customColor": "自定义",
+		"preview": "预览",
+		"adding": "添加中...",
+		"saving": "保存中...",
+		"delete": "删除"
+	},
+	"folder": {
+		"new": "新建文件夹",
+		"rename": "重命名文件夹",
+		"name": "名称",
+		"namePlaceholder": "文件夹名称",
+		"createInside": "将在其中创建",
+		"adding": "添加中...",
+		"saving": "保存中...",
+		"addChild": "添加子文件夹",
+		"rename_action": "重命名",
+		"delete": "删除",
+		"deleteConfirm": "确定要删除此文件夹吗？子文件夹和书签也将一并删除。",
+		"syncError": "Chrome 文件夹同步失败。",
+		"deleteError": "删除文件夹失败。",
+		"saveEnter": "保存 (Enter)",
+		"cancelEsc": "取消 (Esc)",
+		"collapse": "收起",
+		"expand": "展开"
+	},
+	"sidebar": {
+		"folders": "文件夹",
+		"addFolder": "添加文件夹",
+		"tags": "标签",
+		"addTag": "添加标签",
+		"all": "全部",
+		"editTag": "编辑"
+	},
+	"header": {
+		"addBookmark": "添加书签",
+		"settings": "设置"
+	},
+	"bookmarkList": {
+		"loadError": "加载书签时出错",
+		"unknownError": "未知错误",
+		"empty": "暂无书签",
+		"reorderSyncError": "Chrome 书签排序同步失败。",
+		"reorderError": "书签排序失败。"
+	},
+	"filterBar": {
+		"folders": "文件夹",
+		"tags": "标签",
+		"all": "全部",
+		"addFolder": "添加文件夹",
+		"addTag": "添加标签"
+	},
+	"search": {
+		"bookmarkLabel": "书签",
+		"bookmarkPlaceholder": "搜索已保存的书签...",
+		"bookmarkAriaLabel": "搜索书签",
+		"clearAriaLabel": "清除搜索",
+		"googleAriaLabel": "Google 搜索或输入 URL",
+		"googlePlaceholder": "搜索或输入 URL...",
+		"googleHomeAriaLabel": "前往 Google 主页",
+		"googleHomeTitle": "前往 google.com",
+		"searchButton": "搜索",
+		"go": "前往"
+	},
+	"common": {
+		"cancel": "取消",
+		"save": "保存",
+		"add": "添加",
+		"edit": "编辑"
+	}
+}

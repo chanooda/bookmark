@@ -10,9 +10,6 @@
 			"path": "apps/web"
 		},
 		{
-			"path": "apps/extension"
-		},
-		{
 			"path": "packages/ui"
 		},
 		{

@@ -1,3 +1,9 @@
+import type {
+	BookmarkListQuery,
+	CreateBookmarkDto,
+	ReorderItemDto,
+	UpdateBookmarkDto,
+} from '@bookmark/types';
 import {
 	Body,
 	Controller,
@@ -11,14 +17,8 @@ import {
 	UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import type {
-	BookmarkListQuery,
-	CreateBookmarkDto,
-	ReorderItemDto,
-	UpdateBookmarkDto,
-} from '@repo/types';
 import type { Request } from 'express';
-import { BookmarksService } from './bookmarks.service';
+import type { BookmarksService } from './bookmarks.service';
 
 @Controller('bookmarks')
 @UseGuards(AuthGuard('jwt'))

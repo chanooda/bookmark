@@ -1,6 +1,12 @@
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@repo/ui/components/dialog';
-import { cn } from '@repo/ui/lib/utils';
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogTitle,
+} from '@bookmark/ui/components/dialog';
+import { cn } from '@bookmark/ui/lib/utils';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSettingStore } from '../model/settingStore';
 import { SettingsDialogContext } from './SettingsDialogContext';
 import { SETTINGS_SECTIONS } from './sections';
@@ -57,12 +63,26 @@ function SectionIcon({ id, className }: { id: string; className?: string }) {
 		);
 	}
 
+	if (id === 'language') {
+		return (
+			<svg aria-hidden='true' className={cls} fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+				<path
+					d='M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+					strokeWidth='1.5'
+				/>
+			</svg>
+		);
+	}
+
 	return null;
 }
 
 export function SettingsDialog() {
 	const { settingsOpen, setSettingsOpen } = useSettingStore();
 	const [isBlocking, setIsBlocking] = useState(false);
+	const { t } = useTranslation();
 
 	const enabledSections = SETTINGS_SECTIONS.filter((s) => s.enabled);
 	const [activeId, setActiveId] = useState(enabledSections[0]?.id ?? '');
@@ -79,14 +99,16 @@ export function SettingsDialog() {
 		<SettingsDialogContext value={{ setBlocking: setIsBlocking }}>
 			<Dialog onOpenChange={handleOpenChange} open={settingsOpen}>
 				<DialogContent className='w-[min(860px,calc(100vw-2rem))] overflow-hidden p-0 sm:max-w-none [&>button]:top-3 [&>button]:right-3'>
-					<DialogTitle className='sr-only'>설정</DialogTitle>
-					<DialogDescription className='sr-only'>앱 설정 및 데이터 관리</DialogDescription>
+					<DialogTitle className='sr-only'>{t('settings.title')}</DialogTitle>
+					<DialogDescription className='sr-only'>{t('settings.description')}</DialogDescription>
 
 					<div className='flex h-[min(580px,calc(100vh-8rem))]'>
 						{/* ── Left sidebar ── */}
 						<aside className='flex w-52 shrink-0 flex-col border-r bg-muted/40'>
 							<div className='flex h-[52px] items-center border-b border-border/50 px-4'>
-								<span className='text-[13px] font-semibold text-foreground/80'>설정</span>
+								<span className='text-[13px] font-semibold text-foreground/80'>
+									{t('settings.title')}
+								</span>
 							</div>
 
 							<nav className='flex flex-1 flex-col gap-px overflow-y-auto p-2'>
@@ -110,7 +132,7 @@ export function SettingsDialog() {
 											}
 											id={section.id}
 										/>
-										{section.label}
+										{t(section.labelKey)}
 									</button>
 								))}
 							</nav>
@@ -119,14 +141,14 @@ export function SettingsDialog() {
 						{/* ── Right content area ── */}
 						<div className='flex min-w-0 flex-1 flex-col'>
 							{/* Content header */}
-							<div className='flex h-[52px] shrink-0 items-end border-b border-border/50 px-8 pb-3'>
+							<div className='flex shrink-0 items-end border-b border-border/50 px-8 py-3'>
 								<div>
 									<h2 className='text-[13px] font-semibold text-foreground/90'>
-										{activeSection?.label}
+										{activeSection ? t(activeSection.labelKey) : ''}
 									</h2>
-									{activeSection?.description && (
+									{activeSection?.descriptionKey && (
 										<p className='text-[11px] text-muted-foreground/70'>
-											{activeSection.description}
+											{t(activeSection.descriptionKey)}
 										</p>
 									)}
 								</div>

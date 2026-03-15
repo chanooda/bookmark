@@ -1,11 +1,12 @@
 {
 	"manifest_version": 3,
-	"name": "Bookmark App Webpage",
+	"name": "__MSG_appName__",
+	"short_name": "__MSG_appShortName__",
 	"version": "0.0.1",
-	"description": "Easily add and manage bookmarks",
+	"description": "__MSG_appDescription__",
+	"default_locale": "en",
 	"chrome_url_overrides": {
 		"newtab": "index.html"
 	},
-	"permissions": ["storage", "identity", "tabs", "activeTab", "bookmarks"],
-	"host_permissions": ["http://localhost:3000/*"]
+	"permissions": ["storage", "identity", "tabs", "activeTab", "bookmarks"]
 }

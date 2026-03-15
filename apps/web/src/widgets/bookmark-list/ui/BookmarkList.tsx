@@ -1,3 +1,5 @@
+import type { Bookmark } from '@bookmark/types';
+import { cn } from '@bookmark/ui/lib/utils';
 import { closestCenter, DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import {
 	rectSortingStrategy,
@@ -6,9 +8,8 @@ import {
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import type { Bookmark } from '@repo/types';
-import { cn } from '@repo/ui/lib/utils';
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import type { ViewMode } from '@/entities/bookmark';
 import { useBookmarks, useReorderBookmarks } from '@/entities/bookmark';
@@ -41,6 +42,7 @@ function BookmarkListSkeleton({ viewMode }: { viewMode: ViewMode }) {
 }
 
 function BookmarkListError({ error }: { error: unknown }) {
+	const { t } = useTranslation();
 	return (
 		<div className='flex h-48 flex-col items-center justify-center gap-2 rounded-xl border border-destructive/20 bg-destructive/5'>
 			<svg
@@ -57,15 +59,16 @@ function BookmarkListError({ error }: { error: unknown }) {
 					strokeWidth={2}
 				/>
 			</svg>
-			<p className='text-sm text-destructive/80'>북마크를 불러오는 중 오류가 발생했습니다</p>
+			<p className='text-sm text-destructive/80'>{t('bookmarkList.loadError')}</p>
 			<p className='text-xs text-muted-foreground'>
-				{error instanceof Error ? error.message : '알 수 없는 오류'}
+				{error instanceof Error ? error.message : t('bookmarkList.unknownError')}
 			</p>
 		</div>
 	);
 }
 
 function BookmarkListEmpty() {
+	const { t } = useTranslation();
 	return (
 		<div className='flex h-52 flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border/40'>
 			<div className='flex h-10 w-10 items-center justify-center rounded-full bg-muted/50'>
@@ -78,7 +81,7 @@ function BookmarkListEmpty() {
 					<path d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z' />
 				</svg>
 			</div>
-			<p className='text-sm text-muted-foreground/50'>북마크가 없습니다</p>
+			<p className='text-sm text-muted-foreground/50'>{t('bookmarkList.empty')}</p>
 		</div>
 	);
 }
@@ -117,6 +120,7 @@ function SortableBookmark({ bookmark, viewMode }: SortableBookmarkProps) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function BookmarkList() {
+	const { t } = useTranslation();
 	const { selectedTagId, selectedFolderId, search } = useBookmarkFilterStore();
 	const { viewMode, syncMode } = useSettingStore();
 	const { mutate: reorderBookmarks } = useReorderBookmarks();
@@ -140,13 +144,13 @@ export function BookmarkList() {
 					if (chromeSyncService) {
 						chromeSyncService
 							.syncReorderBookmarks(changed)
-							.catch(() => toast.error('Chrome 북마크 순서 동기화에 실패했습니다.'));
+							.catch(() => toast.error(t('bookmarkList.reorderSyncError')));
 					}
 				},
-				onError: () => toast.error('북마크 순서 변경에 실패했습니다.'),
+				onError: () => toast.error(t('bookmarkList.reorderError')),
 			});
 		},
-		[reorderBookmarks, chromeSyncService],
+		[reorderBookmarks, chromeSyncService, t],
 	);
 
 	const { items: sortableBookmarks, handleDragEnd } = useSortableReorder(bookmarks, handleReorder);

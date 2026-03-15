@@ -1,5 +1,6 @@
-import type { Tag } from '@repo/types';
-import { cn } from '@repo/ui/lib/utils';
+import type { Tag } from '@bookmark/types';
+import { cn } from '@bookmark/ui/lib/utils';
+import { useTranslation } from 'react-i18next';
 import { useTags } from '@/entities/tag';
 import { useBookmarkFilterStore } from '@/features/bookmark';
 import { useFolderDialogStore } from '@/features/folder-manage';
@@ -48,6 +49,8 @@ interface TagRowProps {
 }
 
 function TagRow({ tag, isSelected, onSelect, onEdit }: TagRowProps) {
+	const { t } = useTranslation();
+
 	return (
 		<div className='group flex items-center'>
 			<button
@@ -66,7 +69,7 @@ function TagRow({ tag, isSelected, onSelect, onEdit }: TagRowProps) {
 			<button
 				className='mr-1 shrink-0 rounded-md p-0.5 text-muted-foreground/40 opacity-0 transition-all hover:bg-accent hover:text-foreground group-hover:opacity-100'
 				onClick={onEdit}
-				title='편집'
+				title={t('sidebar.editTag')}
 				type='button'
 			>
 				<svg
@@ -95,9 +98,15 @@ interface FolderSectionProps {
 }
 
 function FolderSection({ selectedFolderId, onSelectAll, onAdd }: FolderSectionProps) {
+	const { t } = useTranslation();
+
 	return (
 		<div className='mb-5 flex h-1/2 flex-col gap-0.5 overflow-y-auto'>
-			<SidebarSectionHeader addTitle='폴더 추가' label='폴더' onAdd={onAdd} />
+			<SidebarSectionHeader
+				addTitle={t('sidebar.addFolder')}
+				label={t('sidebar.folders')}
+				onAdd={onAdd}
+			/>
 			<button
 				className={cn(
 					'flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-sm transition-all',
@@ -122,7 +131,7 @@ function FolderSection({ selectedFolderId, onSelectAll, onAdd }: FolderSectionPr
 						strokeWidth={1.75}
 					/>
 				</svg>
-				<span>전체</span>
+				<span>{t('sidebar.all')}</span>
 			</button>
 			<FolderTree />
 		</div>
@@ -138,9 +147,15 @@ interface TagSectionProps {
 }
 
 function TagSection({ tags, selectedTagId, onSelectTag, onEditTag, onAdd }: TagSectionProps) {
+	const { t } = useTranslation();
+
 	return (
 		<>
-			<SidebarSectionHeader addTitle='태그 추가' label='태그' onAdd={onAdd} />
+			<SidebarSectionHeader
+				addTitle={t('sidebar.addTag')}
+				label={t('sidebar.tags')}
+				onAdd={onAdd}
+			/>
 			<div className='flex h-1/2 flex-col gap-0.5 overflow-y-auto'>
 				{tags.map((tag) => (
 					<TagRow

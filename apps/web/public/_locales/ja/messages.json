@@ -1,0 +1,14 @@
+{
+	"appName": {
+		"message": "mark.",
+		"description": "アプリ名"
+	},
+	"appShortName": {
+		"message": "mark.",
+		"description": "アプリの短縮名"
+	},
+	"appDescription": {
+		"message": "ブックマークを簡単に追加・管理できます",
+		"description": "アプリの説明"
+	}
+}

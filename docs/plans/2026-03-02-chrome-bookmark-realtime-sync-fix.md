@@ -26,22 +26,26 @@
 ## Task 1: Extension popup의 storage 키를 웹 앱과 통일
 
 ### 문제
+
 - Extension popup: `chrome.storage.local.set({ settings: { realtimeSync } })`
 - Web app Zustand persist: `chrome.storage.local.set({ setting: '{"state":{"viewMode":"grid","realtimeSync":true},"version":0}' })`
 - 키(`'settings'` vs `'setting'`)와 포맷이 달라 설정이 공유되지 않음
 
 ### 수정 방향
+
 `useAppSettings.ts`에서 Zustand persist 포맷(`{ state: { realtimeSync }, version }`)을 읽고 쓰도록 변경.
 키는 `'setting'`으로 통일(웹 앱 기준).
 
 **Files:**
+
 - Modify: `apps/extension/src/shared/lib/settings/useAppSettings.ts`
 
 **Step 1: 파일 현재 내용 확인 후 수정**
 
 현재 파일 (`apps/extension/src/shared/lib/settings/useAppSettings.ts`):
+
 ```ts
-import { type AppSettings, DEFAULT_APP_SETTINGS } from '@repo/types';
+import { type AppSettings, DEFAULT_APP_SETTINGS } from '@bookmark/types';
 import { useCallback, useEffect, useState } from 'react';
 
 const SETTINGS_KEY = 'settings';
@@ -50,78 +54,79 @@ const SETTINGS_KEY = 'settings';
 ```
 
 수정 후:
+
 ```ts
-import { type AppSettings, DEFAULT_APP_SETTINGS } from '@repo/types';
+import { type AppSettings, DEFAULT_APP_SETTINGS } from '@bookmark/types';
 import { useCallback, useEffect, useState } from 'react';
 
 // Web app의 Zustand persist 키와 동일하게 사용
 const SETTINGS_KEY = 'setting';
 
 interface ZustandPersistedState {
-	state: Partial<AppSettings>;
-	version: number;
+ state: Partial<AppSettings>;
+ version: number;
 }
 
 function isChromeStorageAvailable(): boolean {
-	return typeof chrome !== 'undefined' && !!chrome.storage?.local;
+ return typeof chrome !== 'undefined' && !!chrome.storage?.local;
 }
 
 async function readPersistedSettings(): Promise<Partial<AppSettings>> {
-	const result = await chrome.storage.local.get(SETTINGS_KEY);
-	const raw = result[SETTINGS_KEY] as string | undefined;
-	if (!raw) return {};
-	try {
-		const parsed = JSON.parse(raw) as ZustandPersistedState;
-		return parsed.state ?? {};
-	} catch {
-		return {};
-	}
+ const result = await chrome.storage.local.get(SETTINGS_KEY);
+ const raw = result[SETTINGS_KEY] as string | undefined;
+ if (!raw) return {};
+ try {
+  const parsed = JSON.parse(raw) as ZustandPersistedState;
+  return parsed.state ?? {};
+ } catch {
+  return {};
+ }
 }
 
 async function writePersistedSettings(patch: Partial<AppSettings>): Promise<void> {
-	const result = await chrome.storage.local.get(SETTINGS_KEY);
-	const raw = result[SETTINGS_KEY] as string | undefined;
-	let existing: ZustandPersistedState = { state: {}, version: 0 };
-	if (raw) {
-		try {
-			existing = JSON.parse(raw) as ZustandPersistedState;
-		} catch {
-			// keep default
-		}
-	}
-	const next: ZustandPersistedState = {
-		...existing,
-		state: { ...existing.state, ...patch },
-	};
-	await chrome.storage.local.set({ [SETTINGS_KEY]: JSON.stringify(next) });
+ const result = await chrome.storage.local.get(SETTINGS_KEY);
+ const raw = result[SETTINGS_KEY] as string | undefined;
+ let existing: ZustandPersistedState = { state: {}, version: 0 };
+ if (raw) {
+  try {
+   existing = JSON.parse(raw) as ZustandPersistedState;
+  } catch {
+   // keep default
+  }
+ }
+ const next: ZustandPersistedState = {
+  ...existing,
+  state: { ...existing.state, ...patch },
+ };
+ await chrome.storage.local.set({ [SETTINGS_KEY]: JSON.stringify(next) });
 }
 
 export function useAppSettings() {
-	const [settings, setSettings] = useState<AppSettings>(DEFAULT_APP_SETTINGS);
-	const [isLoaded, setIsLoaded] = useState(false);
+ const [settings, setSettings] = useState<AppSettings>(DEFAULT_APP_SETTINGS);
+ const [isLoaded, setIsLoaded] = useState(false);
 
-	useEffect(() => {
-		if (!isChromeStorageAvailable()) {
-			setIsLoaded(true);
-			return;
-		}
-		readPersistedSettings().then((stored) => {
-			setSettings({ ...DEFAULT_APP_SETTINGS, ...stored });
-			setIsLoaded(true);
-		});
-	}, []);
+ useEffect(() => {
+  if (!isChromeStorageAvailable()) {
+   setIsLoaded(true);
+   return;
+  }
+  readPersistedSettings().then((stored) => {
+   setSettings({ ...DEFAULT_APP_SETTINGS, ...stored });
+   setIsLoaded(true);
+  });
+ }, []);
 
-	const updateSettings = useCallback(async (patch: Partial<AppSettings>) => {
-		setSettings((prev) => {
-			const next = { ...prev, ...patch };
-			if (isChromeStorageAvailable()) {
-				writePersistedSettings(patch);
-			}
-			return next;
-		});
-	}, []);
+ const updateSettings = useCallback(async (patch: Partial<AppSettings>) => {
+  setSettings((prev) => {
+   const next = { ...prev, ...patch };
+   if (isChromeStorageAvailable()) {
+    writePersistedSettings(patch);
+   }
+   return next;
+  });
+ }, []);
 
-	return { settings, isLoaded, updateSettings };
+ return { settings, isLoaded, updateSettings };
 }
 ```
 
@@ -157,11 +162,13 @@ git commit -m "fix: unify realtimeSync storage key between popup and new tab pag
 `FolderTree.tsx`의 패턴을 참고.
 
 **Files:**
+
 - Modify: `apps/web/src/features/bookmark/ui/BookmarkCreateDialog.tsx`
 
 **Step 1: 파일 수정**
 
 추가할 import:
+
 ```ts
 import { toast } from 'sonner';
 import { useSettingStore } from '@/features/settings';
@@ -169,12 +176,14 @@ import { useChromeSyncService } from '@/shared/lib/chrome-sync';
 ```
 
 `BookmarkCreateDialog` 함수 내 훅 추가 (기존 훅 선언 근처):
+
 ```ts
 const { realtimeSync } = useSettingStore();
 const chromeSyncService = useChromeSyncService(realtimeSync);
 ```
 
 `handleSubmit` 내 `mutate` 호출의 `onSuccess` 수정:
+
 ```ts
 mutate(dto, {
   onSuccess: (bookmark) => {
@@ -211,11 +220,13 @@ git commit -m "feat: sync Chrome bookmark on create from new tab page"
 북마크 수정 성공 시 `chromeSyncService.syncUpdateBookmark(bookmark, folders)`를 호출한다.
 
 **Files:**
+
 - Modify: `apps/web/src/features/bookmark/ui/BookmarkEditDialog.tsx`
 
 **Step 1: 파일 수정**
 
 추가할 import:
+
 ```ts
 import { toast } from 'sonner';
 import { useSettingStore } from '@/features/settings';
@@ -223,12 +234,14 @@ import { useChromeSyncService } from '@/shared/lib/chrome-sync';
 ```
 
 `BookmarkEditDialog` 함수 내 훅 추가:
+
 ```ts
 const { realtimeSync } = useSettingStore();
 const chromeSyncService = useChromeSyncService(realtimeSync);
 ```
 
 `handleSubmit` 내 `mutate` 호출의 `onSuccess` 수정:
+
 ```ts
 mutate(
   { id: editTarget.id, dto },
@@ -269,26 +282,31 @@ git commit -m "feat: sync Chrome bookmark on edit from new tab page"
 `syncDeleteBookmark`는 folders 데이터가 필요 없으므로 `useFolders`는 추가 불필요.
 
 **Files:**
+
 - Modify: `apps/web/src/widgets/bookmark-list/ui/BookmarkCard.tsx`
 
 **Step 1: 파일 수정**
 
 추가할 import:
+
 ```ts
 import { toast } from 'sonner';
 import { useChromeSyncService } from '@/shared/lib/chrome-sync';
 ```
 
 `BookmarkCard` 함수 내:
+
 - 기존: `const { viewMode = 'grid' } = useSettingStore();`
 - 수정: `const { viewMode = 'grid', realtimeSync } = useSettingStore();`
 
 훅 추가:
+
 ```ts
 const chromeSyncService = useChromeSyncService(realtimeSync);
 ```
 
 `handleDelete` 수정:
+
 ```ts
 function handleDelete() {
   deleteBookmark(bookmark.id, {

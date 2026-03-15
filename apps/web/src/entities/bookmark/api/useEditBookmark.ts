@@ -1,4 +1,4 @@
-import type { UpdateBookmarkDto } from '@repo/types';
+import type { UpdateBookmarkDto } from '@bookmark/types';
 import { useMutation } from '@tanstack/react-query';
 import { useStorageAdapter } from '@/shared/lib/storage';
 

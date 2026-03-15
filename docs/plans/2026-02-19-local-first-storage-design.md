@@ -40,15 +40,17 @@ interface StorageAdapter {
 | `ApiAdapter` | NestJS REST API | Logged in |
 
 **ChromeStorageAdapter** local schema:
+
 ```json
 {
   "bookmarks": [...],
   "tags": [...]
 }
 ```
+
 IDs generated with `crypto.randomUUID()`.
 
-**ApiAdapter** wraps existing `bookmarksApi` and `tagsApi` from `@repo/api-client`.
+**ApiAdapter** wraps existing `bookmarksApi` and `tagsApi` from `@bookmark/api-client`.
 
 ### StorageContext (`apps/web/src/shared/lib/storage`)
 

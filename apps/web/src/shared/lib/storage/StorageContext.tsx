@@ -1,5 +1,5 @@
-import { ApiAdapter, ChromeStorageAdapter, setAuthToken } from '@repo/api-client';
-import type { StorageAdapter } from '@repo/types';
+import { ApiAdapter, ChromeStorageAdapter, setAuthToken } from '@bookmark/api-client';
+import type { StorageAdapter } from '@bookmark/types';
 import { createContext, type ReactNode, useContext, useMemo, useState } from 'react';
 
 interface StorageContextValue {

@@ -1,11 +1,11 @@
-import { Button } from '@repo/ui/components/button';
+import { Button } from '@bookmark/ui/components/button';
 import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-} from '@repo/ui/components/dialog';
+} from '@bookmark/ui/components/dialog';
 import { useAuthStore } from '../model';
 import { useLaunchWebAuthFlow } from '../model/useLaunchWebAuthFlow';
 

@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
+import type { CreateTagDto, UpdateTagDto } from '@bookmark/types';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import type { CreateTagDto, UpdateTagDto } from '@repo/types';
 import { and, eq } from 'drizzle-orm';
 import { db } from '../db';
 import { tags } from '../db/schema';

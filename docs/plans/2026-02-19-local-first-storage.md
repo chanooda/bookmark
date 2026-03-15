@@ -13,6 +13,7 @@
 ## Task 1: Add StorageAdapter interface to packages/types
 
 **Files:**
+
 - Modify: `packages/types/src/index.ts`
 
 **Step 1: Add the interface** at the bottom of `packages/types/src/index.ts`:
@@ -52,18 +53,19 @@ git commit -m "feat(types): add StorageAdapter interface"
 `ChromeStorageAdapter` uses `chrome.storage.local`, so the package needs the Chrome type definitions.
 
 **Files:**
+
 - Modify: `packages/api-client/package.json`
 
 **Step 1: Install types**
 
 ```bash
-pnpm --filter @repo/api-client add -D @types/chrome
+pnpm --filter @bookmark/api-client add -D @types/chrome
 ```
 
 **Step 2: Verify it installed**
 
 ```bash
-pnpm --filter @repo/api-client ls @types/chrome
+pnpm --filter @bookmark/api-client ls @types/chrome
 ```
 
 Expected: shows version
@@ -80,6 +82,7 @@ git commit -m "feat(api-client): add @types/chrome dev dep"
 ## Task 3: Implement ChromeStorageAdapter
 
 **Files:**
+
 - Create: `packages/api-client/src/chrome-storage-adapter.ts`
 
 **Step 1: Create the file**
@@ -94,7 +97,7 @@ import type {
   Tag,
   UpdateBookmarkDto,
   UpdateTagDto,
-} from '@repo/types';
+} from '@bookmark/types';
 
 interface LocalStore {
   bookmarks?: Bookmark[];
@@ -232,6 +235,7 @@ git commit -m "feat(api-client): implement ChromeStorageAdapter"
 ## Task 4: Implement ApiAdapter
 
 **Files:**
+
 - Create: `packages/api-client/src/api-adapter.ts`
 
 **Step 1: Create the file**
@@ -246,7 +250,7 @@ import type {
   Tag,
   UpdateBookmarkDto,
   UpdateTagDto,
-} from '@repo/types';
+} from '@bookmark/types';
 import { bookmarksApi } from './bookmarks';
 import { tagsApi } from './tags';
 
@@ -314,6 +318,7 @@ git commit -m "feat(api-client): implement ApiAdapter and export adapters"
 ## Task 5: Create StorageContext in apps/web
 
 **Files:**
+
 - Create: `apps/web/src/shared/lib/storage/StorageContext.tsx`
 - Create: `apps/web/src/shared/lib/storage/migrate.ts`
 - Create: `apps/web/src/shared/lib/storage/index.ts`
@@ -321,8 +326,8 @@ git commit -m "feat(api-client): implement ApiAdapter and export adapters"
 **Step 1: Create `StorageContext.tsx`**
 
 ```typescript
-import { ApiAdapter, ChromeStorageAdapter, setAuthToken } from '@repo/api-client';
-import type { StorageAdapter } from '@repo/types';
+import { ApiAdapter, ChromeStorageAdapter, setAuthToken } from '@bookmark/api-client';
+import type { StorageAdapter } from '@bookmark/types';
 import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
 
 interface StorageContextValue {
@@ -377,7 +382,7 @@ export function useStorageContext(): StorageContextValue {
 **Step 2: Create `migrate.ts`**
 
 ```typescript
-import { ApiAdapter, ChromeStorageAdapter } from '@repo/api-client';
+import { ApiAdapter, ChromeStorageAdapter } from '@bookmark/api-client';
 
 export async function migrateLocalToApi(apiAdapter: ApiAdapter): Promise<void> {
   const localAdapter = new ChromeStorageAdapter();
@@ -446,6 +451,7 @@ git commit -m "feat(web): add StorageContext, StorageProvider, and migration uti
 ## Task 6: Wire StorageProvider into apps/web providers
 
 **Files:**
+
 - Modify: `apps/web/src/app/providers/index.tsx`
 
 **Step 1: Replace the file content**
@@ -497,12 +503,13 @@ git commit -m "feat(web): add StorageProvider to app providers"
 ## Task 7: Update useBookmarks to use adapter
 
 **Files:**
+
 - Modify: `apps/web/src/entities/bookmark/model/useBookmarks.ts`
 
 **Step 1: Replace the file content**
 
 ```typescript
-import type { BookmarkListQuery } from '@repo/types';
+import type { BookmarkListQuery } from '@bookmark/types';
 import { useQuery } from '@tanstack/react-query';
 import { useStorageAdapter } from '@/shared/lib/storage';
 
@@ -540,6 +547,7 @@ git commit -m "feat(web): update useBookmarks to use StorageAdapter"
 ## Task 8: Update useTags to use adapter
 
 **Files:**
+
 - Modify: `apps/web/src/entities/tag/model/useTags.ts`
 
 **Step 1: Replace the file content**
@@ -581,6 +589,7 @@ git commit -m "feat(web): update useTags to use StorageAdapter"
 ## Task 9: Update mutation features to use adapter
 
 **Files:**
+
 - Modify: `apps/web/src/features/bookmark-delete/model/useDeleteBookmark.ts`
 - Modify: `apps/web/src/features/bookmark-create/ui/BookmarkCreateDialog.tsx`
 
@@ -608,21 +617,25 @@ export function useDeleteBookmark() {
 Change only the import and the `mutationFn` — the rest of the component stays the same:
 
 Remove:
+
 ```typescript
 import { bookmarksApi } from '@/shared/api';
 ```
 
 Add:
+
 ```typescript
 import { useStorageAdapter } from '@/shared/lib/storage';
 ```
 
 Inside the component, add before the mutation:
+
 ```typescript
 const adapter = useStorageAdapter();
 ```
 
 Change the mutation:
+
 ```typescript
 const { mutate, isPending } = useMutation({
   mutationFn: (dto: CreateBookmarkDto) => adapter.createBookmark(dto),
@@ -654,6 +667,7 @@ git commit -m "feat(web): update bookmark mutation features to use StorageAdapte
 ## Task 10: Remove ProtectedRoute from router
 
 **Files:**
+
 - Modify: `apps/web/src/app/router/index.tsx`
 
 **Step 1: Replace the file content**
@@ -697,12 +711,13 @@ git commit -m "feat(web): remove ProtectedRoute, homepage accessible without log
 ## Task 11: Update AuthCallbackPage to run migration
 
 **Files:**
+
 - Modify: `apps/web/src/pages/login/ui/AuthCallbackPage.tsx`
 
 **Step 1: Replace the file content**
 
 ```typescript
-import { ApiAdapter, setAuthToken } from '@repo/api-client';
+import { ApiAdapter, setAuthToken } from '@bookmark/api-client';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { migrateLocalToApi, useStorageContext } from '@/shared/lib/storage';
@@ -762,17 +777,20 @@ git commit -m "feat(web): add local-to-api migration on login callback"
 ## Task 12: Add sync/logout button to HomePage header
 
 **Files:**
+
 - Modify: `apps/web/src/pages/home/ui/HomePage.tsx`
 
 **Step 1: Add import and use `useStorageContext`**
 
 Add these imports at the top:
+
 ```typescript
-import { setAuthToken } from '@repo/api-client';
+import { setAuthToken } from '@bookmark/api-client';
 import { useStorageContext } from '@/shared/lib/storage';
 ```
 
 Inside the component, add:
+
 ```typescript
 const { mode, logout } = useStorageContext();
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
@@ -819,6 +837,7 @@ git commit -m "feat(web): add sync/logout button to homepage header"
 ## Task 13: Add StorageProvider to apps/extension
 
 **Files:**
+
 - Create: `apps/extension/src/shared/lib/storage/StorageContext.tsx`
 - Create: `apps/extension/src/shared/lib/storage/migrate.ts`
 - Create: `apps/extension/src/shared/lib/storage/index.ts`
@@ -837,7 +856,7 @@ The extension uses the same storage layer as the web app. Copy the three files c
 **Step 2: Update `apps/extension/src/app/providers/index.tsx`**
 
 ```typescript
-import { setAuthToken } from '@repo/api-client';
+import { setAuthToken } from '@bookmark/api-client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 import { StorageProvider } from '@/shared/lib/storage';
@@ -881,6 +900,7 @@ git commit -m "feat(extension): add StorageProvider"
 ## Task 14: Update extension PopupPage to use adapter
 
 **Files:**
+
 - Modify: `apps/extension/src/pages/popup/ui/PopupPage.tsx`
 
 The current `PopupPage` blocks usage when not logged in and calls `bookmarksApi`/`tagsApi` directly. Replace with adapter-based calls and remove the auth gate.
@@ -888,17 +908,17 @@ The current `PopupPage` blocks usage when not logged in and calls `bookmarksApi`
 **Step 1: Replace the file content**
 
 ```typescript
-import { setAuthToken } from '@repo/api-client';
-import type { CreateBookmarkDto } from '@repo/types';
-import { Button } from '@repo/ui/components/button';
-import { Input } from '@repo/ui/components/input';
-import { Label } from '@repo/ui/components/label';
+import { setAuthToken } from '@bookmark/api-client';
+import type { CreateBookmarkDto } from '@bookmark/types';
+import { Button } from '@bookmark/ui/components/button';
+import { Input } from '@bookmark/ui/components/input';
+import { Label } from '@bookmark/ui/components/label';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { TagSelector } from '@/entities/tag/ui/TagSelector';
 import { tagKeys } from '@/entities/tag/model/useTags';
 import { useStorageAdapter, useStorageContext, migrateLocalToApi } from '@/shared/lib/storage';
-import { ApiAdapter } from '@repo/api-client';
+import { ApiAdapter } from '@bookmark/api-client';
 import { useQuery } from '@tanstack/react-query';
 
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
@@ -1120,6 +1140,7 @@ pnpm dev
 ```
 
 Verify:
+
 - [ ] Homepage loads without redirecting to `/login`
 - [ ] Bookmarks list renders (empty on first load is fine)
 - [ ] "동기화" button appears in header when not logged in

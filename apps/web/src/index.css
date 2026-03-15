@@ -1,4 +1,4 @@
-/* Tailwind and shadcn globals are imported via @repo/ui/styles/globals.css in main.tsx */
+/* Tailwind and shadcn globals are imported via @bookmark/ui/styles/globals.css in main.tsx */
 
 /* ── Warm Void: Override dark theme color tokens ── */
 html.dark {

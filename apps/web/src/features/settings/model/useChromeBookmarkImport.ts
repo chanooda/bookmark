@@ -1,4 +1,4 @@
-import type { StorageAdapter } from '@repo/types';
+import type { StorageAdapter } from '@bookmark/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { bookmarkKeys } from '@/entities/bookmark';

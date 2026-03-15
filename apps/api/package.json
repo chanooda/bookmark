@@ -1,5 +1,5 @@
 {
-	"name": "@repo/api",
+	"name": "@bookmark/api",
 	"version": "0.0.1",
 	"description": "",
 	"author": "",
@@ -22,7 +22,7 @@
 		"@nestjs/jwt": "^11.0.0",
 		"@nestjs/passport": "^11.0.0",
 		"@nestjs/platform-express": "^11.0.1",
-		"@repo/types": "workspace:*",
+		"@bookmark/types": "workspace:*",
 		"better-sqlite3": "^11.8.1",
 		"drizzle-orm": "^0.39.0",
 		"passport": "^0.7.0",

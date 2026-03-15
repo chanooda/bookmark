@@ -11,7 +11,7 @@ import type {
 	UpdateBookmarkDto,
 	UpdateFolderDto,
 	UpdateTagDto,
-} from '@repo/types';
+} from '@bookmark/types';
 import { bookmarksApi } from './bookmarks';
 import { foldersApi } from './folders';
 import { tagsApi } from './tags';

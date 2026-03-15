@@ -23,7 +23,7 @@ vi.mock('@/shared/lib/storage', () => ({
 	migrateLocalToApi: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock('@repo/api-client', () => ({
+vi.mock('@bookmark/api-client', () => ({
 	ApiAdapter: vi.fn(),
 	setAuthToken: vi.fn(),
 }));

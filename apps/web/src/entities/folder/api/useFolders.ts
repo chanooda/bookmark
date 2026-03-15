@@ -1,4 +1,4 @@
-import type { Folder } from '@repo/types';
+import type { Folder } from '@bookmark/types';
 import { useQuery } from '@tanstack/react-query';
 import { useStorageAdapter } from '@/shared/lib/storage';
 

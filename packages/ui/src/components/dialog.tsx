@@ -1,5 +1,5 @@
-import { Button } from '@repo/ui/components/button';
-import { cn } from '@repo/ui/lib/utils';
+import { Button } from '@bookmark/ui/components/button';
+import { cn } from '@bookmark/ui/lib/utils';
 import { XIcon } from 'lucide-react';
 import { Dialog as DialogPrimitive } from 'radix-ui';
 import type * as React from 'react';

@@ -1,11 +1,11 @@
-import type { Folder } from '@repo/types';
+import type { Folder } from '@bookmark/types';
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from '@repo/ui/components/select';
+} from '@bookmark/ui/components/select';
 import { buildFolderTree, flattenFolderTree } from '@/entities/folder';
 
 interface FolderSelectProps {

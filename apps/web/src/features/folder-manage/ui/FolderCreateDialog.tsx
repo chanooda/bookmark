@@ -1,10 +1,11 @@
-import type { Folder } from '@repo/types';
-import { Button } from '@repo/ui/components/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/dialog';
-import { Input } from '@repo/ui/components/input';
-import { Label } from '@repo/ui/components/label';
+import type { Folder } from '@bookmark/types';
+import { Button } from '@bookmark/ui/components/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@bookmark/ui/components/dialog';
+import { Input } from '@bookmark/ui/components/input';
+import { Label } from '@bookmark/ui/components/label';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { folderKeys, useFolders } from '@/entities/folder';
 import { useSettingStore } from '@/features/settings';
@@ -13,6 +14,7 @@ import { useCreateFolder } from '../api/useCreateFolder';
 import { useFolderDialogStore } from '../model/folderDialogStore';
 
 export function FolderCreateDialog() {
+	const { t } = useTranslation();
 	const { createOpen, createParentId, setCreateOpen } = useFolderDialogStore();
 	const queryClient = useQueryClient();
 	const { syncMode } = useSettingStore();
@@ -45,7 +47,7 @@ export function FolderCreateDialog() {
 					if (chromeSyncService) {
 						chromeSyncService
 							.syncCreateFolder(newFolder, [...existingFolders, newFolder])
-							.catch(() => toast.error('Chrome 폴더 동기화에 실패했습니다.'));
+							.catch(() => toast.error(t('folder.syncError')));
 					}
 					setCreateOpen(false);
 				},
@@ -57,7 +59,7 @@ export function FolderCreateDialog() {
 		<Dialog onOpenChange={(open) => !isPending && setCreateOpen(open)} open={createOpen}>
 			<DialogContent className='sm:max-w-sm'>
 				<DialogHeader>
-					<DialogTitle>새 폴더</DialogTitle>
+					<DialogTitle>{t('folder.new')}</DialogTitle>
 				</DialogHeader>
 				<form className='flex flex-col gap-4' onSubmit={handleSubmit}>
 					{parentFolder && (
@@ -77,16 +79,16 @@ export function FolderCreateDialog() {
 								/>
 							</svg>
 							<span className='font-medium text-foreground/70'>{parentFolder.name}</span>
-							<span>안에 생성됩니다</span>
+							<span>{t('folder.createInside')}</span>
 						</div>
 					)}
 					<div className='flex flex-col gap-1.5'>
-						<Label htmlFor='folder-name'>이름 *</Label>
+						<Label htmlFor='folder-name'>{t('folder.name')} *</Label>
 						<Input
 							autoFocus
 							id='folder-name'
 							onChange={(e) => setName(e.target.value)}
-							placeholder='폴더 이름'
+							placeholder={t('folder.namePlaceholder')}
 							required
 							value={name}
 						/>
@@ -98,10 +100,10 @@ export function FolderCreateDialog() {
 							type='button'
 							variant='outline'
 						>
-							취소
+							{t('common.cancel')}
 						</Button>
 						<Button disabled={isPending} type='submit'>
-							{isPending ? '추가 중...' : '추가'}
+							{isPending ? t('folder.adding') : t('common.add')}
 						</Button>
 					</div>
 				</form>

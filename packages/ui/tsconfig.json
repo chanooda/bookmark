@@ -2,7 +2,7 @@
 	"extends": "@chanooda/typescript-config-frontend/react.json",
 	"compilerOptions": {
 		"paths": {
-			"@repo/ui/*": ["./src/*"]
+			"@bookmark/ui/*": ["./src/*"]
 		}
 	},
 	"include": ["src"],

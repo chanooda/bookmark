@@ -1,6 +1,7 @@
-import type { Folder } from '@repo/types';
-import { cn } from '@repo/ui/lib/utils';
+import type { Folder } from '@bookmark/types';
+import { cn } from '@bookmark/ui/lib/utils';
 import { createContext, useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { buildFolderTree, type FolderNode, useFolders } from '@/entities/folder';
 import { useBookmarkFilterStore } from '@/features/bookmark';
@@ -39,6 +40,7 @@ function FolderNodeRow({ node, onAddChild, onStartEdit, onDelete }: FolderNodeRo
 	const { selectedFolderId, setSelectedFolderId, setSelectedTagId } = useBookmarkFilterStore();
 	const { editingNodeId, editingNodeName, onNameChange, onSubmit, onCancel } = useFolderEditing();
 	const [expanded, setExpanded] = useState(true);
+	const { t } = useTranslation();
 	const hasChildren = node.children.length > 0;
 	const isEditing = editingNodeId === node.id;
 
@@ -82,7 +84,7 @@ function FolderNodeRow({ node, onAddChild, onStartEdit, onDelete }: FolderNodeRo
 							e.preventDefault();
 							onSubmit();
 						}}
-						title='저장 (Enter)'
+						title={t('folder.saveEnter')}
 						type='button'
 					>
 						<svg
@@ -106,7 +108,7 @@ function FolderNodeRow({ node, onAddChild, onStartEdit, onDelete }: FolderNodeRo
 							e.preventDefault();
 							onCancel();
 						}}
-						title='취소 (Esc)'
+						title={t('folder.cancelEsc')}
 						type='button'
 					>
 						<svg
@@ -128,7 +130,7 @@ function FolderNodeRow({ node, onAddChild, onStartEdit, onDelete }: FolderNodeRo
 			) : (
 				<div className='group flex items-center'>
 					<button
-						aria-label={expanded ? '접기' : '펼치기'}
+						aria-label={expanded ? t('folder.collapse') : t('folder.expand')}
 						className='mr-0.5 flex h-4 w-4 shrink-0 items-center justify-center text-muted-foreground opacity-0 hover:text-foreground group-hover:opacity-100'
 						onClick={() => setExpanded((v) => !v)}
 						style={{ visibility: hasChildren ? 'visible' : 'hidden' }}
@@ -177,7 +179,7 @@ function FolderNodeRow({ node, onAddChild, onStartEdit, onDelete }: FolderNodeRo
 						<button
 							className='rounded-md p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground'
 							onClick={() => onAddChild(node.id)}
-							title='하위 폴더 추가'
+							title={t('folder.addChild')}
 							type='button'
 						>
 							<svg
@@ -198,7 +200,7 @@ function FolderNodeRow({ node, onAddChild, onStartEdit, onDelete }: FolderNodeRo
 						<button
 							className='rounded-md p-0.5 text-muted-foreground hover:bg-accent hover:text-foreground'
 							onClick={() => onStartEdit(node)}
-							title='이름 변경'
+							title={t('folder.rename_action')}
 							type='button'
 						>
 							<svg
@@ -219,7 +221,7 @@ function FolderNodeRow({ node, onAddChild, onStartEdit, onDelete }: FolderNodeRo
 						<button
 							className='rounded-md p-0.5 text-muted-foreground hover:text-destructive'
 							onClick={() => onDelete(node.id)}
-							title='삭제'
+							title={t('folder.delete')}
 							type='button'
 						>
 							<svg
@@ -260,6 +262,7 @@ function FolderNodeRow({ node, onAddChild, onStartEdit, onDelete }: FolderNodeRo
 // ─── FolderTree ───────────────────────────────────────────────────────────────
 
 export function FolderTree() {
+	const { t } = useTranslation();
 	const { data: folders = [] } = useFolders();
 	const { selectedFolderId, setSelectedFolderId, setSelectedTagId } = useBookmarkFilterStore();
 	const tree = buildFolderTree(folders);
@@ -273,20 +276,18 @@ export function FolderTree() {
 	const [editingNodeName, setEditingNodeName] = useState('');
 
 	function handleDelete(id: string) {
-		if (!window.confirm('폴더를 삭제하시겠습니까? 하위 폴더와 북마크도 함께 삭제됩니다.')) return;
+		if (!window.confirm(t('folder.deleteConfirm'))) return;
 		deleteFolder(id, {
 			onSuccess: () => {
 				if (chromeSyncService) {
-					chromeSyncService
-						.syncDeleteFolder(id)
-						.catch(() => toast.error('Chrome 폴더 동기화에 실패했습니다.'));
+					chromeSyncService.syncDeleteFolder(id).catch(() => toast.error(t('folder.syncError')));
 				}
 				if (selectedFolderId === id) {
 					setSelectedFolderId(undefined);
 					setSelectedTagId(undefined);
 				}
 			},
-			onError: () => toast.error('폴더 삭제에 실패했습니다.'),
+			onError: () => toast.error(t('folder.deleteError')),
 		});
 	}
 
@@ -310,7 +311,7 @@ export function FolderTree() {
 					if (chromeSyncService) {
 						chromeSyncService
 							.syncUpdateFolder(id, name)
-							.catch(() => toast.error('Chrome 폴더 동기화에 실패했습니다.'));
+							.catch(() => toast.error(t('folder.syncError')));
 					}
 				},
 			},

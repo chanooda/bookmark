@@ -1,11 +1,11 @@
 import { randomUUID } from 'node:crypto';
-import { Injectable, NotFoundException } from '@nestjs/common';
 import type {
 	BookmarkListQuery,
 	CreateBookmarkDto,
 	ReorderItemDto,
 	UpdateBookmarkDto,
-} from '@repo/types';
+} from '@bookmark/types';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { and, eq, isNull, like, max } from 'drizzle-orm';
 import { db } from '../db';
 import { bookmarks, bookmarkTags } from '../db/schema';

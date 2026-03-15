@@ -1,8 +1,8 @@
+import type { CreateFolderDto, ReorderItemDto, UpdateFolderDto } from '@bookmark/types';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import type { CreateFolderDto, ReorderItemDto, UpdateFolderDto } from '@repo/types';
 import type { Request } from 'express';
-import { FoldersService } from './folders.service';
+import type { FoldersService } from './folders.service';
 
 @Controller('folders')
 @UseGuards(AuthGuard('jwt'))

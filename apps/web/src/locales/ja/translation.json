@@ -1,0 +1,179 @@
+{
+	"settings": {
+		"title": "設定",
+		"description": "アプリの設定とデータ管理",
+		"sections": {
+			"viewMode": {
+				"label": "表示",
+				"description": "ブックマーク一覧のレイアウトを選択します。"
+			},
+			"theme": {
+				"label": "テーマ",
+				"description": "アプリのカラーテーマを選択します。"
+			},
+			"realtimeSync": {
+				"label": "同期",
+				"description": "Chrome ブックマークとのリアルタイム同期方向を設定します。"
+			},
+			"chromeImport": {
+				"label": "Chrome インポート",
+				"description": "Chrome ブラウザのブックマークをアプリにインポートします。"
+			},
+			"language": {
+				"label": "言語",
+				"description": "アプリの表示言語を選択します。"
+			}
+		}
+	},
+	"theme": {
+		"label": "テーマ",
+		"light": "ライト",
+		"dark": "ダーク",
+		"system": "システム",
+		"switchToLight": "ライトモードに切り替え",
+		"switchToDark": "ダークモードに切り替え"
+	},
+	"viewMode": {
+		"label": "表示モード",
+		"glass": "グラス",
+		"grid": "グリッド",
+		"list": "リスト"
+	},
+	"sync": {
+		"label": "リアルタイム同期",
+		"save": "保存",
+		"warning": "⚠ 同期設定によっては Chrome ブックマークが削除される場合があります。事前に Chrome ブックマークをエクスポート（{{path}}）することをお勧めします。",
+		"warningPath": "Chrome 設定 → ブックマーク → ブックマークをエクスポート",
+		"options": {
+			"off": {
+				"label": "同期しない",
+				"description": "Chrome ブックマークとアプリ間の自動同期を無効にします。",
+				"warning": ""
+			},
+			"chromeToWeb": {
+				"label": "Chrome → Web",
+				"description": "Chrome ブックマークの変更がアプリに自動反映されます。",
+				"warning": "⚠ Chrome でブックマークを削除するとアプリでも完全に削除されます。"
+			},
+			"webToChrome": {
+				"label": "Web → Chrome",
+				"description": "アプリのブックマーク変更が Chrome ブックマークに自動反映されます。",
+				"warning": "⚠ アプリでブックマークを削除すると Chrome でも完全に削除されます。"
+			},
+			"bidirectional": {
+				"label": "双方向",
+				"description": "アプリと Chrome ブックマークが双方向で自動同期されます。",
+				"warning": "⚠ どちら側で削除しても両方から完全に削除されます。"
+			}
+		}
+	},
+	"chromeImport": {
+		"title": "Chrome ブックマークをインポート",
+		"description": "現在の Chrome ブラウザのブックマークをアプリにインポートします。既存の URL はスキップされます。",
+		"progress": "{{current}} / {{total}} 処理中...",
+		"done": "完了 — {{total}} 件中 {{current}} 件処理済み",
+		"error": "エラー: {{message}}",
+		"unknownError": "不明なエラー",
+		"importing": "インポート中... ({{percent}}%)",
+		"reimport": "再インポート",
+		"import": "Chrome ブックマークをインポート"
+	},
+	"language": {
+		"label": "言語",
+		"languages": {
+			"en": "English",
+			"ko": "한국어",
+			"zh": "中文",
+			"ja": "日本語"
+		}
+	},
+	"bookmark": {
+		"add": "ブックマークを追加",
+		"edit": "ブックマークを編集",
+		"adding": "追加中...",
+		"editing": "編集中...",
+		"url": "URL",
+		"title": "タイトル",
+		"titlePlaceholder": "タイトル",
+		"description": "説明",
+		"descriptionPlaceholder": "説明（任意）",
+		"folder": "フォルダ",
+		"tag": "タグ",
+		"syncError": "Chrome ブックマークの同期に失敗しました。"
+	},
+	"tag": {
+		"add": "タグを追加",
+		"edit": "タグを編集",
+		"name": "名前",
+		"namePlaceholder": "タグ名",
+		"color": "カラー",
+		"customColor": "カスタム",
+		"preview": "プレビュー",
+		"adding": "追加中...",
+		"saving": "保存中...",
+		"delete": "削除"
+	},
+	"folder": {
+		"new": "新しいフォルダ",
+		"rename": "フォルダ名を変更",
+		"name": "名前",
+		"namePlaceholder": "フォルダ名",
+		"createInside": "の中に作成されます",
+		"adding": "追加中...",
+		"saving": "保存中...",
+		"addChild": "サブフォルダを追加",
+		"rename_action": "名前を変更",
+		"delete": "削除",
+		"deleteConfirm": "このフォルダを削除しますか？サブフォルダとブックマークも一緒に削除されます。",
+		"syncError": "Chrome フォルダの同期に失敗しました。",
+		"deleteError": "フォルダの削除に失敗しました。",
+		"saveEnter": "保存 (Enter)",
+		"cancelEsc": "キャンセル (Esc)",
+		"collapse": "折りたたむ",
+		"expand": "展開する"
+	},
+	"sidebar": {
+		"folders": "フォルダ",
+		"addFolder": "フォルダを追加",
+		"tags": "タグ",
+		"addTag": "タグを追加",
+		"all": "すべて",
+		"editTag": "編集"
+	},
+	"header": {
+		"addBookmark": "ブックマークを追加",
+		"settings": "設定"
+	},
+	"bookmarkList": {
+		"loadError": "ブックマークの読み込み中にエラーが発生しました",
+		"unknownError": "不明なエラー",
+		"empty": "ブックマークがありません",
+		"reorderSyncError": "Chrome ブックマークの順序同期に失敗しました。",
+		"reorderError": "ブックマークの並び替えに失敗しました。"
+	},
+	"filterBar": {
+		"folders": "フォルダ",
+		"tags": "タグ",
+		"all": "すべて",
+		"addFolder": "フォルダを追加",
+		"addTag": "タグを追加"
+	},
+	"search": {
+		"bookmarkLabel": "ブックマーク",
+		"bookmarkPlaceholder": "保存したブックマークを検索...",
+		"bookmarkAriaLabel": "ブックマークを検索",
+		"clearAriaLabel": "検索をクリア",
+		"googleAriaLabel": "Google 検索または URL を入力",
+		"googlePlaceholder": "検索または URL を入力...",
+		"googleHomeAriaLabel": "Google ホームへ移動",
+		"googleHomeTitle": "google.com へ移動",
+		"searchButton": "検索",
+		"go": "移動"
+	},
+	"common": {
+		"cancel": "キャンセル",
+		"save": "保存",
+		"add": "追加",
+		"edit": "編集"
+	}
+}

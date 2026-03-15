@@ -1,5 +1,5 @@
-import { buttonVariants } from '@repo/ui/components/button';
-import { cn } from '@repo/ui/lib/utils';
+import { buttonVariants } from '@bookmark/ui/components/button';
+import { cn } from '@bookmark/ui/lib/utils';
 import { AlertDialog as AlertDialogPrimitive } from 'radix-ui';
 import type * as React from 'react';
 

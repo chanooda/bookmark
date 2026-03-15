@@ -4,7 +4,7 @@ import type {
 	CreateBookmarkDto,
 	ReorderItemDto,
 	UpdateBookmarkDto,
-} from '@repo/types';
+} from '@bookmark/types';
 import { apiClient } from './client';
 
 export const bookmarksApi = {

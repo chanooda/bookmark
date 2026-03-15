@@ -1,4 +1,4 @@
-import { ApiAdapter, setAuthToken } from '@repo/api-client';
+import { ApiAdapter, setAuthToken } from '@bookmark/api-client';
 import { useState } from 'react';
 import { migrateLocalToApi, useStorageContext } from '@/shared/lib/storage';
 

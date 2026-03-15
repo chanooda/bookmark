@@ -1,8 +1,9 @@
-import type { CreateBookmarkDto } from '@repo/types';
-import { Button } from '@repo/ui/components/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/dialog';
+import type { CreateBookmarkDto } from '@bookmark/types';
+import { Button } from '@bookmark/ui/components/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@bookmark/ui/components/dialog';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { bookmarkKeys, useCreateBookmark } from '@/entities/bookmark';
 import { useFolders } from '@/entities/folder';
@@ -14,6 +15,7 @@ import { useBookmarkForm } from '../model/useBookmarkForm';
 import { BookmarkFormFields } from './BookmarkFormFields';
 
 export function BookmarkCreateDialog() {
+	const { t } = useTranslation();
 	const { createOpen, createDefaultFolderId, setCreateOpen } = useBookmarkDialogStore();
 	const { selectedFolderId: filterFolderId } = useBookmarkFilterStore();
 	const defaultFolderId =
@@ -61,7 +63,7 @@ export function BookmarkCreateDialog() {
 				if (chromeSyncService) {
 					chromeSyncService
 						.syncCreateBookmark(bookmark, folders)
-						.catch(() => toast.error('Chrome 북마크 동기화에 실패했습니다.'));
+						.catch(() => toast.error(t('bookmark.syncError')));
 				}
 				setCreateOpen(false);
 			},
@@ -72,7 +74,7 @@ export function BookmarkCreateDialog() {
 		<Dialog onOpenChange={setCreateOpen} open={createOpen}>
 			<DialogContent className='sm:max-w-md'>
 				<DialogHeader>
-					<DialogTitle>북마크 추가</DialogTitle>
+					<DialogTitle>{t('bookmark.add')}</DialogTitle>
 				</DialogHeader>
 				<form className='flex flex-col gap-4' onSubmit={handleSubmit}>
 					<BookmarkFormFields
@@ -89,10 +91,10 @@ export function BookmarkCreateDialog() {
 					/>
 					<div className='flex justify-end gap-2 pt-2'>
 						<Button onClick={() => setCreateOpen(false)} type='button' variant='outline'>
-							취소
+							{t('common.cancel')}
 						</Button>
 						<Button disabled={isPending} type='submit'>
-							{isPending ? '추가 중...' : '추가'}
+							{isPending ? t('bookmark.adding') : t('common.add')}
 						</Button>
 					</div>
 				</form>

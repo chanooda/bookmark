@@ -1,10 +1,12 @@
-import { Button } from '@repo/ui/components/button';
+import { Button } from '@bookmark/ui/components/button';
+import { useTranslation } from 'react-i18next';
 import { useBookmarkDialogStore } from '@/features/bookmark';
 import { useSettingStore } from '@/features/settings';
 import { useTheme } from '@/shared/lib/theme';
 import { ViewModeToggle } from './ViewModeToggle';
 
 export function Header() {
+	const { t } = useTranslation();
 	const { viewMode, setViewMode, setSettingsOpen } = useSettingStore();
 	const { setCreateOpen } = useBookmarkDialogStore();
 	const { resolvedTheme, setTheme } = useTheme();
@@ -43,7 +45,7 @@ export function Header() {
 						className='rounded-lg size-9 shrink-0 text-muted-foreground hover:text-foreground'
 						onClick={toggleTheme}
 						size='sm'
-						title={resolvedTheme === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환'}
+						title={resolvedTheme === 'dark' ? t('theme.switchToLight') : t('theme.switchToDark')}
 						variant='ghost'
 					>
 						{resolvedTheme === 'dark' ? (
@@ -83,7 +85,7 @@ export function Header() {
 						className='size-9 rounded-lg p-0 text-muted-foreground hover:text-foreground'
 						onClick={() => setSettingsOpen(true)}
 						size='sm'
-						title='설정'
+						title={t('header.settings')}
 						variant='ghost'
 					>
 						<svg
@@ -149,7 +151,7 @@ export function Header() {
 								strokeWidth={2.5}
 							/>
 						</svg>
-						북마크 추가
+						{t('header.addBookmark')}
 					</Button>
 				</div>
 			</div>

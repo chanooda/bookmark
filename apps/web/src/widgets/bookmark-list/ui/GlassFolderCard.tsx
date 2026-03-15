@@ -1,4 +1,4 @@
-import type { Bookmark, Folder } from '@repo/types';
+import type { Bookmark, Folder } from '@bookmark/types';
 import { useEffect, useRef, useState } from 'react';
 import { stripProtocol } from '@/shared/lib/url';
 import { FaviconImg } from '@/shared/ui';

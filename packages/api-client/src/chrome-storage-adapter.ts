@@ -11,7 +11,7 @@ import type {
 	UpdateBookmarkDto,
 	UpdateFolderDto,
 	UpdateTagDto,
-} from '@repo/types';
+} from '@bookmark/types';
 
 interface LocalStore {
 	bookmarks?: Bookmark[];

@@ -1,4 +1,4 @@
-import type { Bookmark } from '@repo/types';
+import type { Bookmark } from '@bookmark/types';
 import { create } from 'zustand';
 
 interface BookmarkDialogState {

@@ -1,10 +1,11 @@
-import { Button } from '@repo/ui/components/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/dialog';
-import { Input } from '@repo/ui/components/input';
-import { Label } from '@repo/ui/components/label';
-import { cn } from '@repo/ui/lib/utils';
+import { Button } from '@bookmark/ui/components/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@bookmark/ui/components/dialog';
+import { Input } from '@bookmark/ui/components/input';
+import { Label } from '@bookmark/ui/components/label';
+import { cn } from '@bookmark/ui/lib/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { bookmarkKeys } from '@/entities/bookmark';
 import { tagKeys } from '@/entities/tag';
 import { useBookmarkFilterStore } from '@/features/bookmark';
@@ -28,6 +29,7 @@ const TAG_PRESET_COLORS = [
 ];
 
 export function TagEditDialog() {
+	const { t } = useTranslation();
 	const { editTarget, setEditTarget } = useTagDialogStore();
 	const queryClient = useQueryClient();
 	const { mutate: editTag, isPending: isEditing } = useEditTag();
@@ -82,23 +84,23 @@ export function TagEditDialog() {
 		>
 			<DialogContent className='sm:max-w-sm'>
 				<DialogHeader>
-					<DialogTitle>태그 편집</DialogTitle>
+					<DialogTitle>{t('tag.edit')}</DialogTitle>
 				</DialogHeader>
 				<form className='flex flex-col gap-4' onSubmit={handleSubmit}>
 					<div className='flex flex-col gap-1.5'>
-						<Label htmlFor='tag-edit-name'>이름 *</Label>
+						<Label htmlFor='tag-edit-name'>{t('tag.name')} *</Label>
 						<Input
 							autoFocus
 							id='tag-edit-name'
 							onChange={(e) => setName(e.target.value)}
-							placeholder='태그 이름'
+							placeholder={t('tag.namePlaceholder')}
 							required
 							value={name}
 						/>
 					</div>
 
 					<div className='flex flex-col gap-2'>
-						<Label>색상</Label>
+						<Label>{t('tag.color')}</Label>
 						<div className='grid grid-cols-6 gap-2'>
 							{TAG_PRESET_COLORS.map((presetColor) => (
 								<button
@@ -120,7 +122,7 @@ export function TagEditDialog() {
 										'scale-110 border-solid border-transparent ring-2 ring-foreground/30 ring-offset-2',
 								)}
 								style={isCustomColor ? { backgroundColor: color } : undefined}
-								title='직접 입력'
+								title={t('tag.customColor')}
 							>
 								<input
 									className='sr-only'
@@ -151,7 +153,7 @@ export function TagEditDialog() {
 					{name.trim() && (
 						<div className='rounded-md border border-border/50 bg-muted/30 px-3 py-2'>
 							<p className='mb-1.5 text-[10px] uppercase tracking-wider text-muted-foreground/50'>
-								미리보기
+								{t('tag.preview')}
 							</p>
 							<div className='flex items-center gap-2'>
 								<span
@@ -170,7 +172,7 @@ export function TagEditDialog() {
 							type='button'
 							variant='ghost'
 						>
-							삭제
+							{t('tag.delete')}
 						</Button>
 						<div className='flex gap-2'>
 							<Button
@@ -179,10 +181,10 @@ export function TagEditDialog() {
 								type='button'
 								variant='outline'
 							>
-								취소
+								{t('common.cancel')}
 							</Button>
 							<Button disabled={isEditing} type='submit'>
-								{isEditing ? '저장 중...' : '저장'}
+								{isEditing ? t('tag.saving') : t('common.save')}
 							</Button>
 						</div>
 					</div>

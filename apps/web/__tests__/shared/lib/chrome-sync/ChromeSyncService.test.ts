@@ -1,4 +1,4 @@
-import type { Bookmark, Folder } from '@repo/types';
+import type { Bookmark, Folder } from '@bookmark/types';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ChromeSyncGuard } from '@/shared/lib/chrome-sync/ChromeSyncGuard';
 import { ChromeSyncService } from '@/shared/lib/chrome-sync/ChromeSyncService';

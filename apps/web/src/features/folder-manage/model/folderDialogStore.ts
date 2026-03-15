@@ -1,4 +1,4 @@
-import type { Folder } from '@repo/types';
+import type { Folder } from '@bookmark/types';
 import { create } from 'zustand';
 
 interface FolderDialogState {

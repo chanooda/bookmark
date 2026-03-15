@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
+import type { CreateFolderDto, ReorderItemDto, UpdateFolderDto } from '@bookmark/types';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import type { CreateFolderDto, ReorderItemDto, UpdateFolderDto } from '@repo/types';
 import { and, asc, eq, inArray, isNull, max } from 'drizzle-orm';
 import { db } from '../db';
 import { bookmarks, folders } from '../db/schema';

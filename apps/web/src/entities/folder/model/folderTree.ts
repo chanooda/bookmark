@@ -1,4 +1,4 @@
-import type { Folder } from '@repo/types';
+import type { Folder } from '@bookmark/types';
 
 export interface FolderNode extends Folder {
 	children: FolderNode[];

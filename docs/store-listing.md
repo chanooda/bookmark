@@ -11,20 +11,19 @@
 |------|------|
 | **이름** | mark. |
 | **카테고리** | Productivity |
-| **언어** | 한국어 |
 | **홈페이지 URL** | (선택) |
 
 ---
 
-## 요약 (132자 이내, 스토어 검색 결과에 표시)
+## 🇰🇷 한국어 (ko)
+
+### 요약 (132자 이내)
 
 ```
 새 탭을 북마크 허브로. 태그·폴더로 정리하고 크롬 북마크와 동기화하는 북마크 매니저입니다.
 ```
 
----
-
-## 상세 설명 (스토어 상세 페이지)
+### 상세 설명
 
 ```
 mark.는 크롬 새 탭을 북마크 관리 공간으로 바꿔주는 확장 프로그램입니다.
@@ -72,6 +71,186 @@ mark.는 크롬 새 탭을 북마크 관리 공간으로 바꿔주는 확장 프
 
 모든 데이터는 Chrome 로컬 스토리지에만 저장됩니다.
 외부 서버로 데이터가 전송되지 않습니다.
+```
+
+---
+
+## 🇺🇸 English (en)
+
+### Summary (up to 132 characters)
+
+```
+Turn every new tab into your bookmark hub. Organize with tags & folders, sync with Chrome bookmarks.
+```
+
+### Description
+
+```
+mark. transforms your Chrome new tab into a clean, powerful bookmark manager.
+Stop digging through your bookmark bar — see all your bookmarks at a glance every time you open a new tab.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+  Key Features
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 New Tab Bookmark Hub
+Your bookmark dashboard opens instantly with every new tab.
+Jump to your favorite sites with a single click.
+
+🏷️ Smart Organization with Tags
+Use folders and tags together to keep bookmarks neatly categorized.
+Filter related bookmarks instantly with a single tag click.
+
+🔍 Quick Search
+Search bookmarks by title or URL in seconds.
+
+🔄 Chrome Bookmark Sync
+Import your existing Chrome bookmarks or enable bidirectional sync.
+Bookmarks added in Chrome automatically appear in mark.
+
+🎨 3 View Modes
+• List — efficiently browse a large number of bookmarks
+• Grid — visually scan bookmarks as cards
+• Glass — immersive gradient view with a stylish aesthetic
+
+🖱️ Popup Quick-Add
+Click the toolbar icon to instantly bookmark the current tab.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+  How to Use
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Open a new tab after installing — you're ready to go
+2. Use the [Add Bookmark] button in the top right to save bookmarks
+3. Choose a Chrome sync mode in Settings (⚙)
+4. Organize your bookmarks with tags and folders
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+  Data & Privacy
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+All data is stored locally in Chrome storage only.
+No data is ever sent to external servers.
+```
+
+---
+
+## 🇨🇳 中文 (zh)
+
+### 摘要（132字以内）
+
+```
+将每个新标签页变为书签中心。通过标签和文件夹整理书签，并与Chrome书签同步。
+```
+
+### 详细说明
+
+```
+mark. 是一款将Chrome新标签页转变为书签管理空间的扩展程序。
+无需再翻找书签栏，每次打开新标签页即可一览所有书签。
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+  主要功能
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 新标签页书签中心
+打开新标签页，书签仪表板立即呈现。
+一键直达您的常用网站。
+
+🏷️ 标签智能整理
+结合文件夹和标签，系统地分类管理书签。
+单击标签，即时筛选相关书签。
+
+🔍 快速搜索
+通过标题或URL快速查找书签。
+
+🔄 Chrome书签同步
+导入现有Chrome书签，或开启双向同步。
+在Chrome中添加的书签会自动同步至mark.。
+
+🎨 三种视图模式
+• 列表 — 高效浏览大量书签
+• 网格 — 以卡片形式直观查看
+• Glass — 沉浸式渐变背景的美观视图
+
+🖱️ 弹窗快速添加
+点击工具栏图标，即可将当前标签页快速添加为书签。
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+  使用方法
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. 安装后打开新标签页即可开始使用
+2. 点击右上角 [添加书签] 按钮添加书签
+3. 在设置(⚙)中选择Chrome书签同步模式
+4. 使用标签和文件夹整理您的书签
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+  数据存储方式
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+所有数据仅保存在Chrome本地存储中。
+不向任何外部服务器发送数据。
+```
+
+---
+
+## 🇯🇵 日本語 (ja)
+
+### 概要（132文字以内）
+
+```
+新しいタブをブックマークハブに。タグ・フォルダで整理し、Chromeブックマークと同期するブックマークマネージャー。
+```
+
+### 詳細説明
+
+```
+mark. は、Chromeの新しいタブをブックマーク管理スペースに変える拡張機能です。
+ブックマークバーをいちいち探す代わりに、新しいタブを開くたびにすべてのブックマークを一目で確認できます。
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+  主な機能
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 新しいタブのブックマークハブ
+新しいタブを開くと、すぐにブックマークダッシュボードが表示されます。
+お気に入りのサイトにワンクリックでアクセスできます。
+
+🏷️ タグでスマートに整理
+フォルダとタグを組み合わせてブックマークを体系的に分類します。
+タグをクリックするだけで関連ブックマークを即座にフィルタリングできます。
+
+🔍 素早い検索
+タイトルやURLでブックマークをすばやく検索できます。
+
+🔄 Chromeブックマークの同期
+既存のChromeブックマークをそのまま取り込んだり、双方向で同期したりできます。
+Chromeで追加したブックマークが自動的にmark.に反映されます。
+
+🎨 3つの表示モード
+• リスト — 多くのブックマークを効率よく閲覧
+• グリッド — カード形式で視覚的に確認
+• Glass — 没入感のあるグラデーション背景のスタイリッシュなビュー
+
+🖱️ ポップアップでクイック追加
+ツールバーアイコンをクリックすると、現在のタブをすぐにブックマークとして追加できます。
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+  使い方
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. インストール後、新しいタブを開くとすぐに始められます
+2. 右上の [ブックマークを追加] ボタンでブックマークを追加してください
+3. 設定(⚙)でChromeブックマークの同期モードを選択してください
+4. タグとフォルダでブックマークを整理してください
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+  データの保存方法
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+すべてのデータはChromeのローカルストレージにのみ保存されます。
+外部サーバーにデータが送信されることはありません。
 ```
 
 ---

@@ -1,4 +1,4 @@
-# mark.
+# mark
 
 새 탭을 북마크 허브로 바꿔주는 Chrome 확장 프로그램
 
@@ -78,7 +78,7 @@ pnpm check-types
 pnpm check
 
 # 테스트
-pnpm --filter @repo/web test
+pnpm --filter @bookmark/web test
 ```
 
 ---

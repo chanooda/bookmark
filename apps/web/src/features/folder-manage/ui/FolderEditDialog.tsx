@@ -1,12 +1,14 @@
-import { Button } from '@repo/ui/components/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/dialog';
-import { Input } from '@repo/ui/components/input';
-import { Label } from '@repo/ui/components/label';
+import { Button } from '@bookmark/ui/components/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@bookmark/ui/components/dialog';
+import { Input } from '@bookmark/ui/components/input';
+import { Label } from '@bookmark/ui/components/label';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useEditFolder } from '../api/useEditFolder';
 import { useFolderDialogStore } from '../model/folderDialogStore';
 
 export function FolderEditDialog() {
+	const { t } = useTranslation();
 	const { editTarget, setEditTarget } = useFolderDialogStore();
 	const { mutate: editFolder, isPending } = useEditFolder();
 	const [name, setName] = useState('');
@@ -31,16 +33,16 @@ export function FolderEditDialog() {
 		>
 			<DialogContent className='sm:max-w-sm'>
 				<DialogHeader>
-					<DialogTitle>폴더 이름 변경</DialogTitle>
+					<DialogTitle>{t('folder.rename')}</DialogTitle>
 				</DialogHeader>
 				<form className='flex flex-col gap-4' onSubmit={handleSubmit}>
 					<div className='flex flex-col gap-1.5'>
-						<Label htmlFor='folder-edit-name'>이름 *</Label>
+						<Label htmlFor='folder-edit-name'>{t('folder.name')} *</Label>
 						<Input
 							autoFocus
 							id='folder-edit-name'
 							onChange={(e) => setName(e.target.value)}
-							placeholder='폴더 이름'
+							placeholder={t('folder.namePlaceholder')}
 							required
 							value={name}
 						/>
@@ -52,10 +54,10 @@ export function FolderEditDialog() {
 							type='button'
 							variant='outline'
 						>
-							취소
+							{t('common.cancel')}
 						</Button>
 						<Button disabled={isPending} type='submit'>
-							{isPending ? '저장 중...' : '저장'}
+							{isPending ? t('folder.saving') : t('common.save')}
 						</Button>
 					</div>
 				</form>

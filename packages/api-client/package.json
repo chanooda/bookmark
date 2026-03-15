@@ -1,5 +1,5 @@
 {
-	"name": "@repo/api-client",
+	"name": "@bookmark/api-client",
 	"version": "0.0.1",
 	"private": true,
 	"main": "./src/index.ts",
@@ -12,7 +12,7 @@
 		"check-types": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@repo/types": "workspace:*",
+		"@bookmark/types": "workspace:*",
 		"axios": "^1.7.9",
 		"zod": "^3.24.1"
 	},

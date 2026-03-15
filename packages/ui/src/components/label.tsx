@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@repo/ui/lib/utils';
+import { cn } from '@bookmark/ui/lib/utils';
 import { Label as LabelPrimitive } from 'radix-ui';
 import type * as React from 'react';
 

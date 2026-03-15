@@ -1,4 +1,4 @@
-import type { BookmarkListQuery } from '@repo/types';
+import type { BookmarkListQuery } from '@bookmark/types';
 import { useQuery } from '@tanstack/react-query';
 import { useStorageAdapter } from '@/shared/lib/storage';
 

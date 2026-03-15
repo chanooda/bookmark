@@ -19,7 +19,7 @@ vi.mock('sonner', () => ({
 	toast: { error: vi.fn() },
 }));
 
-import type { SyncMode } from '@repo/types';
+import type { SyncMode } from '@bookmark/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSettingStore } from '@/features/settings';
 import { useChromeBrowserSync } from '@/shared/lib/chrome-sync/useChromeBrowserSync';

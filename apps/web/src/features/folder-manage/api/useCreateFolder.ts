@@ -1,4 +1,4 @@
-import type { CreateFolderDto } from '@repo/types';
+import type { CreateFolderDto } from '@bookmark/types';
 import { useMutation } from '@tanstack/react-query';
 import { useStorageAdapter } from '@/shared/lib/storage';
 

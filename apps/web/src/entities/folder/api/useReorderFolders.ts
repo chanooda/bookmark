@@ -1,4 +1,4 @@
-import type { ReorderItemDto } from '@repo/types';
+import type { ReorderItemDto } from '@bookmark/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useStorageAdapter } from '@/shared/lib/storage';

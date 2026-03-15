@@ -6,7 +6,7 @@
 
 **Architecture:** React Router를 완전 제거하고 `chrome.identity.launchWebAuthFlow`로 OAuth를 처리한다. 백엔드에 code-exchange 전용 엔드포인트를 추가해 extension이 직접 인증 코드를 교환할 수 있도록 한다. LoginPage/AuthCallbackPage는 단일 `LoginDialog`로 통합된다.
 
-**Tech Stack:** React 19, Vite, NestJS, `chrome.identity` API, `@repo/api-client`, `@repo/ui`
+**Tech Stack:** React 19, Vite, NestJS, `chrome.identity` API, `@bookmark/api-client`, `@bookmark/ui`
 
 ---
 
@@ -22,6 +22,7 @@
 ## Task 1: Backend — Google code exchange 엔드포인트 추가
 
 **Files:**
+
 - Modify: `apps/api/src/auth/auth.service.ts`
 - Modify: `apps/api/src/auth/auth.controller.ts`
 
@@ -85,7 +86,7 @@ async googleExchange(@Body() body: { code: string; redirectUri: string }) {
 ### Step 3: 타입 체크 확인
 
 ```bash
-pnpm --filter @repo/api check-types
+pnpm --filter @bookmark/api check-types
 ```
 
 Expected: 에러 없음
@@ -102,6 +103,7 @@ git commit -m "feat(api): add POST /auth/google/exchange endpoint for extension 
 ## Task 2: Web — react-router 제거 및 main.tsx 단순화
 
 **Files:**
+
 - Modify: `apps/web/package.json`
 - Modify: `apps/web/src/main.tsx`
 - Delete: `apps/web/src/app/router/index.tsx`
@@ -123,14 +125,14 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Providers } from './app/providers';
 import { HomePage } from './pages/home/ui/HomePage';
-import '@repo/ui/styles/globals.css';
+import '@bookmark/ui/styles/globals.css';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
-	<StrictMode>
-		<Providers>
-			<HomePage />
-		</Providers>
-	</StrictMode>,
+ <StrictMode>
+  <Providers>
+   <HomePage />
+  </Providers>
+ </StrictMode>,
 );
 ```
 
@@ -143,8 +145,8 @@ rm apps/web/src/app/router/index.tsx
 ### Step 5: 타입 체크 및 린트
 
 ```bash
-pnpm --filter @repo/web check-types
-pnpm --filter @repo/web check
+pnpm --filter @bookmark/web check-types
+pnpm --filter @bookmark/web check
 ```
 
 Expected: 에러 없음 (react-router import 참조가 모두 제거되었는지 확인)
@@ -162,6 +164,7 @@ git commit -m "refactor(web): remove react-router, render HomePage directly"
 ## Task 3: LoginPage, AuthCallbackPage 삭제
 
 **Files:**
+
 - Delete: `apps/web/src/pages/login/ui/LoginPage.tsx`
 - Delete: `apps/web/src/pages/login/ui/AuthCallbackPage.tsx`
 
@@ -181,7 +184,7 @@ rmdir apps/web/src/pages/login/ui apps/web/src/pages/login 2>/dev/null || true
 ### Step 2: 타입 체크
 
 ```bash
-pnpm --filter @repo/web check-types
+pnpm --filter @bookmark/web check-types
 ```
 
 Expected: 에러 없음
@@ -198,6 +201,7 @@ git commit -m "refactor(web): remove LoginPage and AuthCallbackPage (replaced by
 ## Task 4: useLaunchWebAuthFlow 훅 생성
 
 **Files:**
+
 - Create: `apps/web/src/features/auth/model/useLaunchWebAuthFlow.ts`
 - Create: `apps/web/src/features/auth/model/useLaunchWebAuthFlow.test.ts`
 
@@ -231,7 +235,7 @@ vi.mock('@/shared/lib/storage', () => ({
   migrateLocalToApi: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock('@repo/api-client', () => ({
+vi.mock('@bookmark/api-client', () => ({
   ApiAdapter: vi.fn(),
   setAuthToken: vi.fn(),
 }));
@@ -307,7 +311,7 @@ describe('useLaunchWebAuthFlow', () => {
 ### Step 2: 테스트 실행 (실패 확인)
 
 ```bash
-pnpm --filter @repo/web test
+pnpm --filter @bookmark/web test
 ```
 
 Expected: `useLaunchWebAuthFlow` 파일이 없어 FAIL
@@ -317,7 +321,7 @@ Expected: `useLaunchWebAuthFlow` 파일이 없어 FAIL
 `apps/web/src/features/auth/model/useLaunchWebAuthFlow.ts`:
 
 ```ts
-import { ApiAdapter, setAuthToken } from '@repo/api-client';
+import { ApiAdapter, setAuthToken } from '@bookmark/api-client';
 import { useState } from 'react';
 import { migrateLocalToApi, useStorageContext } from '@/shared/lib/storage';
 
@@ -325,73 +329,73 @@ const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID ?? '';
 
 export function useLaunchWebAuthFlow() {
-	const { switchToApi } = useStorageContext();
-	const [isPending, setIsPending] = useState(false);
-	const [error, setError] = useState<string | null>(null);
+ const { switchToApi } = useStorageContext();
+ const [isPending, setIsPending] = useState(false);
+ const [error, setError] = useState<string | null>(null);
 
-	async function launch() {
-		setIsPending(true);
-		setError(null);
+ async function launch() {
+  setIsPending(true);
+  setError(null);
 
-		try {
-			const redirectUri = chrome.identity.getRedirectURL();
-			const oauthUrl =
-				'https://accounts.google.com/o/oauth2/v2/auth?' +
-				`client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}` +
-				`&redirect_uri=${encodeURIComponent(redirectUri)}` +
-				'&response_type=code' +
-				`&scope=${encodeURIComponent('email profile')}` +
-				'&access_type=offline' +
-				'&prompt=consent';
+  try {
+   const redirectUri = chrome.identity.getRedirectURL();
+   const oauthUrl =
+    'https://accounts.google.com/o/oauth2/v2/auth?' +
+    `client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}` +
+    `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+    '&response_type=code' +
+    `&scope=${encodeURIComponent('email profile')}` +
+    '&access_type=offline' +
+    '&prompt=consent';
 
-			const responseUrl = await new Promise<string>((resolve, reject) => {
-				chrome.identity.launchWebAuthFlow({ url: oauthUrl, interactive: true }, (url) => {
-					if (chrome.runtime.lastError) {
-						reject(new Error(chrome.runtime.lastError.message));
-					} else if (!url) {
-						reject(new Error('No response URL'));
-					} else {
-						resolve(url);
-					}
-				});
-			});
+   const responseUrl = await new Promise<string>((resolve, reject) => {
+    chrome.identity.launchWebAuthFlow({ url: oauthUrl, interactive: true }, (url) => {
+     if (chrome.runtime.lastError) {
+      reject(new Error(chrome.runtime.lastError.message));
+     } else if (!url) {
+      reject(new Error('No response URL'));
+     } else {
+      resolve(url);
+     }
+    });
+   });
 
-			const code = new URL(responseUrl).searchParams.get('code');
-			if (!code) throw new Error('No auth code in response');
+   const code = new URL(responseUrl).searchParams.get('code');
+   if (!code) throw new Error('No auth code in response');
 
-			const res = await fetch(`${API_URL}/auth/google/exchange`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ code, redirectUri }),
-			});
+   const res = await fetch(`${API_URL}/auth/google/exchange`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ code, redirectUri }),
+   });
 
-			if (!res.ok) throw new Error('Token exchange failed');
+   if (!res.ok) throw new Error('Token exchange failed');
 
-			const { token } = (await res.json()) as { token: string };
-			localStorage.setItem('auth_token', token);
-			setAuthToken(token);
+   const { token } = (await res.json()) as { token: string };
+   localStorage.setItem('auth_token', token);
+   setAuthToken(token);
 
-			const apiAdapter = new ApiAdapter();
-			await migrateLocalToApi(apiAdapter).catch(() => {
-				// migration failure is non-fatal
-			});
+   const apiAdapter = new ApiAdapter();
+   await migrateLocalToApi(apiAdapter).catch(() => {
+    // migration failure is non-fatal
+   });
 
-			switchToApi();
-		} catch (e) {
-			setError(e instanceof Error ? e.message : '로그인에 실패했습니다');
-		} finally {
-			setIsPending(false);
-		}
-	}
+   switchToApi();
+  } catch (e) {
+   setError(e instanceof Error ? e.message : '로그인에 실패했습니다');
+  } finally {
+   setIsPending(false);
+  }
+ }
 
-	return { launch, isPending, error };
+ return { launch, isPending, error };
 }
 ```
 
 ### Step 4: 테스트 실행 (통과 확인)
 
 ```bash
-pnpm --filter @repo/web test
+pnpm --filter @bookmark/web test
 ```
 
 Expected: 3개 테스트 모두 PASS
@@ -399,8 +403,8 @@ Expected: 3개 테스트 모두 PASS
 ### Step 5: 타입 체크 및 린트
 
 ```bash
-pnpm --filter @repo/web check-types
-pnpm --filter @repo/web check
+pnpm --filter @bookmark/web check-types
+pnpm --filter @bookmark/web check
 ```
 
 ### Step 6: 커밋
@@ -415,81 +419,82 @@ git commit -m "feat(web): add useLaunchWebAuthFlow hook for chrome.identity OAut
 ## Task 5: LoginDialog 생성
 
 **Files:**
+
 - Create: `apps/web/src/features/auth/ui/LoginDialog.tsx`
 
 ### Step 1: LoginDialog 구현
 
 ```tsx
-import { Button } from '@repo/ui/components/button';
+import { Button } from '@bookmark/ui/components/button';
 import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-} from '@repo/ui/components/dialog';
+ Dialog,
+ DialogContent,
+ DialogDescription,
+ DialogHeader,
+ DialogTitle,
+} from '@bookmark/ui/components/dialog';
 import { useLaunchWebAuthFlow } from '../model/useLaunchWebAuthFlow';
 
 interface LoginDialogProps {
-	open: boolean;
-	onOpenChange: (open: boolean) => void;
+ open: boolean;
+ onOpenChange: (open: boolean) => void;
 }
 
 export function LoginDialog({ open, onOpenChange }: LoginDialogProps) {
-	const { launch, isPending, error } = useLaunchWebAuthFlow();
+ const { launch, isPending, error } = useLaunchWebAuthFlow();
 
-	async function handleLogin() {
-		await launch();
-		if (!error) onOpenChange(false);
-	}
+ async function handleLogin() {
+  await launch();
+  if (!error) onOpenChange(false);
+ }
 
-	return (
-		<Dialog onOpenChange={onOpenChange} open={open}>
-			<DialogContent className='sm:max-w-sm'>
-				<DialogHeader>
-					<DialogTitle>클라우드 동기화</DialogTitle>
-					<DialogDescription>
-						Google 계정으로 로그인하면 북마크를 여러 기기에서 동기화할 수 있습니다.
-					</DialogDescription>
-				</DialogHeader>
-				<div className='flex flex-col gap-3 pt-2'>
-					{error && <p className='text-sm text-destructive'>{error}</p>}
-					<Button className='w-full gap-2' disabled={isPending} onClick={handleLogin}>
-						<svg aria-hidden='true' className='h-4 w-4' viewBox='0 0 24 24'>
-							<path
-								d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'
-								fill='currentColor'
-							/>
-							<path
-								d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z'
-								fill='currentColor'
-							/>
-							<path
-								d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z'
-								fill='currentColor'
-							/>
-							<path
-								d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z'
-								fill='currentColor'
-							/>
-						</svg>
-						{isPending ? '로그인 중...' : 'Google로 로그인'}
-					</Button>
-					<p className='text-center text-xs text-muted-foreground'>
-						로컬 데이터는 자동으로 이전됩니다
-					</p>
-				</div>
-			</DialogContent>
-		</Dialog>
-	);
+ return (
+  <Dialog onOpenChange={onOpenChange} open={open}>
+   <DialogContent className='sm:max-w-sm'>
+    <DialogHeader>
+     <DialogTitle>클라우드 동기화</DialogTitle>
+     <DialogDescription>
+      Google 계정으로 로그인하면 북마크를 여러 기기에서 동기화할 수 있습니다.
+     </DialogDescription>
+    </DialogHeader>
+    <div className='flex flex-col gap-3 pt-2'>
+     {error && <p className='text-sm text-destructive'>{error}</p>}
+     <Button className='w-full gap-2' disabled={isPending} onClick={handleLogin}>
+      <svg aria-hidden='true' className='h-4 w-4' viewBox='0 0 24 24'>
+       <path
+        d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'
+        fill='currentColor'
+       />
+       <path
+        d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z'
+        fill='currentColor'
+       />
+       <path
+        d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z'
+        fill='currentColor'
+       />
+       <path
+        d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z'
+        fill='currentColor'
+       />
+      </svg>
+      {isPending ? '로그인 중...' : 'Google로 로그인'}
+     </Button>
+     <p className='text-center text-xs text-muted-foreground'>
+      로컬 데이터는 자동으로 이전됩니다
+     </p>
+    </div>
+   </DialogContent>
+  </Dialog>
+ );
 }
 ```
 
 ### Step 2: 타입 체크 및 린트
 
 ```bash
-pnpm --filter @repo/web check-types
-pnpm --filter @repo/web check
+pnpm --filter @bookmark/web check-types
+pnpm --filter @bookmark/web check
 ```
 
 Expected: 에러 없음
@@ -506,6 +511,7 @@ git commit -m "feat(web): add LoginDialog replacing LoginPage"
 ## Task 6: HomePage 업데이트
 
 **Files:**
+
 - Modify: `apps/web/src/pages/home/ui/HomePage.tsx`
 
 ### Step 1: 다음 변경사항 적용
@@ -518,9 +524,9 @@ git commit -m "feat(web): add LoginDialog replacing LoginPage"
 변경 후 import 섹션:
 
 ```tsx
-import type { Bookmark } from '@repo/types';
-import { Button } from '@repo/ui/components/button';
-import { Input } from '@repo/ui/components/input';
+import type { Bookmark } from '@bookmark/types';
+import { Button } from '@bookmark/ui/components/button';
+import { Input } from '@bookmark/ui/components/input';
 import { useState } from 'react';
 import { LoginDialog } from '@/features/auth/ui/LoginDialog';
 import { BookmarkCreateDialog } from '@/features/bookmark-create/ui/BookmarkCreateDialog';
@@ -565,8 +571,8 @@ const [loginOpen, setLoginOpen] = useState(false);
 ### Step 2: 타입 체크 및 린트
 
 ```bash
-pnpm --filter @repo/web check-types
-pnpm --filter @repo/web check
+pnpm --filter @bookmark/web check-types
+pnpm --filter @bookmark/web check
 ```
 
 Expected: 에러 없음
@@ -583,6 +589,7 @@ git commit -m "feat(web): integrate LoginDialog into HomePage, remove sync link"
 ## Task 7: 환경 변수 설정
 
 **Files:**
+
 - Create: `apps/web/.env.example`
 - Create: `apps/api/.env.example` (있으면 업데이트)
 
@@ -635,8 +642,9 @@ pnpm build
 ```
 
 Expected:
-- `@repo/web#build:ext` 먼저 완료
-- `@repo/extension#build` 완료 + `[copy-newtab] web 빌드 결과물을 dist/newtab/ 에 복사 완료` 출력
+
+- `@bookmark/web#build:ext` 먼저 완료
+- `@bookmark/extension#build` 완료 + `[copy-newtab] web 빌드 결과물을 dist/newtab/ 에 복사 완료` 출력
 
 ### Step 3: 빌드 결과 구조 확인
 

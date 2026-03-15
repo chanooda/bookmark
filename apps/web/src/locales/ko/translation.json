@@ -1,0 +1,179 @@
+{
+	"settings": {
+		"title": "설정",
+		"description": "앱 설정 및 데이터 관리",
+		"sections": {
+			"viewMode": {
+				"label": "보기 설정",
+				"description": "북마크 목록을 표시하는 레이아웃을 선택합니다."
+			},
+			"theme": {
+				"label": "테마",
+				"description": "앱의 색상 테마를 선택합니다."
+			},
+			"realtimeSync": {
+				"label": "동기화",
+				"description": "Chrome 북마크와의 실시간 동기화 방향을 설정합니다."
+			},
+			"chromeImport": {
+				"label": "Chrome 가져오기",
+				"description": "Chrome 브라우저의 북마크를 앱으로 가져옵니다."
+			},
+			"language": {
+				"label": "언어",
+				"description": "앱의 표시 언어를 선택합니다."
+			}
+		}
+	},
+	"theme": {
+		"label": "테마",
+		"light": "라이트",
+		"dark": "다크",
+		"system": "시스템",
+		"switchToLight": "라이트 모드로 전환",
+		"switchToDark": "다크 모드로 전환"
+	},
+	"viewMode": {
+		"label": "뷰 모드",
+		"glass": "글래스",
+		"grid": "그리드",
+		"list": "목록"
+	},
+	"sync": {
+		"label": "실시간 동기화",
+		"save": "저장",
+		"warning": "⚠ 동기화 설정에 따라 크롬 북마크가 삭제될 수 있습니다. 사전에 크롬 북마크를 내보내기({{path}})하는 것을 권장합니다.",
+		"warningPath": "Chrome 설정 → 북마크 및 목록 → 북마크 내보내기",
+		"options": {
+			"off": {
+				"label": "동기화 안 함",
+				"description": "Chrome 북마크와 앱 간 자동 동기화를 사용하지 않습니다.",
+				"warning": ""
+			},
+			"chromeToWeb": {
+				"label": "Chrome → Web",
+				"description": "Chrome 북마크 변경 시 앱에 자동 반영됩니다.",
+				"warning": "⚠ Chrome에서 북마크 삭제 시 앱에서도 영구 삭제됩니다."
+			},
+			"webToChrome": {
+				"label": "Web → Chrome",
+				"description": "앱에서 북마크 변경 시 Chrome 북마크에 자동 반영됩니다.",
+				"warning": "⚠ 앱에서 북마크 삭제 시 Chrome에서도 영구 삭제됩니다."
+			},
+			"bidirectional": {
+				"label": "양방향",
+				"description": "앱과 Chrome 북마크가 양방향으로 자동 동기화됩니다.",
+				"warning": "⚠ 어느 쪽에서 삭제해도 양쪽에서 영구 삭제됩니다."
+			}
+		}
+	},
+	"chromeImport": {
+		"title": "Chrome 북마크 가져오기",
+		"description": "현재 Chrome 브라우저의 북마크를 앱으로 가져옵니다. 이미 있는 URL은 건너뜁니다.",
+		"progress": "{{current}} / {{total}} 처리 중...",
+		"done": "완료 — {{total}}개 중 {{current}}개 처리됨",
+		"error": "오류: {{message}}",
+		"unknownError": "알 수 없는 오류",
+		"importing": "가져오는 중... ({{percent}}%)",
+		"reimport": "다시 가져오기",
+		"import": "Chrome 북마크 가져오기"
+	},
+	"language": {
+		"label": "언어",
+		"languages": {
+			"en": "English",
+			"ko": "한국어",
+			"zh": "中文",
+			"ja": "日本語"
+		}
+	},
+	"bookmark": {
+		"add": "북마크 추가",
+		"edit": "북마크 수정",
+		"adding": "추가 중...",
+		"editing": "수정 중...",
+		"url": "URL",
+		"title": "제목",
+		"titlePlaceholder": "제목",
+		"description": "설명",
+		"descriptionPlaceholder": "설명 (선택)",
+		"folder": "폴더",
+		"tag": "태그",
+		"syncError": "Chrome 북마크 동기화에 실패했습니다."
+	},
+	"tag": {
+		"add": "태그 추가",
+		"edit": "태그 편집",
+		"name": "이름",
+		"namePlaceholder": "태그 이름",
+		"color": "색상",
+		"customColor": "직접 입력",
+		"preview": "미리보기",
+		"adding": "추가 중...",
+		"saving": "저장 중...",
+		"delete": "삭제"
+	},
+	"folder": {
+		"new": "새 폴더",
+		"rename": "폴더 이름 변경",
+		"name": "이름",
+		"namePlaceholder": "폴더 이름",
+		"createInside": "안에 생성됩니다",
+		"adding": "추가 중...",
+		"saving": "저장 중...",
+		"addChild": "하위 폴더 추가",
+		"rename_action": "이름 변경",
+		"delete": "삭제",
+		"deleteConfirm": "폴더를 삭제하시겠습니까? 하위 폴더와 북마크도 함께 삭제됩니다.",
+		"syncError": "Chrome 폴더 동기화에 실패했습니다.",
+		"deleteError": "폴더 삭제에 실패했습니다.",
+		"saveEnter": "저장 (Enter)",
+		"cancelEsc": "취소 (Esc)",
+		"collapse": "접기",
+		"expand": "펼치기"
+	},
+	"sidebar": {
+		"folders": "폴더",
+		"addFolder": "폴더 추가",
+		"tags": "태그",
+		"addTag": "태그 추가",
+		"all": "전체",
+		"editTag": "편집"
+	},
+	"header": {
+		"addBookmark": "북마크 추가",
+		"settings": "설정"
+	},
+	"bookmarkList": {
+		"loadError": "북마크를 불러오는 중 오류가 발생했습니다",
+		"unknownError": "알 수 없는 오류",
+		"empty": "북마크가 없습니다",
+		"reorderSyncError": "Chrome 북마크 순서 동기화에 실패했습니다.",
+		"reorderError": "북마크 순서 변경에 실패했습니다."
+	},
+	"filterBar": {
+		"folders": "폴더",
+		"tags": "태그",
+		"all": "전체",
+		"addFolder": "폴더 추가",
+		"addTag": "태그 추가"
+	},
+	"search": {
+		"bookmarkLabel": "북마크",
+		"bookmarkPlaceholder": "저장한 북마크 검색...",
+		"bookmarkAriaLabel": "북마크 검색",
+		"clearAriaLabel": "검색어 지우기",
+		"googleAriaLabel": "Google 검색 또는 URL 입력",
+		"googlePlaceholder": "검색어 또는 URL 입력...",
+		"googleHomeAriaLabel": "Google 홈으로 이동",
+		"googleHomeTitle": "google.com으로 이동",
+		"searchButton": "검색",
+		"go": "이동"
+	},
+	"common": {
+		"cancel": "취소",
+		"save": "저장",
+		"add": "추가",
+		"edit": "수정"
+	}
+}

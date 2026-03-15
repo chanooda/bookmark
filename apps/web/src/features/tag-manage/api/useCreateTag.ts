@@ -1,4 +1,4 @@
-import type { CreateTagDto } from '@repo/types';
+import type { CreateTagDto } from '@bookmark/types';
 import { useMutation } from '@tanstack/react-query';
 import { useStorageAdapter } from '@/shared/lib/storage';
 

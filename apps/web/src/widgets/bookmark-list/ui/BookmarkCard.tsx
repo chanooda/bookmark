@@ -1,4 +1,4 @@
-import type { Bookmark } from '@repo/types';
+import type { Bookmark } from '@bookmark/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { bookmarkKeys, useDeleteBookmark } from '@/entities/bookmark';
