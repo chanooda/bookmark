@@ -255,11 +255,36 @@ Chromeで追加したブックマークが自動的にmark.に反映されます
 
 ---
 
+## Single Purpose & Permission Justifications
+
+### Single Purpose
+
+mark. serves a single purpose: **replacing the Chrome new tab page with a personal bookmark manager** that lets users organize, search, and sync their bookmarks using tags and folders.
+
+### Permission Justifications
+
+#### `storage`
+
+mark. uses `chrome.storage.local` to persist all user data — bookmarks, tags, folders, sync mappings, and UI settings (view mode, language, theme) — entirely on the user's device. No data is ever sent to external servers.
+
+#### `bookmarks`
+
+mark. uses the `chrome.bookmarks` API to provide two-way sync between the app and Chrome's native bookmarks. Specifically:
+
+- **Read** (`getTree`, `getSubTree`): imports existing Chrome bookmarks into mark. on first use or manual import.
+- **Write** (`create`, `update`, `move`, `remove`, `removeTree`): reflects changes made in mark. back to Chrome's bookmark bar.
+- **Real-time listeners** (`onCreated`, `onRemoved`, `onChanged`): keeps mark. in sync when bookmarks are added or removed directly in Chrome.
+
+#### `identity`
+
+mark. uses `chrome.identity` to support optional Google account sign-in via OAuth 2.0 for future cloud sync functionality. `getRedirectURL()` provides the correct OAuth callback URL for the extension context, and `launchWebAuthFlow()` opens the secure Google sign-in dialog.
+
+---
+
 ## 권한 정당성 설명 (심사 시 필요할 수 있음)
 
 | 권한 | 이유 |
 |------|------|
 | `storage` | 북마크·태그·폴더 데이터를 Chrome 로컬 스토리지에 저장 |
 | `bookmarks` | 크롬 기본 북마크와 양방향 동기화 |
-| `tabs` | 팝업에서 현재 탭 URL/제목을 자동으로 북마크 폼에 채우기 |
-| `activeTab` | 현재 활성 탭 정보 읽기 (팝업 사용 시) |
+| `identity` | Google OAuth 로그인 (클라우드 동기화용) |
