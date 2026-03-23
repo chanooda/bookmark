@@ -1,4 +1,5 @@
 import type { Bookmark, Folder } from '@bookmark/types';
+import { Check, Folder as FolderIcon, MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { stripProtocol } from '@/shared/lib/url';
 import { FaviconImg } from '@/shared/ui';
@@ -90,11 +91,7 @@ export function GlassFolderCard({
 						title='폴더 관리'
 						type='button'
 					>
-						<svg aria-hidden='true' className='h-3.5 w-3.5' fill='currentColor' viewBox='0 0 24 24'>
-							<circle cx='12' cy='5' r='1.5' />
-							<circle cx='12' cy='12' r='1.5' />
-							<circle cx='12' cy='19' r='1.5' />
-						</svg>
+						<MoreVertical aria-hidden='true' className='h-3.5 w-3.5' fill='currentColor' />
 					</button>
 
 					{/* Dropdown */}
@@ -118,20 +115,7 @@ export function GlassFolderCard({
 								}}
 								type='button'
 							>
-								<svg
-									aria-hidden='true'
-									className='h-3.5 w-3.5 shrink-0'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path
-										d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-									/>
-								</svg>
+								<Pencil aria-hidden='true' className='h-3.5 w-3.5 shrink-0' />
 								이름 변경
 							</button>
 							<div className='mx-3 my-1 h-px bg-white/8' />
@@ -144,20 +128,7 @@ export function GlassFolderCard({
 								}}
 								type='button'
 							>
-								<svg
-									aria-hidden='true'
-									className='h-3.5 w-3.5 shrink-0'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path
-										d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-									/>
-								</svg>
+								<Trash2 aria-hidden='true' className='h-3.5 w-3.5 shrink-0' />
 								폴더 삭제
 							</button>
 						</div>
@@ -206,14 +177,12 @@ export function GlassFolderCard({
 							{displaySubfolders.map((sf) => (
 								<div className='flex min-w-0 items-center gap-2' key={sf.id}>
 									<div className='flex h-6 w-6 shrink-0 items-center justify-center rounded-[7px]'>
-										<svg
+										<FolderIcon
 											aria-hidden='true'
 											className='size-6 text-blue-200/80'
 											fill='currentColor'
-											viewBox='0 0 24 24'
-										>
-											<path d='M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z' />
-										</svg>
+											strokeWidth={0}
+										/>
 									</div>
 									<span className='min-w-0 flex-1 truncate text-left text-[12px] font-semibold leading-tight text-white/80'>
 										{sf.name}
@@ -287,20 +256,7 @@ export function GlassFolderCard({
 						title='저장'
 						type='submit'
 					>
-						<svg
-							aria-hidden='true'
-							className='h-2.5 w-2.5'
-							fill='none'
-							stroke='currentColor'
-							viewBox='0 0 24 24'
-						>
-							<path
-								d='M5 13l4 4L19 7'
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								strokeWidth={2.5}
-							/>
-						</svg>
+						<Check aria-hidden='true' className='h-2.5 w-2.5' strokeWidth={2.5} />
 					</button>
 				</form>
 			)}

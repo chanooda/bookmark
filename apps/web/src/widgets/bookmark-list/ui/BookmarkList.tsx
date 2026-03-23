@@ -8,6 +8,7 @@ import {
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { AlertTriangle, Bookmark as BookmarkIcon } from 'lucide-react';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -45,20 +46,7 @@ function BookmarkListError({ error }: { error: unknown }) {
 	const { t } = useTranslation();
 	return (
 		<div className='flex h-48 flex-col items-center justify-center gap-2 rounded-xl border border-destructive/20 bg-destructive/5'>
-			<svg
-				aria-hidden='true'
-				className='h-6 w-6 text-destructive/60'
-				fill='none'
-				stroke='currentColor'
-				viewBox='0 0 24 24'
-			>
-				<path
-					d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
-					strokeLinecap='round'
-					strokeLinejoin='round'
-					strokeWidth={2}
-				/>
-			</svg>
+			<AlertTriangle aria-hidden='true' className='h-6 w-6 text-destructive/60' />
 			<p className='text-sm text-destructive/80'>{t('bookmarkList.loadError')}</p>
 			<p className='text-xs text-muted-foreground'>
 				{error instanceof Error ? error.message : t('bookmarkList.unknownError')}
@@ -72,14 +60,12 @@ function BookmarkListEmpty() {
 	return (
 		<div className='flex h-52 flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border/40'>
 			<div className='flex h-10 w-10 items-center justify-center rounded-full bg-muted/50'>
-				<svg
+				<BookmarkIcon
 					aria-hidden='true'
 					className='h-5 w-5 text-muted-foreground/40'
 					fill='currentColor'
-					viewBox='0 0 24 24'
-				>
-					<path d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z' />
-				</svg>
+					strokeWidth={0}
+				/>
 			</div>
 			<p className='text-sm text-muted-foreground/50'>{t('bookmarkList.empty')}</p>
 		</div>

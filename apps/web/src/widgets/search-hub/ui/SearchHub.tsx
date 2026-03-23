@@ -1,3 +1,4 @@
+import { ArrowRight, Bookmark, Search, X } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useBookmarkFilterStore } from '@/features/bookmark';
@@ -40,14 +41,12 @@ export function SearchHub() {
 				<div className='group/bm flex flex-1 items-center overflow-hidden rounded-xl border border-border/50 bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-200 focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/10'>
 					{/* Label badge */}
 					<div className='flex shrink-0 items-center gap-1.5 border-r border-border/40 px-3.5 py-3 transition-colors duration-200 group-focus-within/bm:border-primary/25'>
-						<svg
+						<Bookmark
 							aria-hidden='true'
 							className='h-3.5 w-3.5 shrink-0 text-primary/55 transition-colors duration-200 group-focus-within/bm:text-primary/85'
 							fill='currentColor'
-							viewBox='0 0 24 24'
-						>
-							<path d='M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z' />
-						</svg>
+							strokeWidth={0}
+						/>
 						<span className='font-label text-[9px] uppercase tracking-[0.13em] text-primary/50 transition-colors duration-200 group-focus-within/bm:text-primary/80'>
 							{t('search.bookmarkLabel')}
 						</span>
@@ -68,20 +67,7 @@ export function SearchHub() {
 							onClick={() => setSearch('')}
 							type='button'
 						>
-							<svg
-								aria-hidden='true'
-								className='h-3 w-3'
-								fill='none'
-								stroke='currentColor'
-								viewBox='0 0 24 24'
-							>
-								<path
-									d='M6 18L18 6M6 6l12 12'
-									strokeLinecap='round'
-									strokeLinejoin='round'
-									strokeWidth={2}
-								/>
-							</svg>
+							<X aria-hidden='true' className='h-3 w-3' />
 						</button>
 					)}
 				</div>
@@ -93,20 +79,10 @@ export function SearchHub() {
 				>
 					{/* Label badge */}
 					<div className='flex shrink-0 items-center gap-1.5 border-r border-border/40 px-3.5 py-3 transition-colors duration-200 group-focus-within/ws:border-primary/25'>
-						<svg
+						<Search
 							aria-hidden='true'
 							className='h-3.5 w-3.5 shrink-0 text-primary/55 transition-colors duration-200 group-focus-within/ws:text-primary/85'
-							fill='none'
-							stroke='currentColor'
-							viewBox='0 0 24 24'
-						>
-							<path
-								d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								strokeWidth={2}
-							/>
-						</svg>
+						/>
 						<span className='font-label text-[9px] uppercase tracking-[0.13em] text-primary/50 transition-colors duration-200 group-focus-within/ws:text-primary/80'>
 							{t('search.webLabel')}
 						</span>
@@ -125,20 +101,7 @@ export function SearchHub() {
 						title={t('search.searchButton')}
 						type='submit'
 					>
-						<svg
-							aria-hidden='true'
-							className='h-3.5 w-3.5'
-							fill='none'
-							stroke='currentColor'
-							viewBox='0 0 24 24'
-						>
-							<path
-								d='M14 5l7 7m0 0l-7 7m7-7H3'
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								strokeWidth={2}
-							/>
-						</svg>
+						<ArrowRight aria-hidden='true' className='h-3.5 w-3.5' />
 					</button>
 				</form>
 			</div>

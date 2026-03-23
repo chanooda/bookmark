@@ -7,6 +7,15 @@ import {
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import {
+	ChevronLeft,
+	ChevronRight,
+	Folder as FolderIcon,
+	Pencil,
+	Plus,
+	Trash2,
+	X,
+} from 'lucide-react';
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toast } from 'sonner';
@@ -93,20 +102,7 @@ function ModalBookmarkCard({ bookmark, onEdit, onDelete }: ModalBookmarkCardProp
 					title='수정'
 					type='button'
 				>
-					<svg
-						aria-hidden='true'
-						className='h-3.5 w-3.5'
-						fill='none'
-						stroke='currentColor'
-						viewBox='0 0 24 24'
-					>
-						<path
-							d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
-							strokeLinecap='round'
-							strokeLinejoin='round'
-							strokeWidth={2}
-						/>
-					</svg>
+					<Pencil aria-hidden='true' className='h-3.5 w-3.5' />
 				</button>
 				<button
 					className='flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground/50 transition-all duration-150 hover:bg-destructive/15 hover:text-destructive'
@@ -118,20 +114,7 @@ function ModalBookmarkCard({ bookmark, onEdit, onDelete }: ModalBookmarkCardProp
 					title='삭제'
 					type='button'
 				>
-					<svg
-						aria-hidden='true'
-						className='h-3.5 w-3.5'
-						fill='none'
-						stroke='currentColor'
-						viewBox='0 0 24 24'
-					>
-						<path
-							d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-							strokeLinecap='round'
-							strokeLinejoin='round'
-							strokeWidth={2}
-						/>
-					</svg>
+					<Trash2 aria-hidden='true' className='h-3.5 w-3.5' />
 				</button>
 			</div>
 		</a>
@@ -172,14 +155,10 @@ function FolderTreeNode({ node, currentFolderId, onNavigate, ancestorIds }: Fold
 					type='button'
 				>
 					{hasChildren && (
-						<svg
+						<ChevronRight
 							aria-hidden='true'
 							className={`h-3 w-3 transition-transform duration-150 ${expanded ? 'rotate-90' : ''}`}
-							fill='currentColor'
-							viewBox='0 0 24 24'
-						>
-							<path d='M9 18l6-6-6-6' strokeLinecap='round' strokeLinejoin='round' />
-						</svg>
+						/>
 					)}
 				</button>
 				<button
@@ -187,20 +166,11 @@ function FolderTreeNode({ node, currentFolderId, onNavigate, ancestorIds }: Fold
 					onClick={() => onNavigate(node.id)}
 					type='button'
 				>
-					<svg
+					<FolderIcon
 						aria-hidden='true'
 						className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-foreground' : 'text-muted-foreground/60'}`}
-						fill='none'
-						stroke='currentColor'
-						viewBox='0 0 24 24'
-					>
-						<path
-							d='M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z'
-							strokeLinecap='round'
-							strokeLinejoin='round'
-							strokeWidth={1.8}
-						/>
-					</svg>
+						strokeWidth={1.8}
+					/>
 					<span className='truncate'>{node.name}</span>
 				</button>
 			</div>
@@ -239,14 +209,12 @@ function ExplorerFolderItem({ folder, onNavigate, onEdit, onDelete }: ExplorerFo
 				onClick={onNavigate}
 				type='button'
 			>
-				<svg
+				<FolderIcon
 					aria-hidden='true'
 					className='h-10 w-10 text-blue-400/80'
 					fill='currentColor'
-					viewBox='0 0 24 24'
-				>
-					<path d='M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z' />
-				</svg>
+					strokeWidth={0}
+				/>
 				<span className='line-clamp-2 text-xs font-medium text-foreground/80'>{folder.name}</span>
 			</button>
 
@@ -261,20 +229,7 @@ function ExplorerFolderItem({ folder, onNavigate, onEdit, onDelete }: ExplorerFo
 					title='이름 변경'
 					type='button'
 				>
-					<svg
-						aria-hidden='true'
-						className='h-3 w-3'
-						fill='none'
-						stroke='currentColor'
-						viewBox='0 0 24 24'
-					>
-						<path
-							d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
-							strokeLinecap='round'
-							strokeLinejoin='round'
-							strokeWidth={2}
-						/>
-					</svg>
+					<Pencil aria-hidden='true' className='h-3 w-3' />
 				</button>
 				<button
 					className='flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground/50 hover:bg-destructive/15 hover:text-destructive'
@@ -285,20 +240,7 @@ function ExplorerFolderItem({ folder, onNavigate, onEdit, onDelete }: ExplorerFo
 					title='폴더 삭제'
 					type='button'
 				>
-					<svg
-						aria-hidden='true'
-						className='h-3 w-3'
-						fill='none'
-						stroke='currentColor'
-						viewBox='0 0 24 24'
-					>
-						<path
-							d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-							strokeLinecap='round'
-							strokeLinejoin='round'
-							strokeWidth={2}
-						/>
-					</svg>
+					<Trash2 aria-hidden='true' className='h-3 w-3' />
 				</button>
 			</div>
 		</div>
@@ -558,20 +500,7 @@ export function FileExplorerModal({
 								title='뒤로'
 								type='button'
 							>
-								<svg
-									aria-hidden='true'
-									className='h-4 w-4'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path
-										d='M15 19l-7-7 7-7'
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-									/>
-								</svg>
+								<ChevronLeft aria-hidden='true' className='h-4 w-4' />
 							</button>
 						)}
 
@@ -580,20 +509,10 @@ export function FileExplorerModal({
 							{breadcrumb.map((f, i) => (
 								<Fragment key={f.id}>
 									{i > 0 && (
-										<svg
+										<ChevronRight
 											aria-hidden='true'
 											className='h-3 w-3 shrink-0 text-muted-foreground/30'
-											fill='none'
-											stroke='currentColor'
-											viewBox='0 0 24 24'
-										>
-											<path
-												d='M9 18l6-6-6-6'
-												strokeLinecap='round'
-												strokeLinejoin='round'
-												strokeWidth={2}
-											/>
-										</svg>
+										/>
 									)}
 									<button
 										className={`shrink-0 truncate text-sm transition-colors ${
@@ -619,20 +538,7 @@ export function FileExplorerModal({
 									title='이름 변경'
 									type='button'
 								>
-									<svg
-										aria-hidden='true'
-										className='h-3.5 w-3.5'
-										fill='none'
-										stroke='currentColor'
-										viewBox='0 0 24 24'
-									>
-										<path
-											d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											strokeWidth={2}
-										/>
-									</svg>
+									<Pencil aria-hidden='true' className='h-3.5 w-3.5' />
 								</button>
 							)}
 							{currentFolder && (
@@ -642,20 +548,7 @@ export function FileExplorerModal({
 									title='폴더 삭제'
 									type='button'
 								>
-									<svg
-										aria-hidden='true'
-										className='h-3.5 w-3.5'
-										fill='none'
-										stroke='currentColor'
-										viewBox='0 0 24 24'
-									>
-										<path
-											d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											strokeWidth={2}
-										/>
-									</svg>
+									<Trash2 aria-hidden='true' className='h-3.5 w-3.5' />
 								</button>
 							)}
 
@@ -667,20 +560,7 @@ export function FileExplorerModal({
 								title='폴더 추가'
 								type='button'
 							>
-								<svg
-									aria-hidden='true'
-									className='h-3.5 w-3.5'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path
-										d='M12 4v16m8-8H4'
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2.5}
-									/>
-								</svg>
+								<Plus aria-hidden='true' className='h-3.5 w-3.5' strokeWidth={2.5} />
 								폴더
 							</button>
 
@@ -690,20 +570,7 @@ export function FileExplorerModal({
 								title='북마크 추가'
 								type='button'
 							>
-								<svg
-									aria-hidden='true'
-									className='h-3.5 w-3.5'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path
-										d='M12 4v16m8-8H4'
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2.5}
-									/>
-								</svg>
+								<Plus aria-hidden='true' className='h-3.5 w-3.5' strokeWidth={2.5} />
 								북마크
 							</button>
 
@@ -715,20 +582,7 @@ export function FileExplorerModal({
 								title='닫기'
 								type='button'
 							>
-								<svg
-									aria-hidden='true'
-									className='h-4 w-4'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path
-										d='M6 18L18 6M6 6l12 12'
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-									/>
-								</svg>
+								<X aria-hidden='true' className='h-4 w-4' />
 							</button>
 						</div>
 					</div>
@@ -799,20 +653,11 @@ export function FileExplorerModal({
 						{/* Empty state */}
 						{sortableFolders.length === 0 && sortableBookmarks.length === 0 && (
 							<div className='flex h-40 flex-col items-center justify-center gap-3'>
-								<svg
+								<FolderIcon
 									aria-hidden='true'
 									className='h-10 w-10 text-muted-foreground/20'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path
-										d='M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z'
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={1.5}
-									/>
-								</svg>
+									strokeWidth={1.5}
+								/>
 								<p className='text-sm text-muted-foreground/40'>비어 있습니다</p>
 							</div>
 						)}

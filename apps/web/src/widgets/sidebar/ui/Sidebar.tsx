@@ -1,5 +1,6 @@
 import type { Tag } from '@bookmark/types';
 import { cn } from '@bookmark/ui/lib/utils';
+import { Folder, Pencil, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useTags } from '@/entities/tag';
 import { useBookmarkFilterStore } from '@/features/bookmark';
@@ -27,15 +28,7 @@ function SidebarSectionHeader({
 				title={addTitle}
 				type='button'
 			>
-				<svg
-					aria-hidden='true'
-					className='h-3 w-3'
-					fill='none'
-					stroke='currentColor'
-					viewBox='0 0 24 24'
-				>
-					<path d='M12 4v16m8-8H4' strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} />
-				</svg>
+				<Plus aria-hidden='true' className='h-3 w-3' />
 			</button>
 		</div>
 	);
@@ -72,20 +65,7 @@ function TagRow({ tag, isSelected, onSelect, onEdit }: TagRowProps) {
 				title={t('sidebar.editTag')}
 				type='button'
 			>
-				<svg
-					aria-hidden='true'
-					className='h-3 w-3'
-					fill='none'
-					stroke='currentColor'
-					viewBox='0 0 24 24'
-				>
-					<path
-						d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
-						strokeLinecap='round'
-						strokeLinejoin='round'
-						strokeWidth={2}
-					/>
-				</svg>
+				<Pencil aria-hidden='true' className='h-3 w-3' />
 			</button>
 		</div>
 	);
@@ -117,20 +97,7 @@ function FolderSection({ selectedFolderId, onSelectAll, onAdd }: FolderSectionPr
 				onClick={onSelectAll}
 				type='button'
 			>
-				<svg
-					aria-hidden='true'
-					className='h-3.5 w-3.5 shrink-0'
-					fill='none'
-					stroke='currentColor'
-					viewBox='0 0 24 24'
-				>
-					<path
-						d='M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z'
-						strokeLinecap='round'
-						strokeLinejoin='round'
-						strokeWidth={1.75}
-					/>
-				</svg>
+				<Folder aria-hidden='true' className='h-3.5 w-3.5 shrink-0' strokeWidth={1.75} />
 				<span>{t('sidebar.all')}</span>
 			</button>
 			<FolderTree />

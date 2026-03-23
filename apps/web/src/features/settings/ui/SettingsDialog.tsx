@@ -5,6 +5,7 @@ import {
 	DialogTitle,
 } from '@bookmark/ui/components/dialog';
 import { cn } from '@bookmark/ui/lib/utils';
+import { Chrome, Languages, LayoutGrid, RefreshCw, Sun } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSettingStore } from '../model/settingStore';
@@ -15,65 +16,23 @@ function SectionIcon({ id, className }: { id: string; className?: string }) {
 	const cls = cn('h-[15px] w-[15px] shrink-0', className);
 
 	if (id === 'view-mode') {
-		return (
-			<svg aria-hidden='true' className={cls} fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-				<rect height='7' rx='1.5' strokeWidth='1.5' width='7' x='3' y='3' />
-				<rect height='7' rx='1.5' strokeWidth='1.5' width='7' x='14' y='3' />
-				<rect height='7' rx='1.5' strokeWidth='1.5' width='7' x='3' y='14' />
-				<rect height='7' rx='1.5' strokeWidth='1.5' width='7' x='14' y='14' />
-			</svg>
-		);
+		return <LayoutGrid aria-hidden='true' className={cls} strokeWidth={1.5} />;
 	}
 
 	if (id === 'theme') {
-		return (
-			<svg aria-hidden='true' className={cls} fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-				<circle cx='12' cy='12' r='4' strokeWidth='1.5' />
-				<path
-					d='M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42'
-					strokeLinecap='round'
-					strokeWidth='1.5'
-				/>
-			</svg>
-		);
+		return <Sun aria-hidden='true' className={cls} strokeWidth={1.5} />;
 	}
 
 	if (id === 'realtime-sync') {
-		return (
-			<svg aria-hidden='true' className={cls} fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-				<path
-					d='M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15'
-					strokeLinecap='round'
-					strokeLinejoin='round'
-					strokeWidth='1.5'
-				/>
-			</svg>
-		);
+		return <RefreshCw aria-hidden='true' className={cls} strokeWidth={1.5} />;
 	}
 
 	if (id === 'chrome-import') {
-		return (
-			<svg aria-hidden='true' className={cls} fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-				<circle cx='12' cy='12' r='10' strokeWidth='1.5' />
-				<circle cx='12' cy='12' r='4' strokeWidth='1.5' />
-				<line strokeWidth='1.5' x1='21.17' x2='12' y1='8' y2='8' />
-				<line strokeWidth='1.5' x1='3.95' x2='8.54' y1='6.06' y2='14' />
-				<line strokeWidth='1.5' x1='10.88' x2='15.46' y1='21.94' y2='14' />
-			</svg>
-		);
+		return <Chrome aria-hidden='true' className={cls} strokeWidth={1.5} />;
 	}
 
 	if (id === 'language') {
-		return (
-			<svg aria-hidden='true' className={cls} fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-				<path
-					d='M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129'
-					strokeLinecap='round'
-					strokeLinejoin='round'
-					strokeWidth='1.5'
-				/>
-			</svg>
-		);
+		return <Languages aria-hidden='true' className={cls} strokeWidth={1.5} />;
 	}
 
 	return null;

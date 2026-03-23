@@ -1,3 +1,4 @@
+import { AlignJustify, Grid2x2, LayoutGrid } from 'lucide-react';
 import type { ViewMode } from '@/entities/bookmark';
 
 interface ViewModeToggleProps {
@@ -13,60 +14,17 @@ const VIEW_MODE_BUTTONS: {
 	{
 		mode: 'glass',
 		title: '글래스 보기',
-		icon: (
-			<svg
-				aria-hidden='true'
-				className='size-4'
-				fill='none'
-				stroke='currentColor'
-				viewBox='0 0 24 24'
-			>
-				<rect height='9' rx='2' strokeWidth='1.5' width='9' x='2' y='2' />
-				<rect height='9' rx='2' strokeWidth='1.5' width='9' x='13' y='2' />
-				<rect height='9' rx='2' strokeWidth='1.5' width='9' x='2' y='13' />
-				<rect height='9' rx='2' strokeWidth='1.5' width='9' x='13' y='13' />
-			</svg>
-		),
+		icon: <LayoutGrid aria-hidden='true' className='size-4' strokeWidth={1.5} />,
 	},
 	{
 		mode: 'grid',
 		title: '그리드 보기',
-		icon: (
-			<svg
-				aria-hidden='true'
-				className='size-4'
-				fill='none'
-				stroke='currentColor'
-				viewBox='0 0 24 24'
-			>
-				<path
-					d='M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z'
-					strokeLinecap='round'
-					strokeLinejoin='round'
-					strokeWidth={2}
-				/>
-			</svg>
-		),
+		icon: <Grid2x2 aria-hidden='true' className='size-4' />,
 	},
 	{
 		mode: 'list',
 		title: '목록 보기',
-		icon: (
-			<svg
-				aria-hidden='true'
-				className='size-4'
-				fill='none'
-				stroke='currentColor'
-				viewBox='0 0 24 24'
-			>
-				<path
-					d='M4 6h16M4 12h16M4 18h16'
-					strokeLinecap='round'
-					strokeLinejoin='round'
-					strokeWidth={2}
-				/>
-			</svg>
-		),
+		icon: <AlignJustify aria-hidden='true' className='size-4' />,
 	},
 ];
 

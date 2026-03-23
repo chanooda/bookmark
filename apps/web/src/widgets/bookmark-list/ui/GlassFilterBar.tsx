@@ -1,3 +1,4 @@
+import { Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useFolders } from '@/entities/folder';
 import { useTags } from '@/entities/tag';
@@ -58,20 +59,7 @@ export function GlassFilterBar() {
 						title={t('filterBar.addFolder')}
 						type='button'
 					>
-						<svg
-							aria-hidden='true'
-							className='h-3 w-3'
-							fill='none'
-							stroke='currentColor'
-							viewBox='0 0 24 24'
-						>
-							<path
-								d='M12 4v16m8-8H4'
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								strokeWidth={2.5}
-							/>
-						</svg>
+						<Plus aria-hidden='true' className='h-3 w-3' strokeWidth={2.5} />
 					</button>
 				</div>
 			</div>
@@ -118,20 +106,7 @@ export function GlassFilterBar() {
 							title={t('filterBar.addTag')}
 							type='button'
 						>
-							<svg
-								aria-hidden='true'
-								className='h-3 w-3'
-								fill='none'
-								stroke='currentColor'
-								viewBox='0 0 24 24'
-							>
-								<path
-									d='M12 4v16m8-8H4'
-									strokeLinecap='round'
-									strokeLinejoin='round'
-									strokeWidth={2.5}
-								/>
-							</svg>
+							<Plus aria-hidden='true' className='h-3 w-3' strokeWidth={2.5} />
 						</button>
 					</div>
 				</div>
@@ -146,20 +121,7 @@ export function GlassFilterBar() {
 						onClick={() => setTagCreateOpen(true)}
 						type='button'
 					>
-						<svg
-							aria-hidden='true'
-							className='h-3 w-3'
-							fill='none'
-							stroke='currentColor'
-							viewBox='0 0 24 24'
-						>
-							<path
-								d='M12 4v16m8-8H4'
-								strokeLinecap='round'
-								strokeLinejoin='round'
-								strokeWidth={2.5}
-							/>
-						</svg>
+						<Plus aria-hidden='true' className='h-3 w-3' strokeWidth={2.5} />
 						{t('filterBar.addTag')}
 					</button>
 				</div>

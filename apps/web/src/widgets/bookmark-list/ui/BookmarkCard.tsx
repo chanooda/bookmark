@@ -1,5 +1,6 @@
 import type { Bookmark } from '@bookmark/types';
 import { useQueryClient } from '@tanstack/react-query';
+import { Pencil, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { bookmarkKeys, useDeleteBookmark } from '@/entities/bookmark';
 import { TagBadge } from '@/entities/tag';
@@ -70,20 +71,7 @@ function ActionButtons({ onEdit, onDelete }: { onEdit: () => void; onDelete: () 
 				}}
 				type='button'
 			>
-				<svg
-					aria-hidden='true'
-					className='h-3.5 w-3.5'
-					fill='none'
-					stroke='currentColor'
-					viewBox='0 0 24 24'
-				>
-					<path
-						d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
-						strokeLinecap='round'
-						strokeLinejoin='round'
-						strokeWidth={2}
-					/>
-				</svg>
+				<Pencil aria-hidden='true' className='h-3.5 w-3.5' />
 			</button>
 			<button
 				className='rounded-md p-1.5 text-muted-foreground/50 transition-colors hover:bg-destructive/15 hover:text-destructive'
@@ -94,20 +82,7 @@ function ActionButtons({ onEdit, onDelete }: { onEdit: () => void; onDelete: () 
 				}}
 				type='button'
 			>
-				<svg
-					aria-hidden='true'
-					className='h-3.5 w-3.5'
-					fill='none'
-					stroke='currentColor'
-					viewBox='0 0 24 24'
-				>
-					<path
-						d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-						strokeLinecap='round'
-						strokeLinejoin='round'
-						strokeWidth={2}
-					/>
-				</svg>
+				<Trash2 aria-hidden='true' className='h-3.5 w-3.5' />
 			</button>
 		</div>
 	);

@@ -1,4 +1,5 @@
 import { Button } from '@bookmark/ui/components/button';
+import { Search } from 'lucide-react';
 import { type FormEvent, useState } from 'react';
 
 function detectInputType(input: string): 'url' | 'search' {
@@ -32,20 +33,10 @@ export function GoogleSearchBar() {
 
 			<form className='relative flex w-full max-w-2xl items-center gap-2.5' onSubmit={handleSubmit}>
 				<div className='relative flex-1'>
-					<svg
+					<Search
 						aria-hidden='true'
 						className='pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-muted-foreground/50'
-						fill='none'
-						stroke='currentColor'
-						viewBox='0 0 24 24'
-					>
-						<path
-							d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
-							strokeLinecap='round'
-							strokeLinejoin='round'
-							strokeWidth={2}
-						/>
-					</svg>
+					/>
 					<input
 						className='h-12 w-full rounded-xl border border-border/60 bg-card/90 pl-12 pr-4 text-base text-foreground placeholder:text-muted-foreground/35 outline-none transition-all duration-200 focus:border-primary/40 focus:ring-2 focus:ring-primary/12 shadow-xl shadow-black/25'
 						onChange={(e) => setQuery(e.target.value)}
