@@ -10,43 +10,20 @@ function detectInputType(input: string): 'url' | 'search' {
 	return 'search';
 }
 
-function GoogleIcon() {
-	return (
-		<svg aria-hidden='true' className='h-3.5 w-3.5 shrink-0' viewBox='0 0 24 24'>
-			<path
-				d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'
-				fill='#4285F4'
-			/>
-			<path
-				d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z'
-				fill='#34A853'
-			/>
-			<path
-				d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z'
-				fill='#FBBC05'
-			/>
-			<path
-				d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z'
-				fill='#EA4335'
-			/>
-		</svg>
-	);
-}
-
 export function SearchHub() {
 	const { t } = useTranslation();
 	const { search, setSearch } = useBookmarkFilterStore();
-	const [googleQuery, setGoogleQuery] = useState('');
+	const [webQuery, setWebQuery] = useState('');
 
-	function handleGoogleSubmit(e: FormEvent<HTMLFormElement>) {
+	function handleWebSearch(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
-		const trimmed = googleQuery.trim();
+		const trimmed = webQuery.trim();
 		if (!trimmed) return;
 		if (detectInputType(trimmed) === 'url') {
 			const url = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
 			window.location.href = url;
 		} else {
-			window.location.href = `https://www.google.com/search?q=${encodeURIComponent(trimmed)}`;
+			chrome.search.query({ text: trimmed, disposition: 'CURRENT_TAB' });
 		}
 	}
 
@@ -109,34 +86,42 @@ export function SearchHub() {
 					)}
 				</div>
 
-				{/* ── Google Search ── */}
+				{/* ── Web Search ── */}
 				<form
-					className='group/gl flex flex-1 items-center overflow-hidden rounded-xl border border-border/50 bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-200 focus-within:border-blue-400/40 focus-within:ring-2 focus-within:ring-blue-400/10'
-					onSubmit={handleGoogleSubmit}
+					className='group/ws flex flex-1 items-center overflow-hidden rounded-xl border border-border/50 bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-200 focus-within:border-primary/40 focus-within:ring-2 focus-within:ring-primary/10'
+					onSubmit={handleWebSearch}
 				>
-					{/* Label badge — clickable link to google.com */}
-					<a
-						aria-label={t('search.googleHomeAriaLabel')}
-						className='flex shrink-0 items-center gap-1.5 border-r border-border/40 px-3.5 py-3 transition-all duration-200 group-focus-within/gl:border-blue-400/25 hover:bg-blue-500/5'
-						href='https://www.google.com'
-						title={t('search.googleHomeTitle')}
-					>
-						<GoogleIcon />
-						<span className='font-label text-[9px] uppercase tracking-[0.13em] text-blue-400/50 transition-colors duration-200 group-focus-within/gl:text-blue-400/85'>
-							Google
+					{/* Label badge */}
+					<div className='flex shrink-0 items-center gap-1.5 border-r border-border/40 px-3.5 py-3 transition-colors duration-200 group-focus-within/ws:border-primary/25'>
+						<svg
+							aria-hidden='true'
+							className='h-3.5 w-3.5 shrink-0 text-primary/55 transition-colors duration-200 group-focus-within/ws:text-primary/85'
+							fill='none'
+							stroke='currentColor'
+							viewBox='0 0 24 24'
+						>
+							<path
+								d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+								strokeLinecap='round'
+								strokeLinejoin='round'
+								strokeWidth={2}
+							/>
+						</svg>
+						<span className='font-label text-[9px] uppercase tracking-[0.13em] text-primary/50 transition-colors duration-200 group-focus-within/ws:text-primary/80'>
+							{t('search.webLabel')}
 						</span>
-					</a>
+					</div>
 					{/* Input */}
 					<input
-						aria-label={t('search.googleAriaLabel')}
+						aria-label={t('search.webAriaLabel')}
 						className='h-11 flex-1 bg-transparent px-3.5 text-sm text-foreground placeholder:text-muted-foreground/35 outline-none'
-						onChange={(e) => setGoogleQuery(e.target.value)}
-						placeholder={t('search.googlePlaceholder')}
-						value={googleQuery}
+						onChange={(e) => setWebQuery(e.target.value)}
+						placeholder={t('search.webPlaceholder')}
+						value={webQuery}
 					/>
 					{/* Submit button */}
 					<button
-						className='mr-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-muted-foreground/25 transition-all duration-200 hover:bg-blue-500/12 hover:text-blue-400 group-focus-within/gl:bg-blue-500/8 group-focus-within/gl:text-blue-400/70'
+						className='mr-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-muted-foreground/25 transition-all duration-200 hover:bg-primary/12 hover:text-primary group-focus-within/ws:bg-primary/8 group-focus-within/ws:text-primary/70'
 						title={t('search.searchButton')}
 						type='submit'
 					>

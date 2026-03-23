@@ -163,10 +163,9 @@
 		"bookmarkPlaceholder": "저장한 북마크 검색...",
 		"bookmarkAriaLabel": "북마크 검색",
 		"clearAriaLabel": "검색어 지우기",
-		"googleAriaLabel": "Google 검색 또는 URL 입력",
-		"googlePlaceholder": "검색어 또는 URL 입력...",
-		"googleHomeAriaLabel": "Google 홈으로 이동",
-		"googleHomeTitle": "google.com으로 이동",
+		"webLabel": "웹",
+		"webAriaLabel": "웹 검색 또는 URL 입력",
+		"webPlaceholder": "검색어 또는 URL 입력...",
 		"searchButton": "검색",
 		"go": "이동"
 	},

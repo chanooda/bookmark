@@ -163,10 +163,9 @@
 		"bookmarkPlaceholder": "搜索已保存的书签...",
 		"bookmarkAriaLabel": "搜索书签",
 		"clearAriaLabel": "清除搜索",
-		"googleAriaLabel": "Google 搜索或输入 URL",
-		"googlePlaceholder": "搜索或输入 URL...",
-		"googleHomeAriaLabel": "前往 Google 主页",
-		"googleHomeTitle": "前往 google.com",
+		"webLabel": "网页",
+		"webAriaLabel": "网页搜索或输入 URL",
+		"webPlaceholder": "搜索或输入 URL...",
 		"searchButton": "搜索",
 		"go": "前往"
 	},

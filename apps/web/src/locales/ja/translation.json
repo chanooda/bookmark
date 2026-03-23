@@ -163,10 +163,9 @@
 		"bookmarkPlaceholder": "保存したブックマークを検索...",
 		"bookmarkAriaLabel": "ブックマークを検索",
 		"clearAriaLabel": "検索をクリア",
-		"googleAriaLabel": "Google 検索または URL を入力",
-		"googlePlaceholder": "検索または URL を入力...",
-		"googleHomeAriaLabel": "Google ホームへ移動",
-		"googleHomeTitle": "google.com へ移動",
+		"webLabel": "ウェブ",
+		"webAriaLabel": "ウェブ検索または URL を入力",
+		"webPlaceholder": "検索または URL を入力...",
 		"searchButton": "検索",
 		"go": "移動"
 	},

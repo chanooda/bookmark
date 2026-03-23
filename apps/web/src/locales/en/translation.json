@@ -163,10 +163,9 @@
 		"bookmarkPlaceholder": "Search saved bookmarks...",
 		"bookmarkAriaLabel": "Search bookmarks",
 		"clearAriaLabel": "Clear search",
-		"googleAriaLabel": "Search Google or enter URL",
-		"googlePlaceholder": "Search or enter URL...",
-		"googleHomeAriaLabel": "Go to Google homepage",
-		"googleHomeTitle": "Go to google.com",
+		"webLabel": "Web",
+		"webAriaLabel": "Web search or enter URL",
+		"webPlaceholder": "Search or enter URL...",
 		"searchButton": "Search",
 		"go": "Go"
 	},

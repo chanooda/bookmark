@@ -21,7 +21,7 @@ export function GoogleSearchBar() {
 			const url = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
 			window.location.href = url;
 		} else {
-			window.location.href = `https://www.google.com/search?q=${encodeURIComponent(trimmed)}`;
+			chrome.search.query({ text: trimmed, disposition: 'CURRENT_TAB' });
 		}
 	}
 
@@ -49,7 +49,7 @@ export function GoogleSearchBar() {
 					<input
 						className='h-12 w-full rounded-xl border border-border/60 bg-card/90 pl-12 pr-4 text-base text-foreground placeholder:text-muted-foreground/35 outline-none transition-all duration-200 focus:border-primary/40 focus:ring-2 focus:ring-primary/12 shadow-xl shadow-black/25'
 						onChange={(e) => setQuery(e.target.value)}
-						placeholder='Google 검색 또는 URL 입력'
+						placeholder='검색 또는 URL 입력'
 						value={query}
 					/>
 				</div>
