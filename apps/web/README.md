@@ -279,6 +279,10 @@ mark. uses the `chrome.bookmarks` API to provide two-way sync between the app an
 
 mark. uses `chrome.identity` to support optional Google account sign-in via OAuth 2.0 for future cloud sync functionality. `getRedirectURL()` provides the correct OAuth callback URL for the extension context, and `launchWebAuthFlow()` opens the secure Google sign-in dialog.
 
+#### `search`
+
+mark. uses the `chrome.search` API to provide search functionality directly from the new tab page. When a user types a query, it is submitted to the browser's default search engine, ensuring a seamless experience without leaving the new tab interface.
+
 ---
 
 ## 권한 정당성 설명 (심사 시 필요할 수 있음)
@@ -288,3 +292,4 @@ mark. uses `chrome.identity` to support optional Google account sign-in via OAut
 | `storage` | 북마크·태그·폴더 데이터를 Chrome 로컬 스토리지에 저장 |
 | `bookmarks` | 크롬 기본 북마크와 양방향 동기화 |
 | `identity` | Google OAuth 로그인 (클라우드 동기화용) |
+| `search` | 새 탭 페이지에서 기본 검색 엔진으로 검색 실행 |
