@@ -1,3 +1,4 @@
+import { DragDropProvider } from '@dnd-kit/react';
 import { BookmarkCard } from './features/bookmark';
 import { TopGridLayout } from './features/views';
 
@@ -117,9 +118,10 @@ export default function App() {
 			<div className='relative z-10 h-dvh w-dvw overflow-hidden'>
 				<div className='z-20 h-full w-full overflow-auto p-6'>
 					<div className='mb-8 h-40 w-full bg-black' />
+
 					<TopGridLayout>
-						{[...bookmarks, ...bookmarks, ...bookmarks].map((e, idx) => (
-							<BookmarkCard data={e} key={idx} />
+						{[...bookmarks].map((e, idx) => (
+							<BookmarkCard data={e} index={idx} key={idx} />
 						))}
 					</TopGridLayout>
 				</div>

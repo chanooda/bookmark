@@ -1,4 +1,7 @@
+import { PointerSensor } from '@dnd-kit/react';
+import { useSortable } from '@dnd-kit/react/sortable';
 import { SquarePen, Trash2 } from 'lucide-react';
+import type { MouseEvent } from 'react';
 
 interface BookmarkCardProps {
 	data: {
@@ -12,21 +15,37 @@ interface BookmarkCardProps {
 			id: string;
 		}[];
 	};
+	index: number;
 }
 
-export const BookmarkCard = ({ data }: BookmarkCardProps) => {
+export const BookmarkCard = ({ data, index }: BookmarkCardProps) => {
+	const { ref, isDragging } = useSortable({
+		id: data.url,
+		index,
+		sensors: [PointerSensor.configure({ preventActivation: () => false })],
+	});
+
 	const { title, faviconUrl, tags, url, description } = data;
+
+	const handleClickDeleteButton = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		e.stopPropagation();
+		alert('delete');
+	};
+	const handleClickEditButton = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		e.stopPropagation();
+		alert('edit');
+	};
+
 	return (
-		<div className='@container h-full w-full'>
+		<div className='@container h-full w-full' ref={ref}>
 			<div className='group relative flex h-full min-h-[100cqw] w-full flex-col items-center gap-1.5'>
 				{/* Action buttons */}
 				<div className='absolute top-2 right-2 z-20 flex items-center gap-0.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100'>
 					<button
 						className='flex h-6 w-6 items-center justify-center rounded-md text-white/50 transition-all duration-150 hover:bg-white/20 hover:text-white'
-						onClick={(e) => {
-							e.preventDefault();
-							e.stopPropagation();
-						}}
+						onClick={handleClickEditButton}
 						title='수정'
 						type='button'
 					>
@@ -34,10 +53,7 @@ export const BookmarkCard = ({ data }: BookmarkCardProps) => {
 					</button>
 					<button
 						className='flex h-6 w-6 items-center justify-center rounded-md text-white/50 transition-all duration-150 hover:bg-red-500/20 hover:text-red-400'
-						onClick={(e) => {
-							e.preventDefault();
-							e.stopPropagation();
-						}}
+						onClick={handleClickDeleteButton}
 						title='삭제'
 						type='button'
 					>
@@ -46,9 +62,9 @@ export const BookmarkCard = ({ data }: BookmarkCardProps) => {
 				</div>
 
 				<a
-					className='relative flex h-full w-full flex-col rounded-[16px] p-2.5 transition-all duration-200 hover:scale-[1.04] active:scale-[0.96]'
-					href='https://naver.com'
-					rel='noopener noreferrer'
+					className='relative flex h-full w-full select-none flex-col rounded-[16px] p-2.5 text-start transition-all duration-200 hover:scale-[1.04] active:scale-[0.96]'
+					href={`https://${url}`}
+					rel='noopener referrer'
 					style={{
 						backdropFilter: 'blur(24px)',
 						WebkitBackdropFilter: 'blur(24px)',

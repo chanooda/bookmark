@@ -19,6 +19,7 @@
     "@base-ui/react": "^1.4.1",
     "@chanooda/libs": "latest",
     "@chanooda/libs-react": "latest",
+    "@dnd-kit/react": "^0.4.0",
     "@tanstack/react-query": "^5.100.5",
     "axios": "^1.15.2",
     "class-variance-authority": "^0.7.1",
