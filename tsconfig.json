@@ -1,12 +1,12 @@
 {
-  "extends": "@chanooda/typescript-config-frontend/react.json",
-  "compilerOptions": {
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "noEmit": true,
-    "types": ["vite/client"],
-  },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules", "dist"]
+	"extends": "@chanooda/typescript-config-frontend/react.json",
+	"compilerOptions": {
+		"paths": {
+			"@/*": ["./src/*"]
+		},
+		"noEmit": true,
+		"types": ["vite/client", "chrome"]
+	},
+	"include": ["src/**/*.ts", "src/**/*.tsx"],
+	"exclude": ["node_modules", "dist"]
 }

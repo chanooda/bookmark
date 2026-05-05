@@ -1,31 +1,21 @@
 import { PointerSensor } from '@dnd-kit/react';
 import { useSortable } from '@dnd-kit/react/sortable';
-import { SquarePen, Trash2 } from 'lucide-react';
+import { GlobeIcon, SquarePen, Trash2 } from 'lucide-react';
 import type { MouseEvent } from 'react';
+import type { Bookmark, Tag } from '@/entities/bookmark';
+import { extractFavicon } from '@/shared/libs/chrome';
 
 interface BookmarkCardProps {
-	data: {
-		title: string;
-		description?: string;
-		url: string;
-		faviconUrl: string;
-		tags: {
-			color: string;
-			name: string;
-			id: string;
-		}[];
-	};
+	bookmark: Bookmark;
 	index: number;
 }
 
-export const BookmarkCard = ({ data, index }: BookmarkCardProps) => {
-	const { ref, isDragging } = useSortable({
-		id: data.url,
+export const BookmarkCard = ({ bookmark, index }: BookmarkCardProps) => {
+	const { ref } = useSortable({
+		id: bookmark.id,
 		index,
 		sensors: [PointerSensor.configure({ preventActivation: () => false })],
 	});
-
-	const { title, faviconUrl, tags, url, description } = data;
 
 	const handleClickDeleteButton = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
@@ -37,6 +27,9 @@ export const BookmarkCard = ({ data, index }: BookmarkCardProps) => {
 		e.stopPropagation();
 		alert('edit');
 	};
+
+	const faviconUrl = extractFavicon(bookmark.url);
+	const tags: Tag[] = [];
 
 	return (
 		<div className='@container h-full w-full' ref={ref}>
@@ -63,7 +56,7 @@ export const BookmarkCard = ({ data, index }: BookmarkCardProps) => {
 
 				<a
 					className='relative flex h-full w-full select-none flex-col rounded-[16px] p-2.5 text-start transition-all duration-200 hover:scale-[1.04] active:scale-[0.96]'
-					href={`https://${url}`}
+					href={bookmark.url}
 					rel='noopener referrer'
 					style={{
 						backdropFilter: 'blur(24px)',
@@ -87,23 +80,22 @@ export const BookmarkCard = ({ data, index }: BookmarkCardProps) => {
 					{/* content */}
 					<div className='content relative z-10 flex h-full flex-col gap-2'>
 						<div className='flex w-full justify-start'>
-							<img
-								alt='test'
-								className='block aspect-square h-6 w-6'
-								src={faviconUrl}
-								// src='https://www.google.com/s2/favicons?domain=ui.shadcn.com&sz=64'
-							/>
+							{faviconUrl ? (
+								<img alt='test' className='block aspect-square h-6 w-6' src={faviconUrl} />
+							) : (
+								<GlobeIcon className='h-6 w-6 text-white' />
+							)}
 						</div>
 						{/* Title */}
 						<p className='line-clamp-2 shrink-0 font-semibold text-[13px] text-white/85 leading-snug'>
-							{title}
+							{bookmark.title}
 						</p>
 						{/* URL */}
 						<p className='shrink-0 truncate font-mono text-[11px] text-white/30 tracking-tight'>
-							{url}
+							{bookmark.url}
 						</p>
 						{/* Description */}
-						<p className='line-clamp-3 shrink-0 text-[12px] text-white/50'>{description}</p>
+						<p className='line-clamp-3 shrink-0 text-[12px] text-white/50'>{bookmark.title}</p>
 						<div className='flex flex-wrap gap-1'>
 							{tags.map((tag) => {
 								return (

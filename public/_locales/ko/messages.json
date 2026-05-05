@@ -1,0 +1,14 @@
+{
+	"appName": {
+		"message": "mark.",
+		"description": "앱 이름"
+	},
+	"appShortName": {
+		"message": "mark.",
+		"description": "앱 짧은 이름"
+	},
+	"appDescription": {
+		"message": "북마크를 쉽게 추가하고 관리하세요",
+		"description": "앱 설명"
+	}
+}
