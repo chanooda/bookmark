@@ -9,10 +9,10 @@ export default function App() {
 	});
 
 	return (
-		<main className='bg-black'>
+		<main className='bg-background'>
 			<div className='relative z-10 h-dvh w-dvw overflow-hidden'>
 				<div className='z-20 h-full w-full overflow-auto p-6'>
-					<div className='mb-8 h-40 w-full bg-black' />
+					<div className='mb-8 h-40 w-full bg-background' />
 					<TopGridLayout>
 						{data?.map((bookmark, idx) => {
 							if (!bookmark.children) {
