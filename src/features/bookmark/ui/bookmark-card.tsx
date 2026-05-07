@@ -1,8 +1,10 @@
 import { PointerSensor } from '@dnd-kit/react';
 import { useSortable } from '@dnd-kit/react/sortable';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GlobeIcon, SquarePen, Trash2 } from 'lucide-react';
-import type { MouseEvent } from 'react';
+import { type MouseEvent, useEffect } from 'react';
 import type { Bookmark, Tag } from '@/entities/bookmark';
+import { mutations, queries } from '@/shared/api';
 import { extractFavicon } from '@/shared/libs/chrome';
 
 interface BookmarkCardProps {
@@ -11,10 +13,21 @@ interface BookmarkCardProps {
 }
 
 export const BookmarkCard = ({ bookmark, index }: BookmarkCardProps) => {
-	const { ref } = useSortable({
+	const queryClient = useQueryClient();
+	const { ref, sortable } = useSortable({
 		id: bookmark.id,
-		index,
+		index: index,
+		group: 'root-bookmark',
 		sensors: [PointerSensor.configure({ preventActivation: () => false })],
+	});
+
+	const { mutate: move } = useMutation({
+		...mutations.bookmark.move(),
+		onSuccess() {
+			queryClient.invalidateQueries({
+				queryKey: queries.bookmarks.all.queryKey,
+			});
+		},
 	});
 
 	const handleClickDeleteButton = (e: MouseEvent<HTMLButtonElement>) => {
@@ -30,6 +43,15 @@ export const BookmarkCard = ({ bookmark, index }: BookmarkCardProps) => {
 
 	const faviconUrl = extractFavicon(bookmark.url);
 	const tags: Tag[] = [];
+
+	useEffect(() => {
+		console.log(bookmark.title, sortable.index);
+		move({
+			id: bookmark.id,
+			index: sortable.index,
+			parentId: bookmark.parentId,
+		});
+	}, [sortable.index]);
 
 	return (
 		<div className='@container h-full w-full' ref={ref}>

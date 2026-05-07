@@ -8,8 +8,6 @@ export default function App() {
 		...queries.bookmarks.all,
 	});
 
-	console.log(data);
-
 	return (
 		<main className='bg-black'>
 			<div className='relative z-10 h-dvh w-dvw overflow-hidden'>

@@ -1,7 +1,10 @@
 import { PointerSensor } from '@dnd-kit/react';
 import { useSortable } from '@dnd-kit/react/sortable';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FolderIcon, MoreVerticalIcon } from 'lucide-react';
+import { useEffect } from 'react';
 import type { Bookmark } from '@/entities/bookmark';
+import { mutations, queries } from '@/shared/api';
 import { extractFavicon } from '@/shared/libs/chrome';
 
 interface BookmarkCardProps {
@@ -10,11 +13,31 @@ interface BookmarkCardProps {
 }
 
 export const BookmarkFolderCard = ({ index, bookmark }: BookmarkCardProps) => {
-	const { ref, isDragging } = useSortable({
+	const queryClient = useQueryClient();
+	const { ref, sortable } = useSortable({
 		id: bookmark.id,
 		index,
+		group: 'root-bookmark',
 		sensors: [PointerSensor.configure({ preventActivation: () => false })],
 	});
+
+	const { mutate: move } = useMutation({
+		...mutations.bookmark.move(),
+		onSuccess() {
+			queryClient.invalidateQueries({
+				queryKey: queries.bookmarks.all.queryKey,
+			});
+		},
+	});
+
+	useEffect(() => {
+		console.log(bookmark.title, sortable.index);
+		move({
+			id: bookmark.id,
+			index: sortable.index,
+			parentId: bookmark.parentId,
+		});
+	}, [sortable.index]);
 
 	return (
 		<div className='@container h-full w-full' ref={ref}>
@@ -62,16 +85,25 @@ export const BookmarkFolderCard = ({ index, bookmark }: BookmarkCardProps) => {
 						<div className='my-2 h-px w-full bg-white/15' />
 						<ul className='flex w-full flex-col gap-3'>
 							{bookmark?.children?.slice(0, 6).map((bookmark) => {
-								return (
-									<li className='flex w-full gap-2 text-white/75 text-xs' key={bookmark.id}>
-										<img
-											alt={`${bookmark.title} favicon`}
-											className='h-4 w-4'
-											src={extractFavicon(bookmark.url) || ''}
-										/>
-										<p className='line-clamp-1'>{bookmark.title}</p>
-									</li>
-								);
+								if (!bookmark.children)
+									return (
+										<li className='flex w-full gap-2 text-white/75 text-xs' key={bookmark.id}>
+											<img
+												alt={`${bookmark.title} favicon`}
+												className='h-4 w-4'
+												src={extractFavicon(bookmark.url) || ''}
+											/>
+											<p className='line-clamp-1'>{bookmark.title}</p>
+										</li>
+									);
+								else {
+									return (
+										<li className='flex w-full gap-2 text-white/75 text-xs' key={bookmark.id}>
+											<FolderIcon className='size-4 text-blue-200/80' fill='currentColor' />
+											<p className='line-clamp-1'>{bookmark.title}</p>
+										</li>
+									);
+								}
 							})}
 						</ul>
 					</div>
