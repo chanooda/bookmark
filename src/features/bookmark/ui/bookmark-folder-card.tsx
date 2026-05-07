@@ -31,13 +31,14 @@ export const BookmarkFolderCard = ({ index, bookmark }: BookmarkCardProps) => {
 	});
 
 	useEffect(() => {
-		console.log(bookmark.title, sortable.index);
-		move({
-			id: bookmark.id,
-			index: sortable.index,
-			parentId: bookmark.parentId,
-		});
-	}, [sortable.index]);
+		if (sortable.isDropping) {
+			move({
+				id: bookmark.id,
+				index: sortable.index,
+				parentId: bookmark.parentId,
+			});
+		}
+	}, [sortable.isDropping]);
 
 	return (
 		<div className='@container h-full w-full' ref={ref}>
