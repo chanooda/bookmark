@@ -3,17 +3,15 @@ import { ChevronRight, FolderIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { Bookmark } from '@/entities/bookmark';
 import { queries } from '@/shared/api';
+import { useExplorerStore } from '../model/explorer.store';
 
-export const ExplorerLeftSideBar = ({ id }: { id: string }) => {
-	const [currentId, setCurrentId] = useState(id);
+export const ExplorerLeftSideBar = () => {
+	const currentId = useExplorerStore((s) => s.currentId);
+	const navigate = useExplorerStore((s) => s.navigate);
 
 	const { data: bookmarks } = useQuery({
 		...queries.bookmarks.all,
 	});
-
-	const navigateFolder = (id: string) => {
-		setCurrentId(id);
-	};
 
 	if (!bookmarks) return null;
 
@@ -24,20 +22,16 @@ export const ExplorerLeftSideBar = ({ id }: { id: string }) => {
 					폴더
 				</span>
 			</div>
-			{/* left sidebar - folder tree  */}
 			<div className='h-full flex-1 overflow-y-auto p-2'>
-				{bookmarks.map((bookmark) => {
-					return (
-						<ExplorerTreeNode
-							bookmark={bookmark}
-							currentId={currentId}
-							key={bookmark.id}
-							navigateFolder={navigateFolder}
-						/>
-					);
-				})}
+				{bookmarks.map((bookmark) => (
+					<ExplorerTreeNode
+						bookmark={bookmark}
+						currentId={currentId}
+						key={bookmark.id}
+						navigateFolder={navigate}
+					/>
+				))}
 			</div>
-			{/* section */}
 		</div>
 	);
 };
@@ -81,8 +75,7 @@ export const ExplorerTreeNode = ({
 					{hasFolderChildren && (
 						<ChevronRight
 							aria-hidden='true'
-							className={`h-3 w-3 transition-transform duration-150 ${expanded ? 'rotate-90' : ''}
-								`}
+							className={`h-3 w-3 transition-transform duration-150 ${expanded ? 'rotate-90' : ''}`}
 						/>
 					)}
 				</button>
