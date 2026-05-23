@@ -2,7 +2,7 @@ import { PointerSensor } from '@dnd-kit/react';
 import { useSortable } from '@dnd-kit/react/sortable';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GlobeIcon, SquarePen, Trash2 } from 'lucide-react';
-import { type MouseEvent, useEffect } from 'react';
+import { type MouseEvent, memo, useEffect } from 'react';
 import type { Bookmark, Tag } from '@/entities/bookmark';
 import { mutations, queries } from '@/shared/api';
 import { extractFavicon } from '@/shared/libs/chrome';
@@ -12,7 +12,7 @@ interface BookmarkCardProps {
 	index: number;
 }
 
-export const BookmarkCard = ({ bookmark, index }: BookmarkCardProps) => {
+const _BookmarkCard = ({ bookmark, index }: BookmarkCardProps) => {
 	const queryClient = useQueryClient();
 	const { ref, sortable } = useSortable({
 		id: bookmark.id,
@@ -142,3 +142,5 @@ export const BookmarkCard = ({ bookmark, index }: BookmarkCardProps) => {
 		</div>
 	);
 };
+
+export const BookmarkCard = memo(_BookmarkCard);

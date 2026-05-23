@@ -1,677 +1,152 @@
 import { createQueryKeys } from '@lukemorales/query-key-factory';
-import { assertChromeBookmarks, getChromeBookmarks } from '../libs/chrome';
+import { assertChromeBookmarks, getChromeBookmark, getChromeBookmarks } from '../libs/chrome';
 
+type BookmarkNode = chrome.bookmarks.BookmarkTreeNode;
+
+function findById(nodes: BookmarkNode[], id: string): BookmarkNode | null {
+	for (const node of nodes) {
+		if (node.id === id) return node;
+		if (node.children) {
+			const found = findById(node.children, id);
+			if (found) return found;
+		}
+	}
+	return null;
+}
+
+// depth 1: root level
+// depth 2: inside root folders
+// depth 3: inside depth-2 folders
+// depth 4: inside depth-3 folders (deepest)
 const mock = [
+	// --- 루트 레벨 북마크 ---
+	{ id: 'm001', parentId: '1', index: 0, title: 'Google', url: 'https://www.google.com/', dateAdded: 1550201855000, dateLastUsed: 1777172512467, syncing: true },
+	{ id: 'm002', parentId: '1', index: 1, title: 'GitHub', url: 'https://github.com/', dateAdded: 1775183942229, syncing: true },
+	{ id: 'm003', parentId: '1', index: 2, title: 'YouTube', url: 'https://www.youtube.com/', dateAdded: 1776577594530, syncing: true },
+
+	// --- depth 1: 개발 폴더 (depth 2~4 중첩 테스트) ---
 	{
-		dateAdded: 1550201855000,
-		dateLastUsed: 1777172512467,
-		id: '6',
-		index: 0,
-		parentId: '1',
-		syncing: true,
-		title: 'Google',
-		url: 'https://www.google.com/',
-	},
-	{
-		dateAdded: 1773143252262,
-		dateLastUsed: 1777955702908,
-		id: '203',
-		index: 1,
-		parentId: '1',
-		syncing: true,
-		title: 'NAVER',
-		url: 'https://www.naver.com/',
-	},
-	{
-		dateAdded: 1775183942229,
-		dateLastUsed: 1777818058947,
-		id: '227',
-		index: 2,
-		parentId: '1',
-		syncing: true,
-		title: 'GitHub',
-		url: 'https://github.com/',
-	},
-	{
-		dateAdded: 1776577594530,
-		dateLastUsed: 1777907038472,
-		id: '231',
-		index: 3,
-		parentId: '1',
-		syncing: true,
-		title: 'YouTube',
-		url: 'https://www.youtube.com/?hl=ko&gl=KR&app=desktop',
-	},
-	{
-		dateAdded: 1770641741017,
-		dateLastUsed: 1776779263091,
-		id: '122',
-		index: 4,
-		parentId: '1',
-		syncing: true,
-		title: 'Claude',
-		url: 'https://claude.ai/new',
-	},
-	{
+		id: 'm100', parentId: '1', index: 3, title: '개발', dateAdded: 1773320674234, dateGroupModified: 1773552992532, syncing: true,
 		children: [
+			{ id: 'm101', parentId: 'm100', index: 0, title: 'MDN Web Docs', url: 'https://developer.mozilla.org/ko/', dateAdded: 1769039901306, syncing: true },
+			{ id: 'm102', parentId: 'm100', index: 1, title: 'DevOps Daily', url: 'https://devops-daily.com/', dateAdded: 1758845694428, syncing: true },
+
+			// depth 2: 프론트엔드 폴더
 			{
-				dateAdded: 1769039901306,
-				id: '80',
-				index: 0,
-				parentId: '213',
-				syncing: true,
-				title: 'DevOps Daily - The latest DevOps news, tutorials, and guides',
-				url: 'https://devops-daily.com/',
+				id: 'm110', parentId: 'm100', index: 2, title: '프론트엔드', dateAdded: 1773320674241, dateGroupModified: 1773552992526, syncing: true,
+				children: [
+					{ id: 'm111', parentId: 'm110', index: 0, title: 'React', url: 'https://ko.react.dev/', dateAdded: 1729556147827, syncing: true },
+					{ id: 'm112', parentId: 'm110', index: 1, title: 'Tailwind CSS', url: 'https://tailwindcss.com/', dateAdded: 1769732400888, syncing: true },
+
+					// depth 3: 프레임워크 폴더
+					{
+						id: 'm120', parentId: 'm110', index: 2, title: '프레임워크', dateAdded: 1773320674241, dateGroupModified: 1773552992526, syncing: true,
+						children: [
+							{ id: 'm121', parentId: 'm120', index: 0, title: 'Next.js 한글 문서', url: 'https://nextjs-ko.org/docs', dateAdded: 1729556122895, syncing: true },
+							{ id: 'm122', parentId: 'm120', index: 1, title: 'Remix', url: 'https://remix.run/docs', dateAdded: 1769733859294, syncing: true },
+
+							// depth 4: 상태관리 폴더
+							{
+								id: 'm130', parentId: 'm120', index: 2, title: '상태관리', dateAdded: 1773320674244, dateGroupModified: 1773552992513, syncing: true,
+								children: [
+									{ id: 'm131', parentId: 'm130', index: 0, title: 'Zustand', url: 'https://zustand.docs.pmnd.rs/', dateAdded: 1772345981129, syncing: true },
+									{ id: 'm132', parentId: 'm130', index: 1, title: 'Jotai', url: 'https://jotai.org/docs/introduction', dateAdded: 1769734221058, syncing: true },
+									{ id: 'm133', parentId: 'm130', index: 2, title: 'TanStack Query', url: 'https://tanstack.com/query/latest', dateAdded: 1769733888660, syncing: true },
+								],
+							},
+						],
+					},
+
+					// depth 3: UI 라이브러리 폴더
+					{
+						id: 'm140', parentId: 'm110', index: 3, title: 'UI 라이브러리', dateAdded: 1773320674244, dateGroupModified: 1773552992517, syncing: true,
+						children: [
+							{ id: 'm141', parentId: 'm140', index: 0, title: 'shadcn/ui', url: 'https://ui.shadcn.com/docs/components', dateAdded: 1769923319806, syncing: true },
+							{ id: 'm142', parentId: 'm140', index: 1, title: 'Radix UI', url: 'https://www.radix-ui.com/', dateAdded: 1769732362189, syncing: true },
+							{ id: 'm143', parentId: 'm140', index: 2, title: 'Magic UI', url: 'https://magicui.design/', dateAdded: 1769731896633, syncing: true },
+						],
+					},
+				],
 			},
+
+			// depth 2: 백엔드 폴더
 			{
-				dateAdded: 1758845694428,
-				id: '68',
-				index: 1,
-				parentId: '213',
-				syncing: true,
-				title: '요즘 사람들의 IT 매거진, 요즘IT',
-				url: 'https://yozm.wishket.com/',
-			},
-			{
-				dateAdded: 1758845681449,
-				dateLastUsed: 1773399779859,
-				id: '67',
-				index: 2,
-				parentId: '213',
-				syncing: true,
-				title: 'Medium',
-				url: 'https://medium.com/',
-			},
-			{
-				dateAdded: 1729557487671,
-				dateLastUsed: 1758859476088,
-				id: '24',
-				index: 3,
-				parentId: '213',
-				syncing: true,
-				title: 'Korean FE article | Han Jung(한정) | Substack',
-				url: 'https://kofearticle.substack.com/',
+				id: 'm150', parentId: 'm100', index: 3, title: '백엔드', dateAdded: 1773320674239, dateGroupModified: 1773552992530, syncing: true,
+				children: [
+					{ id: 'm151', parentId: 'm150', index: 0, title: 'FastAPI', url: 'https://fastapi.tiangolo.com/ko/', dateAdded: 1735300399861, syncing: true },
+					{ id: 'm152', parentId: 'm150', index: 1, title: 'NestJS', url: 'https://docs.nestjs.com/', dateAdded: 1735300396371, syncing: true },
+
+					// depth 3: 데이터베이스 폴더
+					{
+						id: 'm160', parentId: 'm150', index: 2, title: '데이터베이스', dateAdded: 1773320674239, dateGroupModified: 1773552992530, syncing: true,
+						children: [
+							{ id: 'm161', parentId: 'm160', index: 0, title: 'PostgreSQL Docs', url: 'https://www.postgresql.org/docs/', dateAdded: 1735300392448, syncing: true },
+							{ id: 'm162', parentId: 'm160', index: 1, title: 'Prisma', url: 'https://www.prisma.io/docs', dateAdded: 1735300390239, syncing: true },
+
+							// depth 4: ORM 폴더
+							{
+								id: 'm170', parentId: 'm160', index: 2, title: 'ORM', dateAdded: 1773320674239, dateGroupModified: 1773552992530, syncing: true,
+								children: [
+									{ id: 'm171', parentId: 'm170', index: 0, title: 'Drizzle ORM', url: 'https://orm.drizzle.team/', dateAdded: 1760417239164, syncing: true },
+									{ id: 'm172', parentId: 'm170', index: 1, title: 'TypeORM', url: 'https://typeorm.io/', dateAdded: 1748578466256, syncing: true },
+								],
+							},
+						],
+					},
+				],
 			},
 		],
-		dateAdded: 1773320674234,
-		dateGroupModified: 1773552992532,
-		id: '213',
-		index: 5,
-		parentId: '1',
-		syncing: true,
-		title: '개발 글',
 	},
+
+	// --- depth 1: AI 폴더 (depth 2~3 중첩) ---
 	{
+		id: 'm200', parentId: '1', index: 4, title: 'AI', dateAdded: 1773320674239, dateGroupModified: 1773552992530, syncing: true,
 		children: [
+			{ id: 'm201', parentId: 'm200', index: 0, title: 'Claude', url: 'https://claude.ai/new', dateAdded: 1770641741017, syncing: true },
+			{ id: 'm202', parentId: 'm200', index: 1, title: 'Hugging Face', url: 'https://huggingface.co/', dateAdded: 1735300396371, syncing: true },
+
+			// depth 2: API 폴더
 			{
-				dateAdded: 1748578466256,
-				dateLastUsed: 1760419273874,
-				id: '62',
-				index: 0,
-				parentId: '214',
-				syncing: true,
-				title: 'Smithery - Model Context Protocol Registry',
-				url: 'https://smithery.ai/',
-			},
-			{
-				dateAdded: 1735646425720,
-				dateLastUsed: 1760419260515,
-				id: '46',
-				index: 1,
-				parentId: '214',
-				syncing: true,
-				title: 'Chat Completions - OpenAI API',
-				url: 'https://platform.openai.com/chat-completions',
-			},
-			{
-				dateAdded: 1735300399861,
-				dateLastUsed: 1760419243843,
-				id: '43',
-				index: 2,
-				parentId: '214',
-				syncing: true,
-				title: 'FastAPI',
-				url: 'https://fastapi.tiangolo.com/ko/',
-			},
-			{
-				dateAdded: 1735300396371,
-				id: '41',
-				index: 3,
-				parentId: '214',
-				syncing: true,
-				title: 'Hugging Face – The AI community building the future.',
-				url: 'https://huggingface.co/',
-			},
-			{
-				dateAdded: 1735300392448,
-				dateLastUsed: 1735355516741,
-				id: '40',
-				index: 4,
-				parentId: '214',
-				syncing: true,
-				title: 'Pinecone Console',
-				url: 'https://app.pinecone.io/registration',
-			},
-			{
-				dateAdded: 1735300390239,
-				dateLastUsed: 1735355510653,
-				id: '39',
-				index: 5,
-				parentId: '214',
-				syncing: true,
-				title: 'Streamlit • A faster way to build and share data apps',
-				url: 'https://streamlit.io/',
-			},
-			{
-				dateAdded: 1760417239164,
-				id: '69',
-				index: 6,
-				parentId: '214',
-				syncing: true,
-				title: 'LangChain Overview - Docs by LangChain',
-				url: 'https://docs.langchain.com/oss/python/langchain/overview?_gl=1*1mosw86*_gcl_au*MzcwNjM3MzcwLjE3NjA0MTcyMTg.*_ga*NzExNTQ1OTk3LjE3NjA0MTcyMTQ.*_ga_47WX3HKKY2*czE3NjA0MTcyMTMkbzEkZzEkdDE3NjA0MTcyMjkkajQ0JGwwJGgw',
+				id: 'm210', parentId: 'm200', index: 2, title: 'API', dateAdded: 1773320674239, dateGroupModified: 1773552992530, syncing: true,
+				children: [
+					{ id: 'm211', parentId: 'm210', index: 0, title: 'OpenAI API', url: 'https://platform.openai.com/docs', dateAdded: 1735646425720, syncing: true },
+					{ id: 'm212', parentId: 'm210', index: 1, title: 'Anthropic API', url: 'https://docs.anthropic.com/', dateAdded: 1748578466256, syncing: true },
+					{ id: 'm213', parentId: 'm210', index: 2, title: 'Smithery MCP Registry', url: 'https://smithery.ai/', dateAdded: 1748578466256, syncing: true },
+
+					// depth 3: 도구 폴더
+					{
+						id: 'm220', parentId: 'm210', index: 3, title: '도구', dateAdded: 1773320674239, dateGroupModified: 1773552992530, syncing: true,
+						children: [
+							{ id: 'm221', parentId: 'm220', index: 0, title: 'LangChain', url: 'https://docs.langchain.com/', dateAdded: 1760417239164, syncing: true },
+							{ id: 'm222', parentId: 'm220', index: 1, title: 'Streamlit', url: 'https://streamlit.io/', dateAdded: 1735300390239, syncing: true },
+						],
+					},
+				],
 			},
 		],
-		dateAdded: 1773320674239,
-		dateGroupModified: 1773552992530,
-		id: '214',
-		index: 6,
-		parentId: '1',
-		syncing: true,
-		title: 'ai',
 	},
+
+	// --- depth 1: 도구 폴더 (depth 2만) ---
 	{
+		id: 'm300', parentId: '1', index: 5, title: '도구', dateAdded: 1773320674242, dateGroupModified: 1773552992521, syncing: true,
 		children: [
+			{ id: 'm301', parentId: 'm300', index: 0, title: 'regex101', url: 'https://regex101.com/', dateAdded: 1744697301813, syncing: true },
+			{ id: 'm302', parentId: 'm300', index: 1, title: 'DownGit', url: 'https://downgit.github.io/#/home', dateAdded: 1770637489051, syncing: true },
+			{ id: 'm303', parentId: 'm300', index: 2, title: 'PNG to WEBP', url: 'https://picflow.com/convert/png-to-webp', dateAdded: 1760510351261, syncing: true },
+
+			// depth 2: 변환 폴더
 			{
-				dateAdded: 1762733245668,
-				id: '76',
-				index: 0,
-				parentId: '215',
-				syncing: true,
-				title: 'The Rust Programming Language - The Rust Programming Language',
-				url: 'https://doc.rust-kr.org/title-page.html',
-			},
-			{
-				dateAdded: 1729557283164,
-				dateLastUsed: 1736490557794,
-				id: '29',
-				index: 1,
-				parentId: '215',
-				syncing: true,
-				title: 'es-toolkit',
-				url: 'https://es-toolkit.slash.page/ko/',
-			},
-			{
-				dateAdded: 1729556147827,
-				dateLastUsed: 1736992255334,
-				id: '26',
-				index: 2,
-				parentId: '215',
-				syncing: true,
-				title: 'React',
-				url: 'https://ko.react.dev/',
-			},
-			{
-				dateAdded: 1729556122895,
-				dateLastUsed: 1736929435644,
-				id: '27',
-				index: 3,
-				parentId: '215',
-				syncing: true,
-				title: '시작하기 – Nextjs 한글 문서',
-				url: 'https://nextjs-ko.org/docs',
-			},
-			{
-				dateAdded: 1729556070632,
-				dateLastUsed: 1772515830755,
-				id: '28',
-				index: 4,
-				parentId: '215',
-				syncing: true,
-				title: 'Overview – React Query 한글 문서',
-				url: 'https://react-query.kro.kr/docs/getting-started',
+				id: 'm310', parentId: 'm300', index: 3, title: '변환', dateAdded: 1773320674242, dateGroupModified: 1773552992523, syncing: true,
+				children: [
+					{ id: 'm311', parentId: 'm310', index: 0, title: 'Util Support', url: 'https://util.support/?menu=convert', dateAdded: 1760510356628, syncing: true },
+					{ id: 'm312', parentId: 'm310', index: 1, title: 'JSON Formatter', url: 'https://jsonformatter.curiousconcept.com/', dateAdded: 1769041471817, syncing: true },
+				],
 			},
 		],
-		dateAdded: 1773320674241,
-		dateGroupModified: 1773552992526,
-		id: '215',
-		index: 7,
-		parentId: '1',
-		syncing: true,
-		title: '개발 번역',
 	},
-	{
-		children: [
-			{
-				dateAdded: 1748567544287,
-				dateLastUsed: 1769601522223,
-				id: '61',
-				index: 0,
-				parentId: '216',
-				syncing: true,
-				title: 'Frontend Mentor | Challenges',
-				url: 'https://www.frontendmentor.io/challenges?difficulty=3%2C4%2C5&type=free%2Cfree-plus',
-			},
-		],
-		dateAdded: 1773320674241,
-		dateGroupModified: 1773320876253,
-		id: '216',
-		index: 8,
-		parentId: '1',
-		syncing: true,
-		title: '과제',
-	},
-	{
-		children: [
-			{
-				dateAdded: 1744697301813,
-				id: '56',
-				index: 0,
-				parentId: '217',
-				syncing: true,
-				title: 'regex101: build, test, and debug regex',
-				url: 'https://regex101.com/',
-			},
-			{
-				dateAdded: 1769041471817,
-				id: '79',
-				index: 1,
-				parentId: '217',
-				syncing: true,
-				title: 'RegExr: Learn, Build, & Test RegEx',
-				url: 'https://regexr.com/',
-			},
-		],
-		dateAdded: 1773320674242,
-		dateGroupModified: 1773552992523,
-		id: '217',
-		index: 9,
-		parentId: '1',
-		syncing: true,
-		title: '개발잡다',
-	},
-	{
-		children: [
-			{
-				dateAdded: 1770637489051,
-				dateLastUsed: 1770733285159,
-				id: '121',
-				index: 0,
-				parentId: '218',
-				syncing: true,
-				title: 'DownGit',
-				url: 'https://downgit.github.io/#/home',
-			},
-			{
-				dateAdded: 1760510356628,
-				id: '73',
-				index: 1,
-				parentId: '218',
-				syncing: true,
-				title: 'Util Support',
-				url: 'https://util.support/?menu=convert',
-			},
-			{
-				dateAdded: 1760510351261,
-				id: '72',
-				index: 2,
-				parentId: '218',
-				syncing: true,
-				title: 'Best PNG to WEBP Converter (Free, Fast & No Ads)',
-				url: 'https://picflow.com/convert/png-to-webp',
-			},
-		],
-		dateAdded: 1773320674242,
-		dateGroupModified: 1773552992521,
-		id: '218',
-		index: 10,
-		parentId: '1',
-		syncing: true,
-		title: 'util',
-	},
-	{
-		children: [
-			{
-				dateAdded: 1769601493315,
-				id: '91',
-				index: 0,
-				parentId: '219',
-				syncing: true,
-				title: 'Roadmap',
-				url: 'https://neetcode.io/roadmap',
-			},
-		],
-		dateAdded: 1773320674243,
-		dateGroupModified: 1773320876248,
-		id: '219',
-		index: 11,
-		parentId: '1',
-		syncing: true,
-		title: '알고리즘',
-	},
-	{
-		children: [
-			{
-				dateAdded: 1769923319806,
-				dateLastUsed: 1772221586983,
-				id: '106',
-				index: 0,
-				parentId: '220',
-				syncing: true,
-				title: 'Components - shadcn/ui',
-				url: 'https://ui.shadcn.com/docs/components',
-			},
-			{
-				dateAdded: 1769732400888,
-				dateLastUsed: 1772221584705,
-				id: '85',
-				index: 1,
-				parentId: '220',
-				syncing: true,
-				title: 'Tailwind CSS - Rapidly build modern websites without ever leaving your HTML.',
-				url: 'https://tailwindcss.com/',
-			},
-			{
-				dateAdded: 1769732362189,
-				dateLastUsed: 1769923311683,
-				id: '89',
-				index: 2,
-				parentId: '220',
-				syncing: true,
-				title: 'Radix UI',
-				url: 'https://www.radix-ui.com/',
-			},
-			{
-				dateAdded: 1769648667441,
-				dateLastUsed: 1769731907490,
-				id: '88',
-				index: 3,
-				parentId: '220',
-				syncing: true,
-				title: 'Beautiful React UI Components Library',
-				url: 'https://www.monet.design/',
-			},
-			{
-				dateAdded: 1769648647825,
-				dateLastUsed: 1769731902684,
-				id: '86',
-				index: 4,
-				parentId: '220',
-				syncing: true,
-				title: 'Discover community-made UI components | 21st.dev',
-				url: 'https://21st.dev/community/components',
-			},
-			{
-				dateAdded: 1769731896633,
-				dateLastUsed: 1769732048768,
-				id: '83',
-				index: 5,
-				parentId: '220',
-				syncing: true,
-				title: 'Magic UI',
-				url: 'https://magicui.design/',
-			},
-			{
-				dateAdded: 1769731814601,
-				id: '84',
-				index: 6,
-				parentId: '220',
-				syncing: true,
-				title: 'React animation — Transforms, keyframes & transitions | Motion',
-				url: 'https://motion.dev/docs/react-animation',
-			},
-		],
-		dateAdded: 1773320674244,
-		dateGroupModified: 1773552992517,
-		id: '220',
-		index: 12,
-		parentId: '1',
-		syncing: true,
-		title: 'ui',
-	},
-	{
-		children: [
-			{
-				dateAdded: 1772345981129,
-				dateLastUsed: 1772429017083,
-				id: '125',
-				index: 0,
-				parentId: '221',
-				syncing: true,
-				title: 'Introduction - Zustand',
-				url: 'https://zustand.docs.pmnd.rs/learn/getting-started/introduction',
-			},
-			{
-				dateAdded: 1769734221058,
-				id: '98',
-				index: 1,
-				parentId: '221',
-				syncing: true,
-				title: 'usehooks-ts',
-				url: 'https://usehooks-ts.com/introduction',
-			},
-			{
-				dateAdded: 1769733951326,
-				id: '99',
-				index: 2,
-				parentId: '221',
-				syncing: true,
-				title: 'dayjs',
-				url: 'https://day.js.org/docs/en/installation/typescript',
-			},
-			{
-				dateAdded: 1769733918710,
-				id: '96',
-				index: 3,
-				parentId: '221',
-				syncing: true,
-				title: 'luxon',
-				url: 'https://moment.github.io/luxon/#/?id=luxon',
-			},
-			{
-				dateAdded: 1769733908010,
-				id: '95',
-				index: 4,
-				parentId: '221',
-				syncing: true,
-				title: 'axios',
-				url: 'https://axios-http.com/docs/intro',
-			},
-			{
-				dateAdded: 1769733888660,
-				id: '93',
-				index: 5,
-				parentId: '221',
-				syncing: true,
-				title: 'TanStack Query',
-				url: 'https://tanstack.com/query/latest',
-			},
-			{
-				dateAdded: 1769733859294,
-				id: '97',
-				index: 6,
-				parentId: '221',
-				syncing: true,
-				title: 'zod',
-				url: 'https://zod.dev/error-customization',
-			},
-		],
-		dateAdded: 1773320674244,
-		dateGroupModified: 1773552992513,
-		id: '221',
-		index: 13,
-		parentId: '1',
-		syncing: true,
-		title: 'libs',
-	},
-	{
-		children: [
-			{
-				dateAdded: 1769937668987,
-				dateLastUsed: 1771214388308,
-				id: '108',
-				index: 0,
-				parentId: '222',
-				syncing: true,
-				title: '가계부',
-				url: 'https://www.notion.so/2f9bb04263bc8155a251f089c9386ed2',
-			},
-			{
-				dateAdded: 1769869352057,
-				id: '104',
-				index: 1,
-				parentId: '222',
-				syncing: true,
-				title: 'Chanoo Blog',
-				url: 'https://chanoo.dev/',
-			},
-			{
-				dateAdded: 1769869340948,
-				id: '103',
-				index: 2,
-				parentId: '222',
-				syncing: true,
-				title: 'Swagger UI',
-				url: 'https://api.chanoo.dev/docs',
-			},
-			{
-				dateAdded: 1769869319943,
-				id: '102',
-				index: 3,
-				parentId: '222',
-				syncing: true,
-				title: 'chanoo-admin',
-				url: 'https://admin.chanoo.dev/',
-			},
-		],
-		dateAdded: 1773320674245,
-		dateGroupModified: 1773552992508,
-		id: '222',
-		index: 14,
-		parentId: '1',
-		syncing: true,
-		title: '김찬우',
-	},
-	{
-		children: [
-			{
-				dateAdded: 1770563459750,
-				id: '116',
-				index: 0,
-				parentId: '223',
-				syncing: true,
-				title: 'Claude Code의 모든 기능 활용법 | GeekNews',
-				url: 'https://news.hada.io/topic?id=24099',
-			},
-			{
-				dateAdded: 1770336945665,
-				id: '114',
-				index: 1,
-				parentId: '223',
-				syncing: true,
-				title: '[번역] 성능과 하이라이팅을 모두 잡는 CSS Highlights API',
-				url: 'https://velog.io/@typo/high-performance-syntax-highlighting-with-css-highlights-api',
-			},
-			{
-				dateAdded: 1769998991510,
-				id: '113',
-				index: 2,
-				parentId: '223',
-				syncing: true,
-				title: 'Claude Code 창시자가 공개한 실전 사용 팁 | GeekNews',
-				url: 'https://news.hada.io/topic?id=26330&utm_source=googlechat&utm_medium=bot&utm_campaign=2163',
-			},
-			{
-				dateAdded: 1769998874677,
-				id: '112',
-				index: 3,
-				parentId: '223',
-				syncing: true,
-				title: '게으른 개발자가 꼭 써야 할 10가지 도구. 원문… | by 조영제 | Jan, 2026 | Medium',
-				url: 'https://siosio3103.medium.com/%EA%B2%8C%EC%9C%BC%EB%A5%B8-%EA%B0%9C%EB%B0%9C%EC%9E%90%EA%B0%80-%EA%BC%AD-%EC%8D%A8%EC%95%BC-%ED%95%A0-10%EA%B0%80%EC%A7%80-%EB%8F%84%EA%B5%AC-afce720a78ae?postPublishedType=initial',
-			},
-		],
-		dateAdded: 1773320674245,
-		dateGroupModified: 1773552992504,
-		id: '223',
-		index: 15,
-		parentId: '1',
-		syncing: true,
-		title: '좋은글',
-	},
-	{
-		children: [
-			{
-				dateAdded: 1770631183181,
-				dateLastUsed: 1770631677461,
-				id: '118',
-				index: 0,
-				parentId: '224',
-				syncing: true,
-				title: 'VoltAgent/awesome-agent-skills at pytorchkr',
-				url: 'https://github.com/VoltAgent/awesome-agent-skills?utm_source=pytorchkr&ref=pytorchkr',
-			},
-		],
-		dateAdded: 1773320674246,
-		dateGroupModified: 1773320876237,
-		id: '224',
-		index: 16,
-		parentId: '1',
-		syncing: true,
-		title: 'subagent',
-	},
-	{
-		children: [
-			{
-				dateAdded: 1770634298638,
-				id: '120',
-				index: 0,
-				parentId: '225',
-				syncing: true,
-				title:
-					'클로드 코드 전세계 사용량 1위의 활용 노하우 공개 l Sionic AI 엔지니어 울트라띵크 박진형(AI 팟캐스트 #73) - YouTube',
-				url: 'https://www.youtube.com/watch?v=0h6gfMqpx_0',
-			},
-		],
-		dateAdded: 1773320674246,
-		dateGroupModified: 1773320876236,
-		id: '225',
-		index: 17,
-		parentId: '1',
-		syncing: true,
-		title: '좋은 영상',
-	},
-	{
-		children: [
-			{
-				dateAdded: 1775441480170,
-				dateLastUsed: 1776577601101,
-				id: '229',
-				index: 0,
-				parentId: '228',
-				syncing: true,
-				title: '청약홈',
-				url: 'https://www.applyhome.co.kr/co/coa/selectMainView.do',
-			},
-		],
-		dateAdded: 1775441478396,
-		dateGroupModified: 1776577594530,
-		id: '228',
-		index: 18,
-		parentId: '1',
-		syncing: true,
-		title: '청약',
-	},
-	{
-		dateAdded: 1777463511355,
-		dateLastUsed: 1777597609647,
-		id: '233',
-		index: 19,
-		parentId: '1',
-		syncing: true,
-		title: '일산아파트인테리어 문촌마을 14단지 세경 19.. : 네이버블로그',
-		url: 'https://blog.naver.com/hong_s2014/221655134030',
-	},
+
+	// --- 루트 레벨 단일 북마크 ---
+	{ id: 'm400', parentId: '1', index: 6, title: 'NAVER', url: 'https://www.naver.com/', dateAdded: 1773143252262, syncing: true },
 ];
 
 // queries/users.ts
@@ -690,4 +165,16 @@ export const bookmarks = createQueryKeys('bookmarks', {
 			}
 		},
 	},
+	detail: (id: string) => ({
+		queryKey: [id],
+		queryFn: async () => {
+			try {
+				assertChromeBookmarks();
+				const res = await getChromeBookmark(id);
+				return res[0] ?? null;
+			} catch {
+				return findById(mock as BookmarkNode[], id);
+			}
+		},
+	}),
 });
