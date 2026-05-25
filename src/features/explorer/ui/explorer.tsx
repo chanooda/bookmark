@@ -29,7 +29,7 @@ export const Explorer = ({ id }: ExplorerProps) => {
 
 	return (
 		<DialogContent
-			className='w-full overflow-hidden rounded-4xl bg-background/95 p-0 shadow-2xl ring-1 ring-border/50 backdrop-blur-2xl sm:max-w-3/4'
+			className='w-full overflow-hidden rounded-4xl bg-background/95 p-0 shadow-2xl ring-1 ring-border/50 backdrop-blur-2xl sm:max-w-[90dvw]'
 			showCloseButton={false}
 		>
 			<VisuallyHidden.Root>
