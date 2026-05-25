@@ -52,15 +52,16 @@ export const ExplorerContent = () => {
 				style={{ scrollbarWidth: 'thin', scrollbarColor: 'rgba(255,255,255,0.12) transparent' }}
 			>
 				{isLoading ? (
-					<div className='grid grid-cols-3 gap-2.5'>
+					<div className='grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3'>
 						{Array.from({ length: 6 }).map((_, i) => (
+							// biome-ignore lint/suspicious/noArrayIndexKey: 	스켈레톤
 							<SkeletonCard key={i} />
 						))}
 					</div>
 				) : isEmpty ? (
 					<EmptyState />
 				) : (
-					<div className='grid grid-cols-3 gap-2.5'>
+					<div className='grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3'>
 						{children.map((item) =>
 							item.children !== undefined ? (
 								<ExplorerFolderCard

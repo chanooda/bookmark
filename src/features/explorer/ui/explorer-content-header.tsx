@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { ChevronLeft, ChevronRight, PencilLine, Plus, Trash2, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Menu, PencilLine, Plus, Trash2, X } from 'lucide-react';
 import { queries } from '@/shared/api';
 import { DialogClose } from '@/shared/shadcn/components/ui/dialog';
 import { findPath } from '../lib/find-path';
@@ -9,6 +9,7 @@ export const ExplorerContentHeader = () => {
 	const rootId = useExplorerStore((s) => s.rootId);
 	const currentId = useExplorerStore((s) => s.currentId);
 	const navigate = useExplorerStore((s) => s.navigate);
+	const toggleSidebar = useExplorerStore((s) => s.toggleSidebar);
 
 	const { data: bookmarks } = useQuery({ ...queries.bookmarks.all });
 
@@ -25,6 +26,13 @@ export const ExplorerContentHeader = () => {
 		<div className='flex h-12 w-full shrink-0 items-center justify-between border-b px-3'>
 			{/* breadcrumb */}
 			<div className='flex min-w-0 items-center gap-0.5'>
+				<button
+					className='flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground md:hidden'
+					onClick={toggleSidebar}
+					type='button'
+				>
+					<Menu className='h-4 w-4' />
+				</button>
 				{!isRoot && (
 					<button
 						className='flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
