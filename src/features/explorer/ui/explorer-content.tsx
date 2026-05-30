@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { FolderIcon } from 'lucide-react';
+import { findById } from '@/entities/bookmark/libs/findBookmarkById';
 import { queries } from '@/shared/api';
 import { useExplorerStore } from '../model/explorer.store';
 import { ExplorerBookmarkCard } from './explorer-bookmark-card';
@@ -35,13 +36,14 @@ export const ExplorerContent = () => {
 	const currentId = useExplorerStore((s) => s.currentId);
 	const navigate = useExplorerStore((s) => s.navigate);
 
-	const { data: currentFolder, isLoading } = useQuery({
-		...queries.bookmarks.detail(currentId),
+	const { data: bookmarks, isLoading } = useQuery({
+		...queries.bookmarks.all,
 		enabled: !!currentId,
 	});
 
-	const children = currentFolder?.children ?? [];
-	const isEmpty = !isLoading && children.length === 0;
+	const bookmarkById = findById(bookmarks || [], currentId);
+	const children = bookmarkById?.children || [];
+	const isEmpty = !isLoading && children?.length === 0;
 
 	return (
 		<div className='flex h-full w-full flex-col overflow-auto'>
@@ -62,7 +64,7 @@ export const ExplorerContent = () => {
 					<EmptyState />
 				) : (
 					<div className='grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3'>
-						{children.map((item) =>
+						{children?.map((item) =>
 							item.children !== undefined ? (
 								<ExplorerFolderCard
 									bookmark={item}

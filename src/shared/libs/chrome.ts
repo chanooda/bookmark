@@ -30,11 +30,6 @@ export const getChromeBookmarks = async () => {
 	return bookmarks;
 };
 
-export const getChromeBookmark = async (id: string) => {
-	const bookmarks = await chrome.bookmarks.get(id);
-	return bookmarks;
-};
-
 export const readStore = async () => {
 	assertChromeStorage();
 	const result = await chrome.storage.local.get(['bookmarks', 'tags', 'folders']);

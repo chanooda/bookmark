@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { VisuallyHidden } from 'radix-ui';
 import { useLayoutEffect } from 'react';
+import { findById } from '@/entities/bookmark/libs/findBookmarkById';
 import { queries } from '@/shared/api';
 import {
 	DialogContent,
@@ -19,16 +20,18 @@ interface ExplorerProps {
 export const Explorer = ({ id }: ExplorerProps) => {
 	const init = useExplorerStore((s) => s.init);
 
-	const { data: bookmark } = useQuery({
-		...queries.bookmarks.detail(id),
+	const { data: bookmarks } = useQuery({
+		...queries.bookmarks.all,
 	});
+
+	const bookmark = findById(bookmarks || [], id);
+
+	const sidebarOpen = useExplorerStore((s) => s.sidebarOpen);
+	const closeSidebar = useExplorerStore((s) => s.closeSidebar);
 
 	useLayoutEffect(() => {
 		init(id);
 	}, [id, init]);
-
-	const sidebarOpen = useExplorerStore((s) => s.sidebarOpen);
-	const closeSidebar = useExplorerStore((s) => s.closeSidebar);
 
 	return (
 		<DialogContent
