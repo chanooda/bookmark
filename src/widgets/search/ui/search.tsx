@@ -6,6 +6,7 @@ import { GoogleIcon } from '@/shared/assets';
 
 export const Search = () => {
 	const setSearch = useFilterStore((store) => store.setSearch);
+	const search = useFilterStore((store) => store.search);
 
 	const handleChangeBookmarkInput = useCallback(
 		debounce((e: ChangeEvent<HTMLInputElement>) => {
@@ -38,14 +39,15 @@ export const Search = () => {
 						placeholder='북마크 검색...'
 					/>
 					{/* Clear button — appears when there's text */}
-
-					<button
-						aria-label={'검색어 초기화'}
-						className='mr-3 flex h-5 w-5 shrink-0 items-center justify-center rounded text-muted-foreground/35 transition-colors duration-150 hover:text-foreground/60'
-						type='button'
-					>
-						<X aria-hidden='true' className='h-3 w-3' />
-					</button>
+					{search && (
+						<button
+							aria-label={'검색어 초기화'}
+							className='mr-3 flex h-5 w-5 shrink-0 items-center justify-center rounded text-muted-foreground/35 transition-colors duration-150 hover:text-foreground/60'
+							type='button'
+						>
+							<X aria-hidden='true' className='h-3 w-3' />
+						</button>
+					)}
 				</div>
 				<form className='group/gl flex flex-1 items-center overflow-hidden rounded-xl border border-border/50 bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-200 focus-within:border-blue-400/40 focus-within:ring-2 focus-within:ring-blue-400/10'>
 					{/* Label badge — clickable link to google.com */}

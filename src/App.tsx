@@ -16,7 +16,7 @@ export default function App() {
 
 	return (
 		<main className='bg-background'>
-			<div className='relative z-10 h-dvh w-dvw overflow-hidden'>
+			<div className='relative z-10 flex h-dvh w-dvw flex-col overflow-hidden'>
 				<Header />
 				<div className='z-20 h-full w-full overflow-auto p-6'>
 					<Search />

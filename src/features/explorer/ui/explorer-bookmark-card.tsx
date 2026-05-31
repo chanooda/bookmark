@@ -3,7 +3,7 @@ import { GlobeIcon, SquarePen, Trash2 } from 'lucide-react';
 import { overlay } from 'overlay-kit';
 import type { MouseEvent } from 'react';
 import type { Bookmark } from '@/entities/bookmark';
-import { BookmarkFormDialog } from '@/features/bookmark';
+import { ItemFormDialog } from '@/shared/ui/item-form-dialog';
 import { mutations, queries } from '@/shared/api';
 import { extractFavicon } from '@/shared/libs/chrome';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
@@ -35,7 +35,7 @@ export const ExplorerBookmarkCard = ({ bookmark }: ExplorerBookmarkCardProps) =>
 		e.preventDefault();
 		e.stopPropagation();
 		overlay.open(({ isOpen, close, unmount }) => (
-			<BookmarkFormDialog
+			<ItemFormDialog
 				bookmarkId={bookmark.id}
 				close={close}
 				initialTitle={bookmark.title}

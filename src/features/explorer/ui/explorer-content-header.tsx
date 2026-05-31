@@ -2,8 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ChevronLeft, ChevronRight, Menu, PencilLine, Plus, Trash2, X } from 'lucide-react';
 import { overlay } from 'overlay-kit';
 import { findById } from '@/entities/bookmark/libs/findBookmarkById';
-import { BookmarkFormDialog } from '@/features/bookmark';
-import { FolderFormDialog } from '@/features/folder';
+import { ItemFormDialog } from '@/shared/ui/item-form-dialog';
 import { mutations, queries } from '@/shared/api';
 import { DialogClose } from '@/shared/shadcn/components/ui/dialog';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
@@ -92,7 +91,7 @@ export const ExplorerContentHeader = () => {
 					className='flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
 					onClick={() =>
 						overlay.open(({ isOpen, close, unmount }) => (
-							<FolderFormDialog
+							<ItemFormDialog
 								close={close}
 								folderId={currentId}
 								initialTitle={currentFolder?.title ?? ''}
@@ -133,8 +132,9 @@ export const ExplorerContentHeader = () => {
 					className='flex h-7 items-center gap-1 rounded-lg px-2 text-muted-foreground text-xs transition-colors hover:bg-accent hover:text-foreground'
 					onClick={() =>
 						overlay.open(({ isOpen, close, unmount }) => (
-							<FolderFormDialog
+							<ItemFormDialog
 								close={close}
+								defaultTab='folder'
 								isOpen={isOpen}
 								parentId={currentId}
 								unmount={unmount}
@@ -150,8 +150,9 @@ export const ExplorerContentHeader = () => {
 					className='flex h-7 items-center gap-1 rounded-lg px-2 text-muted-foreground text-xs transition-colors hover:bg-accent hover:text-foreground'
 					onClick={() =>
 						overlay.open(({ isOpen, close, unmount }) => (
-							<BookmarkFormDialog
+							<ItemFormDialog
 								close={close}
+								defaultTab='bookmark'
 								isOpen={isOpen}
 								parentId={currentId}
 								unmount={unmount}

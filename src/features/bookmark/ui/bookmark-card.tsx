@@ -8,7 +8,7 @@ import type { Bookmark, Tag } from '@/entities/bookmark';
 import { mutations, queries } from '@/shared/api';
 import { extractFavicon } from '@/shared/libs/chrome';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
-import { BookmarkFormDialog } from './bookmark-form-dialog';
+import { ItemFormDialog } from '@/shared/ui/item-form-dialog';
 
 interface BookmarkCardProps {
 	bookmark: Bookmark;
@@ -41,7 +41,7 @@ const _BookmarkCard = ({ bookmark, index }: BookmarkCardProps) => {
 		e.preventDefault();
 		e.stopPropagation();
 		overlay.open(({ isOpen, close, unmount }) => (
-			<BookmarkFormDialog
+			<ItemFormDialog
 				bookmarkId={bookmark.id}
 				close={close}
 				initialTitle={bookmark.title}
