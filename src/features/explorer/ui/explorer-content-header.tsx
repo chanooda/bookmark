@@ -1,7 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ChevronLeft, ChevronRight, Menu, PencilLine, Plus, Trash2, X } from 'lucide-react';
-import { queries } from '@/shared/api';
+import { overlay } from 'overlay-kit';
+import { findById } from '@/entities/bookmark/libs/findBookmarkById';
+import { BookmarkFormDialog } from '@/features/bookmark';
+import { FolderFormDialog } from '@/features/folder';
+import { mutations, queries } from '@/shared/api';
 import { DialogClose } from '@/shared/shadcn/components/ui/dialog';
+import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
 import { findPath } from '../lib/find-path';
 import { useExplorerStore } from '../model/explorer.store';
 
@@ -11,6 +16,7 @@ export const ExplorerContentHeader = () => {
 	const navigate = useExplorerStore((s) => s.navigate);
 	const toggleSidebar = useExplorerStore((s) => s.toggleSidebar);
 
+	const queryClient = useQueryClient();
 	const { data: bookmarks } = useQuery({ ...queries.bookmarks.all });
 
 	const fullPath = bookmarks ? findPath(bookmarks, currentId) : [];
@@ -18,10 +24,24 @@ export const ExplorerContentHeader = () => {
 	const path = rootIndex >= 0 ? fullPath.slice(rootIndex) : fullPath;
 	const isRoot = path.length <= 1;
 
+	const currentFolder = bookmarks ? findById(bookmarks, currentId) : null;
+
 	const handleBack = () => {
 		const parent = path[path.length - 2];
 		if (parent) navigate(parent.id);
 	};
+
+	const invalidate = () =>
+		queryClient.invalidateQueries({ queryKey: queries.bookmarks.all.queryKey });
+
+	const { mutate: deleteFolder } = useMutation({
+		...mutations.bookmark.deleteFolder(),
+		onSuccess() {
+			invalidate();
+			handleBack();
+		},
+	});
+
 	return (
 		<div className='flex h-12 w-full shrink-0 items-center justify-between border-b px-3'>
 			{/* breadcrumb */}
@@ -70,12 +90,38 @@ export const ExplorerContentHeader = () => {
 			<div className='flex shrink-0 items-center'>
 				<button
 					className='flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
+					onClick={() =>
+						overlay.open(({ isOpen, close, unmount }) => (
+							<FolderFormDialog
+								close={close}
+								folderId={currentId}
+								initialTitle={currentFolder?.title ?? ''}
+								isOpen={isOpen}
+								parentId={currentFolder?.parentId ?? ''}
+								unmount={unmount}
+							/>
+						))
+					}
+					title='폴더 이름 수정'
 					type='button'
 				>
 					<PencilLine className='h-3.5 w-3.5' />
 				</button>
 				<button
 					className='flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
+					onClick={() =>
+						overlay.open(({ isOpen, close, unmount }) => (
+							<DeleteConfirmDialog
+								close={close}
+								description={`"${currentFolder?.title}" 폴더와 모든 항목이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.`}
+								isOpen={isOpen}
+								onConfirm={() => deleteFolder({ id: currentId })}
+								title='폴더 삭제'
+								unmount={unmount}
+							/>
+						))
+					}
+					title='폴더 삭제'
 					type='button'
 				>
 					<Trash2 className='h-3.5 w-3.5' />
@@ -85,6 +131,16 @@ export const ExplorerContentHeader = () => {
 
 				<button
 					className='flex h-7 items-center gap-1 rounded-lg px-2 text-muted-foreground text-xs transition-colors hover:bg-accent hover:text-foreground'
+					onClick={() =>
+						overlay.open(({ isOpen, close, unmount }) => (
+							<FolderFormDialog
+								close={close}
+								isOpen={isOpen}
+								parentId={currentId}
+								unmount={unmount}
+							/>
+						))
+					}
 					type='button'
 				>
 					<Plus className='h-3.5 w-3.5' />
@@ -92,6 +148,16 @@ export const ExplorerContentHeader = () => {
 				</button>
 				<button
 					className='flex h-7 items-center gap-1 rounded-lg px-2 text-muted-foreground text-xs transition-colors hover:bg-accent hover:text-foreground'
+					onClick={() =>
+						overlay.open(({ isOpen, close, unmount }) => (
+							<BookmarkFormDialog
+								close={close}
+								isOpen={isOpen}
+								parentId={currentId}
+								unmount={unmount}
+							/>
+						))
+					}
 					type='button'
 				>
 					<Plus className='h-3.5 w-3.5' />

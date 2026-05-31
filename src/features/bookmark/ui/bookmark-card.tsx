@@ -2,10 +2,13 @@ import { PointerSensor } from '@dnd-kit/react';
 import { useSortable } from '@dnd-kit/react/sortable';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GlobeIcon, SquarePen, Trash2 } from 'lucide-react';
+import { overlay } from 'overlay-kit';
 import { type MouseEvent, memo, useEffect } from 'react';
 import type { Bookmark, Tag } from '@/entities/bookmark';
 import { mutations, queries } from '@/shared/api';
 import { extractFavicon } from '@/shared/libs/chrome';
+import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
+import { BookmarkFormDialog } from './bookmark-form-dialog';
 
 interface BookmarkCardProps {
 	bookmark: Bookmark;
@@ -21,24 +24,48 @@ const _BookmarkCard = ({ bookmark, index }: BookmarkCardProps) => {
 		sensors: [PointerSensor.configure({ preventActivation: () => false })],
 	});
 
+	const invalidate = () =>
+		queryClient.invalidateQueries({ queryKey: queries.bookmarks.all.queryKey });
+
 	const { mutate: move } = useMutation({
 		...mutations.bookmark.move(),
-		onSuccess() {
-			queryClient.invalidateQueries({
-				queryKey: queries.bookmarks.all.queryKey,
-			});
-		},
+		onSuccess: invalidate,
 	});
+
+	const { mutate: deleteBookmark } = useMutation({
+		...mutations.bookmark.deleteBookmark(),
+		onSuccess: invalidate,
+	});
+
+	const handleClickEditButton = (e: MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		e.stopPropagation();
+		overlay.open(({ isOpen, close, unmount }) => (
+			<BookmarkFormDialog
+				bookmarkId={bookmark.id}
+				close={close}
+				initialTitle={bookmark.title}
+				initialUrl={bookmark.url ?? ''}
+				isOpen={isOpen}
+				parentId={bookmark.parentId ?? ''}
+				unmount={unmount}
+			/>
+		));
+	};
 
 	const handleClickDeleteButton = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		e.stopPropagation();
-		alert('delete');
-	};
-	const handleClickEditButton = (e: MouseEvent<HTMLButtonElement>) => {
-		e.preventDefault();
-		e.stopPropagation();
-		alert('edit');
+		overlay.open(({ isOpen, close, unmount }) => (
+			<DeleteConfirmDialog
+				close={close}
+				description={`"${bookmark.title}" 북마크가 삭제됩니다. 이 작업은 되돌릴 수 없습니다.`}
+				isOpen={isOpen}
+				onConfirm={() => deleteBookmark({ id: bookmark.id })}
+				title='북마크 삭제'
+				unmount={unmount}
+			/>
+		));
 	};
 
 	const faviconUrl = extractFavicon(bookmark.url);
@@ -46,13 +73,9 @@ const _BookmarkCard = ({ bookmark, index }: BookmarkCardProps) => {
 
 	useEffect(() => {
 		if (sortable.isDropping) {
-			move({
-				id: bookmark.id,
-				index: sortable.index,
-				parentId: bookmark.parentId,
-			});
+			move({ id: bookmark.id, index: sortable.index, parentId: bookmark.parentId });
 		}
-	}, [sortable.isDropping]);
+	}, [sortable.isDropping, sortable.index, bookmark.id, bookmark.parentId, move]);
 
 	return (
 		<div className='@container h-full w-full' ref={ref}>

@@ -1,11 +1,21 @@
 import { PointerSensor } from '@dnd-kit/react';
 import { useSortable } from '@dnd-kit/react/sortable';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { FolderIcon, MoreVerticalIcon } from 'lucide-react';
+import { FolderIcon, MoreVerticalIcon, PencilLine, Trash2 } from 'lucide-react';
+import { overlay } from 'overlay-kit';
 import { memo, useEffect } from 'react';
 import type { Bookmark } from '@/entities/bookmark';
 import { mutations, queries } from '@/shared/api';
 import { extractFavicon } from '@/shared/libs/chrome';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/shared/shadcn/components/ui/dropdown-menu';
+import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
+import { FolderFormDialog } from './folder-form-dialog';
 
 interface FolderCard {
 	bookmark: Bookmark;
@@ -23,37 +33,80 @@ const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
 		sensors: [PointerSensor.configure({ preventActivation: () => false })],
 	});
 
+	const invalidate = () =>
+		queryClient.invalidateQueries({ queryKey: queries.bookmarks.all.queryKey });
+
 	const { mutate: move } = useMutation({
 		...mutations.bookmark.move(),
-		onSuccess() {
-			queryClient.invalidateQueries({
-				queryKey: queries.bookmarks.all.queryKey,
-			});
-		},
+		onSuccess: invalidate,
+	});
+
+	const { mutate: deleteFolder } = useMutation({
+		...mutations.bookmark.deleteFolder(),
+		onSuccess: invalidate,
 	});
 
 	useEffect(() => {
 		if (sortable.isDropping) {
-			move({
-				id: bookmark.id,
-				index: sortable.index,
-				parentId: bookmark.parentId,
-			});
+			move({ id: bookmark.id, index: sortable.index, parentId: bookmark.parentId });
 		}
-	}, [sortable.isDropping]);
+	}, [sortable.isDropping, sortable.index, bookmark.id, bookmark.parentId, move]);
 
 	return (
 		<div className='@container h-full w-full' ref={ref}>
 			<div className='group relative flex h-full min-h-[100cqw] w-full flex-col items-center gap-1.5'>
 				{/* Action buttons */}
 				<div className='absolute top-2 right-2 z-20 flex items-center gap-0.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100'>
-					<button
-						className='flex h-6 w-6 items-center justify-center rounded-md text-white/50 transition-all duration-150 hover:bg-white/20 hover:text-white'
-						title='수정'
-						type='button'
-					>
-						<MoreVerticalIcon aria-hidden='true' className='h-3 w-3' />
-					</button>
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<button
+								className='flex h-6 w-6 items-center justify-center rounded-md text-white/50 transition-all duration-150 hover:bg-white/20 hover:text-white'
+								onClick={(e) => e.stopPropagation()}
+								title='더보기'
+								type='button'
+							>
+								<MoreVerticalIcon aria-hidden='true' className='h-3 w-3' />
+							</button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align='end'>
+							<DropdownMenuItem
+								onClick={() =>
+									overlay.open(({ isOpen, close, unmount }) => (
+										<FolderFormDialog
+											close={close}
+											folderId={bookmark.id}
+											initialTitle={bookmark.title}
+											isOpen={isOpen}
+											parentId={bookmark.parentId ?? ''}
+											unmount={unmount}
+										/>
+									))
+								}
+							>
+								<PencilLine className='h-3.5 w-3.5' />
+								이름 변경
+							</DropdownMenuItem>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem
+								onClick={() =>
+									overlay.open(({ isOpen, close, unmount }) => (
+										<DeleteConfirmDialog
+											close={close}
+											description={`"${bookmark.title}" 폴더와 모든 항목이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.`}
+											isOpen={isOpen}
+											onConfirm={() => deleteFolder({ id: bookmark.id })}
+											title='폴더 삭제'
+											unmount={unmount}
+										/>
+									))
+								}
+								variant='destructive'
+							>
+								<Trash2 className='h-3.5 w-3.5' />
+								삭제
+							</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
 				</div>
 
 				<button
@@ -88,30 +141,27 @@ const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
 						</div>
 						<div className='my-2 h-px w-full bg-white/15' />
 						<ul className='flex w-full flex-col gap-3'>
-							{bookmark?.children?.slice(0, 6).map((bookmark) => {
-								if (!bookmark.children)
+							{bookmark?.children?.slice(0, 6).map((child) => {
+								if (!child.children)
 									return (
-										<li className='flex w-full gap-2 text-white/75 text-xs' key={bookmark.id}>
+										<li className='flex w-full gap-2 text-white/75 text-xs' key={child.id}>
 											<img
-												alt={`${bookmark.title} favicon`}
+												alt={`${child.title} favicon`}
 												className='h-4 w-4'
-												src={extractFavicon(bookmark.url) || ''}
+												src={extractFavicon(child.url) || ''}
 											/>
-											<p className='line-clamp-1'>{bookmark.title}</p>
+											<p className='line-clamp-1'>{child.title}</p>
 										</li>
 									);
-								else {
-									return (
-										<li className='flex w-full gap-2 text-white/75 text-xs' key={bookmark.id}>
-											<FolderIcon className='size-4 text-blue-200/80' fill='currentColor' />
-											<p className='line-clamp-1'>{bookmark.title}</p>
-										</li>
-									);
-								}
+								return (
+									<li className='flex w-full gap-2 text-white/75 text-xs' key={child.id}>
+										<FolderIcon className='size-4 text-blue-200/80' fill='currentColor' />
+										<p className='line-clamp-1'>{child.title}</p>
+									</li>
+								);
 							})}
 						</ul>
 					</div>
-					{/* bookmark list */}
 				</button>
 			</div>
 		</div>

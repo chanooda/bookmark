@@ -1,10 +1,15 @@
 import type { ChildrenProps } from '@chanooda/libs-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { OverlayProvider } from 'overlay-kit';
 
 interface QueryProviderProps extends ChildrenProps {}
 
-export const QueryProvider = ({ children }: QueryProviderProps) => {
-	const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
-	return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+export const QueryProvider = ({ children }: QueryProviderProps) => {
+	return (
+		<QueryClientProvider client={queryClient}>
+			<OverlayProvider>{children}</OverlayProvider>
+		</QueryClientProvider>
+	);
 };

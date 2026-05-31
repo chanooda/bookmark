@@ -1,7 +1,12 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GlobeIcon, SquarePen, Trash2 } from 'lucide-react';
+import { overlay } from 'overlay-kit';
 import type { MouseEvent } from 'react';
 import type { Bookmark } from '@/entities/bookmark';
+import { BookmarkFormDialog } from '@/features/bookmark';
+import { mutations, queries } from '@/shared/api';
 import { extractFavicon } from '@/shared/libs/chrome';
+import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
 
 interface ExplorerBookmarkCardProps {
 	bookmark: Bookmark;
@@ -17,16 +22,44 @@ export const ExplorerBookmarkCard = ({ bookmark }: ExplorerBookmarkCardProps) =>
 		hostname = bookmark.url ?? '';
 	}
 
+	const queryClient = useQueryClient();
+	const invalidate = () =>
+		queryClient.invalidateQueries({ queryKey: queries.bookmarks.all.queryKey });
+
+	const { mutate: deleteBookmark } = useMutation({
+		...mutations.bookmark.deleteBookmark(),
+		onSuccess: invalidate,
+	});
+
 	const handleEdit = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		e.stopPropagation();
-		alert('edit');
+		overlay.open(({ isOpen, close, unmount }) => (
+			<BookmarkFormDialog
+				bookmarkId={bookmark.id}
+				close={close}
+				initialTitle={bookmark.title}
+				initialUrl={bookmark.url ?? ''}
+				isOpen={isOpen}
+				parentId={bookmark.parentId ?? ''}
+				unmount={unmount}
+			/>
+		));
 	};
 
 	const handleDelete = (e: MouseEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 		e.stopPropagation();
-		alert('delete');
+		overlay.open(({ isOpen, close, unmount }) => (
+			<DeleteConfirmDialog
+				close={close}
+				description={`"${bookmark.title}" 북마크가 삭제됩니다. 이 작업은 되돌릴 수 없습니다.`}
+				isOpen={isOpen}
+				onConfirm={() => deleteBookmark({ id: bookmark.id })}
+				title='북마크 삭제'
+				unmount={unmount}
+			/>
+		));
 	};
 
 	return (
