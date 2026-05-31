@@ -1,14 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { FolderPlus } from 'lucide-react';
 import { overlay } from 'overlay-kit';
 import { BookmarkCard } from './features/bookmark';
 import { Explorer } from './features/explorer';
-import { FolderCard, FolderFormDialog } from './features/folder';
+import { FolderCard } from './features/folder';
 import { TopGridLayout } from './features/views';
 import { queries } from './shared/api';
-import { BOOKMARK_ROOT_ID } from './shared/config/chrome.const';
-import { Button } from './shared/shadcn/components/ui/button';
 import { Dialog } from './shared/shadcn/components/ui/dialog';
+import { Header } from './widgets/header';
+import { Search } from './widgets/search';
 
 export default function App() {
 	const { data } = useQuery({
@@ -18,26 +17,9 @@ export default function App() {
 	return (
 		<main className='bg-background'>
 			<div className='relative z-10 h-dvh w-dvw overflow-hidden'>
+				<Header />
 				<div className='z-20 h-full w-full overflow-auto p-6'>
-					<div className='mb-8 flex h-40 w-full items-end pb-4'>
-						<Button
-							className='gap-1.5'
-							onClick={() =>
-								overlay.open(({ isOpen, close, unmount }) => (
-									<FolderFormDialog
-										close={close}
-										isOpen={isOpen}
-										parentId={String(BOOKMARK_ROOT_ID)}
-										unmount={unmount}
-									/>
-								))
-							}
-							size='sm'
-							variant='outline'
-						>
-							<FolderPlus className='h-4 w-4' />새 폴더
-						</Button>
-					</div>
+					<Search />
 					<TopGridLayout>
 						{data?.map((bookmark, idx) => {
 							if (!bookmark.children) {
