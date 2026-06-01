@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+import { SearchX } from 'lucide-react';
 import { overlay } from 'overlay-kit';
-import { BookmarkCard } from './features/bookmark';
+import { useMemo } from 'react';
+import { BookmarkCard, useFilterStore } from './features/bookmark';
 import { Explorer } from './features/explorer';
 import { FolderCard } from './features/folder';
 import { TopGridLayout } from './features/views';
@@ -13,6 +15,16 @@ export default function App() {
 	const { data } = useQuery({
 		...queries.bookmarks.all,
 	});
+	const search = useFilterStore((s) => s.search ?? '');
+
+	const displayItems = useMemo(() => {
+		if (!data) return [];
+		const q = search.trim().toLowerCase();
+		if (!q) return data.tree;
+		return data.flat.filter(
+			(b) => b.title.toLowerCase().includes(q) || (b.url && b.url.toLowerCase().includes(q)),
+		);
+	}, [data, search]);
 
 	return (
 		<main className='bg-background'>
@@ -20,35 +32,45 @@ export default function App() {
 				<Header />
 				<div className='z-20 h-full w-full overflow-auto p-6'>
 					<Search />
-					<TopGridLayout>
-						{data?.map((bookmark, idx) => {
-							if (!bookmark.children) {
-								return <BookmarkCard bookmark={bookmark} index={idx} key={bookmark.id} />;
-							}
-							return (
-								<FolderCard
-									bookmark={bookmark}
-									index={idx}
-									key={bookmark.id}
-									onClick={() => {
-										overlay.open(({ isOpen, close, unmount }) => (
-											<Dialog
-												onOpenChange={(isOpen) => {
-													if (!isOpen) {
-														close();
-														unmount();
-													}
-												}}
-												open={isOpen}
-											>
-												<Explorer id={bookmark.id} />
-											</Dialog>
-										));
-									}}
-								/>
-							);
-						})}
-					</TopGridLayout>
+					{displayItems.length === 0 && search.trim() ? (
+						<div className='flex flex-col items-center justify-center gap-3 py-20 text-muted-foreground'>
+							<SearchX className='h-10 w-10 opacity-30' />
+							<p className='text-sm'>
+								<span className='font-medium text-foreground/60'>'{search}'</span>에 대한 검색
+								결과가 없습니다.
+							</p>
+						</div>
+					) : (
+						<TopGridLayout>
+							{displayItems.map((bookmark, idx) => {
+								if (!bookmark.children) {
+									return <BookmarkCard bookmark={bookmark} index={idx} key={bookmark.id} />;
+								}
+								return (
+									<FolderCard
+										bookmark={bookmark}
+										index={idx}
+										key={bookmark.id}
+										onClick={() => {
+											overlay.open(({ isOpen, close, unmount }) => (
+												<Dialog
+													onOpenChange={(isOpen) => {
+														if (!isOpen) {
+															close();
+															unmount();
+														}
+													}}
+													open={isOpen}
+												>
+													<Explorer id={bookmark.id} />
+												</Dialog>
+											));
+										}}
+									/>
+								);
+							})}
+						</TopGridLayout>
+					)}
 				</div>
 				<div
 					className='absolute inset-0 -z-10'

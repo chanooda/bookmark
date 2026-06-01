@@ -1,20 +1,30 @@
 import { debounce } from '@chanooda/libs';
 import { ArrowRight, Bookmark, X } from 'lucide-react';
-import { type ChangeEvent, useCallback } from 'react';
+import { type ChangeEvent, useCallback, useRef, useState } from 'react';
 import { useFilterStore } from '@/features/bookmark';
 import { GoogleIcon } from '@/shared/assets';
 
 export const Search = () => {
 	const setSearch = useFilterStore((store) => store.setSearch);
-	const search = useFilterStore((store) => store.search);
+	const [inputValue, setInputValue] = useState('');
+	const inputRef = useRef<HTMLInputElement>(null);
 
-	const handleChangeBookmarkInput = useCallback(
-		debounce((e: ChangeEvent<HTMLInputElement>) => {
-			const value = e.target.value;
-			if (value) setSearch(value);
-		}, 500),
+	const debouncedSetSearch = useCallback(
+		debounce((value: string) => setSearch(value), 500),
 		[],
 	);
+
+	const handleChangeBookmarkInput = (e: ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+		setInputValue(value);
+		debouncedSetSearch(value);
+	};
+
+	const handleClear = () => {
+		setInputValue('');
+		setSearch('');
+		if (inputRef.current) inputRef.current.focus();
+	};
 
 	return (
 		<header className='mb-6 flex w-full items-end'>
@@ -37,12 +47,15 @@ export const Search = () => {
 						className='h-11 flex-1 bg-transparent px-3.5 text-foreground text-sm outline-none placeholder:text-muted-foreground/35'
 						onChange={handleChangeBookmarkInput}
 						placeholder='북마크 검색...'
+						ref={inputRef}
+						value={inputValue}
 					/>
 					{/* Clear button — appears when there's text */}
-					{search && (
+					{inputValue && (
 						<button
-							aria-label={'검색어 초기화'}
+							aria-label='검색어 초기화'
 							className='mr-3 flex h-5 w-5 shrink-0 items-center justify-center rounded text-muted-foreground/35 transition-colors duration-150 hover:text-foreground/60'
+							onClick={handleClear}
 							type='button'
 						>
 							<X aria-hidden='true' className='h-3 w-3' />

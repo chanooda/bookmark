@@ -36,12 +36,12 @@ export const ExplorerContent = () => {
 	const currentId = useExplorerStore((s) => s.currentId);
 	const navigate = useExplorerStore((s) => s.navigate);
 
-	const { data: bookmarks, isLoading } = useQuery({
+	const { data, isLoading } = useQuery({
 		...queries.bookmarks.all,
 		enabled: !!currentId,
 	});
 
-	const bookmarkById = findById(bookmarks || [], currentId);
+	const bookmarkById = findById(data?.flat || [], currentId);
 	const children = bookmarkById?.children || [];
 	const isEmpty = !isLoading && children?.length === 0;
 

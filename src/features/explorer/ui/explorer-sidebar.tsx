@@ -9,11 +9,12 @@ export const ExplorerLeftSideBar = () => {
 	const currentId = useExplorerStore((s) => s.currentId);
 	const navigate = useExplorerStore((s) => s.navigate);
 
-	const { data: bookmarks } = useQuery({
+	const { data } = useQuery({
 		...queries.bookmarks.all,
 	});
 
-	if (!bookmarks) return null;
+	if (!data) return null;
+	const bookmarks = data.tree;
 
 	return (
 		<div className='flex h-full w-52 shrink-0 flex-col overflow-auto border-r bg-black'>

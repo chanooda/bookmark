@@ -20,11 +20,11 @@ interface ExplorerProps {
 export const Explorer = ({ id }: ExplorerProps) => {
 	const init = useExplorerStore((s) => s.init);
 
-	const { data: bookmarks } = useQuery({
+	const { data } = useQuery({
 		...queries.bookmarks.all,
 	});
 
-	const bookmark = findById(bookmarks || [], id);
+	const bookmark = findById(data?.flat || [], id);
 
 	const sidebarOpen = useExplorerStore((s) => s.sidebarOpen);
 	const closeSidebar = useExplorerStore((s) => s.closeSidebar);

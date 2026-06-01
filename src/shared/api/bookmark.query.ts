@@ -487,7 +487,9 @@ const mock = [
 	},
 ];
 
-// queries/users.ts
+const flatten = (nodes: chrome.bookmarks.BookmarkTreeNode[]): chrome.bookmarks.BookmarkTreeNode[] =>
+	nodes.flatMap((n) => (n.children ? [n, ...flatten(n.children)] : [n]));
+
 export const bookmarks = createQueryKeys('bookmarks', {
 	all: {
 		queryKey: ['list'],
@@ -495,11 +497,11 @@ export const bookmarks = createQueryKeys('bookmarks', {
 			try {
 				assertChromeBookmarks();
 				const res = await getChromeBookmarks();
-				return res[0]?.children?.flatMap(
-					(bookmark) => bookmark.children,
-				) as chrome.bookmarks.BookmarkTreeNode[];
+				const tree = (res[0]?.children?.flatMap((b) => b.children) ?? []) as chrome.bookmarks.BookmarkTreeNode[];
+				return { tree, flat: flatten(tree) };
 			} catch {
-				return mock;
+				const tree = mock as chrome.bookmarks.BookmarkTreeNode[];
+				return { tree, flat: flatten(tree) };
 			}
 		},
 	},

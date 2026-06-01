@@ -16,14 +16,14 @@ export const ExplorerContentHeader = () => {
 	const toggleSidebar = useExplorerStore((s) => s.toggleSidebar);
 
 	const queryClient = useQueryClient();
-	const { data: bookmarks } = useQuery({ ...queries.bookmarks.all });
+	const { data } = useQuery({ ...queries.bookmarks.all });
 
-	const fullPath = bookmarks ? findPath(bookmarks, currentId) : [];
+	const fullPath = data ? findPath(data.flat, currentId) : [];
 	const rootIndex = fullPath.findIndex((n) => n.id === rootId);
 	const path = rootIndex >= 0 ? fullPath.slice(rootIndex) : fullPath;
 	const isRoot = path.length <= 1;
 
-	const currentFolder = bookmarks ? findById(bookmarks, currentId) : null;
+	const currentFolder = data ? findById(data.flat, currentId) : null;
 
 	const handleBack = () => {
 		const parent = path[path.length - 2];
