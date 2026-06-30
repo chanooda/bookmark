@@ -1,12 +1,13 @@
 import { debounce } from '@chanooda/libs';
 import { ArrowRight, Bookmark, X } from 'lucide-react';
-import { type ChangeEvent, useCallback, useRef, useState } from 'react';
+import { type ChangeEvent, type FormEvent, useCallback, useRef, useState } from 'react';
 import { useFilterStore } from '@/features/bookmark';
 import { GoogleIcon } from '@/shared/assets';
 
 export const Search = () => {
 	const setSearch = useFilterStore((store) => store.setSearch);
 	const [inputValue, setInputValue] = useState('');
+	const [googleQuery, setGoogleQuery] = useState('');
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const debouncedSetSearch = useCallback(
@@ -18,6 +19,12 @@ export const Search = () => {
 		const value = e.target.value;
 		setInputValue(value);
 		debouncedSetSearch(value);
+	};
+
+	const handleGoogleSearch = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		if (!googleQuery.trim()) return;
+		location.href = `https://www.google.com/search?q=${encodeURIComponent(googleQuery)}`;
 	};
 
 	const handleClear = () => {
@@ -62,7 +69,10 @@ export const Search = () => {
 						</button>
 					)}
 				</div>
-				<form className='group/gl flex flex-1 items-center overflow-hidden rounded-xl border border-border/50 bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-200 focus-within:border-blue-400/40 focus-within:ring-2 focus-within:ring-blue-400/10'>
+				<form
+					className='group/gl flex flex-1 items-center overflow-hidden rounded-xl border border-border/50 bg-card/70 shadow-sm backdrop-blur-sm transition-all duration-200 focus-within:border-blue-400/40 focus-within:ring-2 focus-within:ring-blue-400/10'
+					onSubmit={handleGoogleSearch}
+				>
 					{/* Label badge — clickable link to google.com */}
 					<a
 						aria-label='구글 검색'
@@ -79,7 +89,10 @@ export const Search = () => {
 					<input
 						aria-label='구글 검색창'
 						className='h-11 flex-1 bg-transparent px-3.5 text-foreground text-sm outline-none placeholder:text-muted-foreground/35'
+						onChange={(e) => setGoogleQuery(e.target.value)}
+						onFocus={(e) => e.target.select()}
 						placeholder='검색어 또는 URL 입력...'
+						value={googleQuery}
 					/>
 					{/* Submit button */}
 					<button
