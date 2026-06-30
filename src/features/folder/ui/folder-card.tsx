@@ -15,7 +15,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/shared/shadcn/components/ui/dropdown-menu';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
-import { ItemFormDialog } from '@/shared/ui/item-form-dialog';
+import { FolderFormDialog } from '@/shared/ui/folder-form-dialog';
 
 interface FolderCard {
 	bookmark: Bookmark;
@@ -72,7 +72,7 @@ const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
 							<DropdownMenuItem
 								onClick={() =>
 									overlay.open(({ isOpen, close, unmount }) => (
-										<ItemFormDialog
+										<FolderFormDialog
 											close={close}
 											folderId={bookmark.id}
 											initialTitle={bookmark.title}

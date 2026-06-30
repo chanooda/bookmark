@@ -3,7 +3,7 @@ import { FolderIcon, PencilLine, Trash2 } from 'lucide-react';
 import { overlay } from 'overlay-kit';
 import type { MouseEvent } from 'react';
 import type { Bookmark } from '@/entities/bookmark';
-import { ItemFormDialog } from '@/shared/ui/item-form-dialog';
+import { FolderFormDialog } from '@/shared/ui/folder-form-dialog';
 import { mutations, queries } from '@/shared/api';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
 
@@ -27,7 +27,7 @@ export const ExplorerFolderCard = ({ bookmark, onClick }: ExplorerFolderCardProp
 	const handleEdit = (e: MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation();
 		overlay.open(({ isOpen, close, unmount }) => (
-			<ItemFormDialog
+			<FolderFormDialog
 				close={close}
 				folderId={bookmark.id}
 				initialTitle={bookmark.title}

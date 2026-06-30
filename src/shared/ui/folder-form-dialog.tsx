@@ -1,0 +1,123 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import { mutations, queries } from '@/shared/api';
+import { Button } from '@/shared/shadcn/components/ui/button';
+import {
+	Dialog,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from '@/shared/shadcn/components/ui/dialog';
+import { Input } from '@/shared/shadcn/components/ui/input';
+
+interface FolderFormContentProps {
+	parentId: string;
+	onClose: () => void;
+	submitLabel?: string;
+	folderId?: string;
+	initialTitle?: string;
+}
+
+export const FolderFormContent = ({
+	parentId,
+	onClose,
+	submitLabel = '저장',
+	folderId,
+	initialTitle = '',
+}: FolderFormContentProps) => {
+	const isEdit = !!folderId;
+
+	const [title, setTitle] = useState(isEdit ? initialTitle : '');
+
+	const queryClient = useQueryClient();
+	const invalidate = () =>
+		queryClient.invalidateQueries({ queryKey: queries.bookmarks.all.queryKey });
+
+	const onSuccess = () => {
+		invalidate();
+		onClose();
+	};
+
+	const { mutate: createFolder, isPending: isCreating } = useMutation({
+		...mutations.bookmark.createFolder(),
+		onSuccess,
+	});
+
+	const { mutate: updateFolder, isPending: isUpdating } = useMutation({
+		...mutations.bookmark.updateFolder(),
+		onSuccess,
+	});
+
+	const isPending = isCreating || isUpdating;
+
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		const trimmed = title.trim();
+		if (!trimmed) return;
+		if (isEdit && folderId) {
+			updateFolder({ id: folderId, title: trimmed });
+		} else {
+			createFolder({ parentId, title: trimmed });
+		}
+	};
+
+	return (
+		<form className='pt-4' onSubmit={handleSubmit}>
+			<Input
+				autoFocus={!isEdit}
+				className='mt-1'
+				onChange={(e) => setTitle(e.target.value)}
+				placeholder='폴더 이름'
+				value={title}
+			/>
+			<DialogFooter className='mt-4'>
+				<Button onClick={onClose} type='button' variant='outline'>
+					취소
+				</Button>
+				<Button disabled={isPending || !title.trim()} type='submit'>
+					{submitLabel}
+				</Button>
+			</DialogFooter>
+		</form>
+	);
+};
+
+interface FolderFormDialogProps {
+	isOpen: boolean;
+	close: () => void;
+	unmount: () => void;
+	parentId: string;
+	folderId: string;
+	initialTitle?: string;
+}
+
+export const FolderFormDialog = ({
+	isOpen,
+	close,
+	unmount,
+	parentId,
+	folderId,
+	initialTitle,
+}: FolderFormDialogProps) => {
+	const handleClose = () => {
+		close();
+		unmount();
+	};
+
+	return (
+		<Dialog onOpenChange={(open) => !open && handleClose()} open={isOpen}>
+			<DialogContent showCloseButton={false}>
+				<DialogHeader>
+					<DialogTitle>폴더 이름 수정</DialogTitle>
+				</DialogHeader>
+				<FolderFormContent
+					folderId={folderId}
+					initialTitle={initialTitle}
+					onClose={handleClose}
+					parentId={parentId}
+				/>
+			</DialogContent>
+		</Dialog>
+	);
+};

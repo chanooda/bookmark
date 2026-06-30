@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Menu, PencilLine, Plus, Trash2, X } from 'lu
 import { overlay } from 'overlay-kit';
 import { findById } from '@/entities/bookmark/libs/findBookmarkById';
 import { ItemFormDialog } from '@/shared/ui/item-form-dialog';
+import { FolderFormDialog } from '@/shared/ui/folder-form-dialog';
 import { mutations, queries } from '@/shared/api';
 import { DialogClose } from '@/shared/shadcn/components/ui/dialog';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
@@ -91,7 +92,7 @@ export const ExplorerContentHeader = () => {
 					className='flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground'
 					onClick={() =>
 						overlay.open(({ isOpen, close, unmount }) => (
-							<ItemFormDialog
+							<FolderFormDialog
 								close={close}
 								folderId={currentId}
 								initialTitle={currentFolder?.title ?? ''}
