@@ -1,14 +1,17 @@
 {
-  "$schema": "https://biomejs.dev/schemas/latest/schema.json",
-  "extends": ["@chanooda/biome-config-frontend/common"],
-  "assist": {
-    "actions": {
-      "source": {
-        "useSortedAttributes": "on",
-        "organizeImports": "on",
-        "useSortedProperties": "on",
-        "useSortedInterfaceMembers": "on"
-      }
-    }
-  }
+	"$schema": "https://biomejs.dev/schemas/latest/schema.json",
+	"extends": ["@chanooda/biome-config-frontend/common"],
+	"assist": {
+		"actions": {
+			"source": {
+				"useSortedAttributes": "on",
+				"organizeImports": "on",
+				"useSortedProperties": "on",
+				"useSortedInterfaceMembers": "on"
+			}
+		}
+	},
+	"files": {
+		"includes": ["!src/shared/shadcn"]
+	}
 }

@@ -3,9 +3,9 @@ import { GlobeIcon, SquarePen, Trash2 } from 'lucide-react';
 import { overlay } from 'overlay-kit';
 import type { MouseEvent } from 'react';
 import type { Bookmark } from '@/entities/bookmark';
-import { BookmarkFormDialog } from '@/shared/ui/bookmark-form-dialog';
 import { mutations, queries } from '@/shared/api';
 import { extractFavicon } from '@/shared/libs/chrome';
+import { BookmarkFormDialog } from '@/shared/ui/bookmark-form-dialog';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
 
 interface ExplorerBookmarkCardProps {

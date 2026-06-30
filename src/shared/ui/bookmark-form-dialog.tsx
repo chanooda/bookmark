@@ -12,12 +12,12 @@ import {
 import { Input } from '@/shared/shadcn/components/ui/input';
 
 interface BookmarkFormContentProps {
-	parentId: string;
-	onClose: () => void;
-	submitLabel?: string;
 	bookmarkId?: string;
 	initialTitle?: string;
 	initialUrl?: string;
+	onClose: () => void;
+	parentId: string;
+	submitLabel?: string;
 }
 
 export const BookmarkFormContent = ({
@@ -95,13 +95,13 @@ export const BookmarkFormContent = ({
 };
 
 interface BookmarkFormDialogProps {
-	isOpen: boolean;
-	close: () => void;
-	unmount: () => void;
-	parentId: string;
 	bookmarkId: string;
+	close: () => void;
 	initialTitle?: string;
 	initialUrl?: string;
+	isOpen: boolean;
+	parentId: string;
+	unmount: () => void;
 }
 
 export const BookmarkFormDialog = ({

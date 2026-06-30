@@ -12,11 +12,11 @@ import {
 import { Input } from '@/shared/shadcn/components/ui/input';
 
 interface FolderFormContentProps {
-	parentId: string;
-	onClose: () => void;
-	submitLabel?: string;
 	folderId?: string;
 	initialTitle?: string;
+	onClose: () => void;
+	parentId: string;
+	submitLabel?: string;
 }
 
 export const FolderFormContent = ({
@@ -84,12 +84,12 @@ export const FolderFormContent = ({
 };
 
 interface FolderFormDialogProps {
-	isOpen: boolean;
 	close: () => void;
-	unmount: () => void;
-	parentId: string;
 	folderId: string;
 	initialTitle?: string;
+	isOpen: boolean;
+	parentId: string;
+	unmount: () => void;
 }
 
 export const FolderFormDialog = ({

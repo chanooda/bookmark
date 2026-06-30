@@ -10,11 +10,11 @@ import { BookmarkFormContent } from './bookmark-form-dialog';
 import { FolderFormContent } from './folder-form-dialog';
 
 interface ItemFormDialogProps {
-	isOpen: boolean;
 	close: () => void;
-	unmount: () => void;
-	parentId: string;
 	defaultTab?: 'bookmark' | 'folder';
+	isOpen: boolean;
+	parentId: string;
+	unmount: () => void;
 }
 
 export const ItemFormDialog = ({

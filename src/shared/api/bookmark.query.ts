@@ -497,7 +497,8 @@ export const bookmarks = createQueryKeys('bookmarks', {
 			try {
 				assertChromeBookmarks();
 				const res = await getChromeBookmarks();
-				const tree = (res[0]?.children?.flatMap((b) => b.children) ?? []) as chrome.bookmarks.BookmarkTreeNode[];
+				const tree = (res[0]?.children?.flatMap((b) => b.children) ??
+					[]) as chrome.bookmarks.BookmarkTreeNode[];
 				return { tree, flat: flatten(tree) };
 			} catch {
 				const tree = mock as chrome.bookmarks.BookmarkTreeNode[];

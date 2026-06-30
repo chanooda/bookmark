@@ -55,7 +55,7 @@ export const ExplorerTreeNode = ({
 
 	useEffect(() => {
 		if (isAncestor || isActive) setExpanded(true);
-	}, [isAncestor, isActive]);
+	}, [isActive]);
 
 	if (!isFolder) return null;
 

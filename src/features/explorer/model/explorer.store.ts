@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 
 interface ExplorerState {
+	closeSidebar: () => void;
 	currentId: string;
 	init: (rootId: string) => void;
 	navigate: (id: string) => void;
 	rootId: string;
 	sidebarOpen: boolean;
 	toggleSidebar: () => void;
-	closeSidebar: () => void;
 }
 
 export const useExplorerStore = create<ExplorerState>((set) => ({

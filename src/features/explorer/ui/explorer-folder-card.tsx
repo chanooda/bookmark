@@ -3,9 +3,9 @@ import { FolderIcon, PencilLine, Trash2 } from 'lucide-react';
 import { overlay } from 'overlay-kit';
 import type { MouseEvent } from 'react';
 import type { Bookmark } from '@/entities/bookmark';
-import { FolderFormDialog } from '@/shared/ui/folder-form-dialog';
 import { mutations, queries } from '@/shared/api';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
+import { FolderFormDialog } from '@/shared/ui/folder-form-dialog';
 
 interface ExplorerFolderCardProps {
 	bookmark: Bookmark;

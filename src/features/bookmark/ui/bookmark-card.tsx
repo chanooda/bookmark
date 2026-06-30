@@ -7,8 +7,8 @@ import { type MouseEvent, memo, useEffect } from 'react';
 import type { Bookmark, Tag } from '@/entities/bookmark';
 import { mutations, queries } from '@/shared/api';
 import { extractFavicon } from '@/shared/libs/chrome';
-import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
 import { BookmarkFormDialog } from '@/shared/ui/bookmark-form-dialog';
+import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
 
 interface BookmarkCardProps {
 	bookmark: Bookmark;

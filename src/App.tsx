@@ -22,7 +22,7 @@ export default function App() {
 		const q = search.trim().toLowerCase();
 		if (!q) return data.tree;
 		return data.flat.filter(
-			(b) => b.title.toLowerCase().includes(q) || (b.url && b.url.toLowerCase().includes(q)),
+			(b) => b.title.toLowerCase().includes(q) || b.url?.toLowerCase().includes(q),
 		);
 	}, [data, search]);
 
