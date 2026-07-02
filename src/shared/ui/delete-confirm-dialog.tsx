@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -26,6 +27,8 @@ export const DeleteConfirmDialog = ({
 	description,
 	onConfirm,
 }: DeleteConfirmDialogProps) => {
+	const { t } = useTranslation();
+
 	const handleConfirm = () => {
 		onConfirm();
 		close();
@@ -45,9 +48,9 @@ export const DeleteConfirmDialog = ({
 					<AlertDialogDescription>{description}</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel onClick={handleCancel}>취소</AlertDialogCancel>
+					<AlertDialogCancel onClick={handleCancel}>{t('common.cancel')}</AlertDialogCancel>
 					<AlertDialogAction onClick={handleConfirm} variant='destructive'>
-						삭제
+						{t('common.delete')}
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>

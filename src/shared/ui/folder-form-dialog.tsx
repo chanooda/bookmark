@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { mutations, queries } from '@/shared/api';
 import { Button } from '@/shared/shadcn/components/ui/button';
 import {
@@ -22,10 +23,11 @@ interface FolderFormContentProps {
 export const FolderFormContent = ({
 	parentId,
 	onClose,
-	submitLabel = '저장',
+	submitLabel,
 	folderId,
 	initialTitle = '',
 }: FolderFormContentProps) => {
+	const { t } = useTranslation();
 	const isEdit = !!folderId;
 
 	const [title, setTitle] = useState(isEdit ? initialTitle : '');
@@ -68,15 +70,15 @@ export const FolderFormContent = ({
 				autoFocus={!isEdit}
 				className='mt-1'
 				onChange={(e) => setTitle(e.target.value)}
-				placeholder='폴더 이름'
+				placeholder={t('folderForm.namePlaceholder')}
 				value={title}
 			/>
 			<DialogFooter className='mt-4'>
 				<Button onClick={onClose} type='button' variant='outline'>
-					취소
+					{t('common.cancel')}
 				</Button>
 				<Button disabled={isPending || !title.trim()} type='submit'>
-					{submitLabel}
+					{submitLabel ?? t('common.save')}
 				</Button>
 			</DialogFooter>
 		</form>
@@ -100,6 +102,7 @@ export const FolderFormDialog = ({
 	folderId,
 	initialTitle,
 }: FolderFormDialogProps) => {
+	const { t } = useTranslation();
 	const handleClose = () => {
 		close();
 		unmount();
@@ -109,7 +112,7 @@ export const FolderFormDialog = ({
 		<Dialog onOpenChange={(open) => !open && handleClose()} open={isOpen}>
 			<DialogContent showCloseButton={false}>
 				<DialogHeader>
-					<DialogTitle>폴더 이름 수정</DialogTitle>
+					<DialogTitle>{t('folderForm.editTitle')}</DialogTitle>
 				</DialogHeader>
 				<FolderFormContent
 					folderId={folderId}

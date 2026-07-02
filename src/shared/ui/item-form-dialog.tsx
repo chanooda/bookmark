@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
 	Dialog,
 	DialogContent,
@@ -24,6 +25,7 @@ export const ItemFormDialog = ({
 	parentId,
 	defaultTab = 'bookmark',
 }: ItemFormDialogProps) => {
+	const { t } = useTranslation();
 	const [tab, setTab] = useState<'bookmark' | 'folder'>(defaultTab);
 
 	const handleClose = () => {
@@ -35,22 +37,32 @@ export const ItemFormDialog = ({
 		<Dialog onOpenChange={(open) => !open && handleClose()} open={isOpen}>
 			<DialogContent showCloseButton={false}>
 				<DialogHeader>
-					<DialogTitle>{tab === 'bookmark' ? '새 북마크 추가' : '새 폴더 만들기'}</DialogTitle>
+					<DialogTitle>
+						{tab === 'bookmark' ? t('itemForm.addBookmarkTitle') : t('itemForm.addFolderTitle')}
+					</DialogTitle>
 				</DialogHeader>
 				<Tabs onValueChange={(v) => setTab(v as 'bookmark' | 'folder')} value={tab}>
 					<TabsList className='w-full'>
 						<TabsTrigger className='flex-1' value='bookmark'>
-							북마크
+							{t('common.bookmark')}
 						</TabsTrigger>
 						<TabsTrigger className='flex-1' value='folder'>
-							폴더
+							{t('common.folder')}
 						</TabsTrigger>
 					</TabsList>
 					<TabsContent value='bookmark'>
-						<BookmarkFormContent onClose={handleClose} parentId={parentId} submitLabel='추가' />
+						<BookmarkFormContent
+							onClose={handleClose}
+							parentId={parentId}
+							submitLabel={t('common.add')}
+						/>
 					</TabsContent>
 					<TabsContent value='folder'>
-						<FolderFormContent onClose={handleClose} parentId={parentId} submitLabel='만들기' />
+						<FolderFormContent
+							onClose={handleClose}
+							parentId={parentId}
+							submitLabel={t('itemForm.createFolderSubmit')}
+						/>
 					</TabsContent>
 				</Tabs>
 			</DialogContent>

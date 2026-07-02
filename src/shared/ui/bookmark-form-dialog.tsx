@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Globe } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { mutations, queries } from '@/shared/api';
 import { Button } from '@/shared/shadcn/components/ui/button';
 import {
@@ -33,11 +34,12 @@ interface BookmarkFormContentProps {
 export const BookmarkFormContent = ({
 	parentId,
 	onClose,
-	submitLabel = '저장',
+	submitLabel,
 	bookmarkId,
 	initialTitle = '',
 	initialUrl = '',
 }: BookmarkFormContentProps) => {
+	const { t } = useTranslation();
 	const isEdit = !!bookmarkId;
 
 	const [title, setTitle] = useState(isEdit ? initialTitle : '');
@@ -103,7 +105,7 @@ export const BookmarkFormContent = ({
 					autoFocus
 					className='h-12'
 					onChange={handleUrlChange}
-					placeholder='URL (https://...)'
+					placeholder={t('bookmarkForm.urlPlaceholder')}
 					type='url'
 					value={url}
 				/>
@@ -111,15 +113,15 @@ export const BookmarkFormContent = ({
 			<Input
 				className='h-12'
 				onChange={(e) => setTitle(e.target.value)}
-				placeholder='이름'
+				placeholder={t('bookmarkForm.namePlaceholder')}
 				value={title}
 			/>
 			<DialogFooter className='mt-2'>
 				<Button onClick={onClose} size='lg' type='button' variant='outline'>
-					취소
+					{t('common.cancel')}
 				</Button>
 				<Button disabled={isPending || !title.trim() || !url.trim()} size='lg' type='submit'>
-					{submitLabel}
+					{submitLabel ?? t('common.save')}
 				</Button>
 			</DialogFooter>
 		</form>
@@ -145,6 +147,7 @@ export const BookmarkFormDialog = ({
 	initialTitle,
 	initialUrl,
 }: BookmarkFormDialogProps) => {
+	const { t } = useTranslation();
 	const handleClose = () => {
 		close();
 		unmount();
@@ -154,7 +157,7 @@ export const BookmarkFormDialog = ({
 		<Dialog onOpenChange={(open) => !open && handleClose()} open={isOpen}>
 			<DialogContent showCloseButton={false}>
 				<DialogHeader>
-					<DialogTitle>북마크 수정</DialogTitle>
+					<DialogTitle>{t('bookmarkForm.editTitle')}</DialogTitle>
 				</DialogHeader>
 				<BookmarkFormContent
 					bookmarkId={bookmarkId}
