@@ -1,10 +1,12 @@
 import { debounce } from '@chanooda/libs';
 import { ArrowRight, Bookmark, X } from 'lucide-react';
 import { type ChangeEvent, type FormEvent, useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFilterStore } from '@/features/bookmark';
 import { GoogleIcon } from '@/shared/assets';
 
 export const Search = () => {
+	const { t } = useTranslation();
 	const setSearch = useFilterStore((store) => store.setSearch);
 	const [inputValue, setInputValue] = useState('');
 	const [googleQuery, setGoogleQuery] = useState('');
@@ -45,22 +47,22 @@ export const Search = () => {
 							fill='currentColor'
 						/>
 						<span className='font-label text-[9px] text-primary/50 uppercase tracking-[0.13em] transition-colors duration-200 group-focus-within/bm:text-primary/80'>
-							북마크
+							{t('search.bookmarkLabel')}
 						</span>
 					</div>
 					{/* Input */}
 					<input
-						aria-label='북마크 검색'
+						aria-label={t('search.bookmarkAriaLabel')}
 						className='h-11 flex-1 bg-transparent px-3.5 text-foreground text-sm outline-none placeholder:text-muted-foreground/35'
 						onChange={handleChangeBookmarkInput}
-						placeholder='북마크 검색...'
+						placeholder={t('search.bookmarkPlaceholder')}
 						ref={inputRef}
 						value={inputValue}
 					/>
 					{/* Clear button — appears when there's text */}
 					{inputValue && (
 						<button
-							aria-label='검색어 초기화'
+							aria-label={t('search.clearAriaLabel')}
 							className='mr-3 flex h-5 w-5 shrink-0 items-center justify-center rounded text-muted-foreground/35 transition-colors duration-150 hover:text-foreground/60'
 							onClick={handleClear}
 							type='button'
@@ -75,10 +77,10 @@ export const Search = () => {
 				>
 					{/* Label badge — clickable link to google.com */}
 					<a
-						aria-label='구글 검색'
+						aria-label={t('search.googleAriaLabel')}
 						className='flex shrink-0 items-center gap-1.5 border-border/40 border-r px-3.5 py-3 transition-all duration-200 hover:bg-blue-500/5 group-focus-within/gl:border-blue-400/25'
 						href='https://www.google.com'
-						title='구글 검색'
+						title={t('search.googleAriaLabel')}
 					>
 						<GoogleIcon />
 						<span className='font-label text-[9px] text-blue-400/50 uppercase tracking-[0.13em] transition-colors duration-200 group-focus-within/gl:text-blue-400/85'>
@@ -87,17 +89,17 @@ export const Search = () => {
 					</a>
 					{/* Input */}
 					<input
-						aria-label='구글 검색창'
+						aria-label={t('search.googleInputAriaLabel')}
 						className='h-11 flex-1 bg-transparent px-3.5 text-foreground text-sm outline-none placeholder:text-muted-foreground/35'
 						onChange={(e) => setGoogleQuery(e.target.value)}
 						onFocus={(e) => e.target.select()}
-						placeholder='검색어 또는 URL 입력...'
+						placeholder={t('search.googlePlaceholder')}
 						value={googleQuery}
 					/>
 					{/* Submit button */}
 					<button
 						className='mr-3 flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-muted-foreground/25 transition-all duration-200 hover:bg-blue-500/12 hover:text-blue-400 group-focus-within/gl:bg-blue-500/8 group-focus-within/gl:text-blue-400/70'
-						title='검색 버튼'
+						title={t('search.submitTitle')}
 						type='submit'
 					>
 						<ArrowRight aria-hidden='true' className='h-3.5 w-3.5' />

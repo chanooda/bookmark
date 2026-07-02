@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { SearchX } from 'lucide-react';
 import { overlay } from 'overlay-kit';
 import { useMemo } from 'react';
+import { Trans } from 'react-i18next';
 import { BookmarkCard, useFilterStore } from './features/bookmark';
 import { Explorer } from './features/explorer';
 import { FolderCard } from './features/folder';
@@ -48,8 +49,11 @@ export default function App() {
 						<div className='flex flex-col items-center justify-center gap-3 py-20 text-muted-foreground'>
 							<SearchX className='h-10 w-10 opacity-30' />
 							<p className='text-sm'>
-								<span className='font-medium text-foreground/60'>'{search}'</span>에 대한 검색
-								결과가 없습니다.
+								<Trans
+									components={{ query: <span className='font-medium text-foreground/60' /> }}
+									i18nKey='app.noSearchResults'
+									values={{ query: search }}
+								/>
 							</p>
 						</div>
 					) : (
