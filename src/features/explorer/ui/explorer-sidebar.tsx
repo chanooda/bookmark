@@ -48,13 +48,12 @@ export const ExplorerTreeNode = ({
 }) => {
 	const children = bookmark?.children || [];
 	const isActive = bookmark.id === currentId;
-	const isAncestor = false;
 	const isFolder = children.length > 0;
 	const hasFolderChildren = children.some((child) => (child?.children || [])?.length > 0);
 	const [expanded, setExpanded] = useState(isActive);
 
 	useEffect(() => {
-		if (isAncestor || isActive) setExpanded(true);
+		if (isActive) setExpanded(true);
 	}, [isActive]);
 
 	if (!isFolder) return null;
