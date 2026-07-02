@@ -1,0 +1,64 @@
+{
+	"common": {
+		"cancel": "キャンセル",
+		"save": "保存",
+		"add": "追加",
+		"delete": "削除",
+		"edit": "編集",
+		"rename": "名前を変更",
+		"more": "その他",
+		"bookmark": "ブックマーク",
+		"folder": "フォルダ"
+	},
+	"header": {
+		"toggleTheme": "テーマを切り替え",
+		"addBookmark": "ブックマークを追加"
+	},
+	"search": {
+		"bookmarkLabel": "ブックマーク",
+		"bookmarkAriaLabel": "ブックマークを検索",
+		"bookmarkPlaceholder": "ブックマークを検索...",
+		"clearAriaLabel": "検索語をクリア",
+		"googleAriaLabel": "Google検索",
+		"googleInputAriaLabel": "Google検索ボックス",
+		"googlePlaceholder": "検索語またはURLを入力...",
+		"submitTitle": "検索"
+	},
+	"app": {
+		"noSearchResults": "「<query>{{query}}</query>」の検索結果はありません。"
+	},
+	"bookmark": {
+		"deleteConfirmTitle": "ブックマークを削除",
+		"deleteConfirmDescription": "「{{title}}」ブックマークが削除されます。この操作は元に戻せません。"
+	},
+	"folder": {
+		"deleteConfirmTitle": "フォルダを削除",
+		"deleteConfirmDescription": "「{{title}}」フォルダとすべての項目が削除されます。この操作は元に戻せません。",
+		"itemCount_other": "{{count}}個の項目",
+		"empty": "空です"
+	},
+	"explorer": {
+		"closeSidebarAriaLabel": "サイドバーを閉じる",
+		"folderDialogLabel": "フォルダ - {{title}}",
+		"emptyFolder": "空のフォルダです",
+		"foldersLabel": "フォルダ"
+	},
+	"bookmarkForm": {
+		"urlPlaceholder": "URL (https://...)",
+		"namePlaceholder": "名前",
+		"editTitle": "ブックマークを編集"
+	},
+	"folderForm": {
+		"namePlaceholder": "フォルダ名",
+		"editTitle": "フォルダ名を編集"
+	},
+	"itemForm": {
+		"addBookmarkTitle": "新しいブックマークを追加",
+		"addFolderTitle": "新しいフォルダを作成",
+		"createFolderSubmit": "作成"
+	},
+	"settings": {
+		"title": "設定",
+		"language": "言語"
+	}
+}

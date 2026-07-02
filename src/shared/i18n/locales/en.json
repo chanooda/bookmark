@@ -1,0 +1,65 @@
+{
+	"common": {
+		"cancel": "Cancel",
+		"save": "Save",
+		"add": "Add",
+		"delete": "Delete",
+		"edit": "Edit",
+		"rename": "Rename",
+		"more": "More",
+		"bookmark": "Bookmark",
+		"folder": "Folder"
+	},
+	"header": {
+		"toggleTheme": "Toggle theme",
+		"addBookmark": "Add Bookmark"
+	},
+	"search": {
+		"bookmarkLabel": "Bookmark",
+		"bookmarkAriaLabel": "Search bookmarks",
+		"bookmarkPlaceholder": "Search bookmarks...",
+		"clearAriaLabel": "Clear search",
+		"googleAriaLabel": "Google search",
+		"googleInputAriaLabel": "Google search box",
+		"googlePlaceholder": "Enter a search term or URL...",
+		"submitTitle": "Search"
+	},
+	"app": {
+		"noSearchResults": "No results found for '<query>{{query}}</query>'."
+	},
+	"bookmark": {
+		"deleteConfirmTitle": "Delete bookmark",
+		"deleteConfirmDescription": "\"{{title}}\" will be deleted. This action cannot be undone."
+	},
+	"folder": {
+		"deleteConfirmTitle": "Delete folder",
+		"deleteConfirmDescription": "\"{{title}}\" and everything in it will be deleted. This action cannot be undone.",
+		"itemCount_one": "{{count}} item",
+		"itemCount_other": "{{count}} items",
+		"empty": "Empty"
+	},
+	"explorer": {
+		"closeSidebarAriaLabel": "Close sidebar",
+		"folderDialogLabel": "Folder - {{title}}",
+		"emptyFolder": "This folder is empty",
+		"foldersLabel": "Folders"
+	},
+	"bookmarkForm": {
+		"urlPlaceholder": "URL (https://...)",
+		"namePlaceholder": "Name",
+		"editTitle": "Edit bookmark"
+	},
+	"folderForm": {
+		"namePlaceholder": "Folder name",
+		"editTitle": "Edit folder name"
+	},
+	"itemForm": {
+		"addBookmarkTitle": "Add new bookmark",
+		"addFolderTitle": "Create new folder",
+		"createFolderSubmit": "Create"
+	},
+	"settings": {
+		"title": "Settings",
+		"language": "Language"
+	}
+}

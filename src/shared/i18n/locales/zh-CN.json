@@ -1,0 +1,64 @@
+{
+	"common": {
+		"cancel": "取消",
+		"save": "保存",
+		"add": "添加",
+		"delete": "删除",
+		"edit": "编辑",
+		"rename": "重命名",
+		"more": "更多",
+		"bookmark": "书签",
+		"folder": "文件夹"
+	},
+	"header": {
+		"toggleTheme": "切换主题",
+		"addBookmark": "添加书签"
+	},
+	"search": {
+		"bookmarkLabel": "书签",
+		"bookmarkAriaLabel": "搜索书签",
+		"bookmarkPlaceholder": "搜索书签...",
+		"clearAriaLabel": "清除搜索",
+		"googleAriaLabel": "谷歌搜索",
+		"googleInputAriaLabel": "谷歌搜索框",
+		"googlePlaceholder": "输入搜索词或网址...",
+		"submitTitle": "搜索"
+	},
+	"app": {
+		"noSearchResults": "未找到与“<query>{{query}}</query>”相关的搜索结果。"
+	},
+	"bookmark": {
+		"deleteConfirmTitle": "删除书签",
+		"deleteConfirmDescription": "“{{title}}”书签将被删除。此操作无法撤销。"
+	},
+	"folder": {
+		"deleteConfirmTitle": "删除文件夹",
+		"deleteConfirmDescription": "“{{title}}”文件夹及其所有内容将被删除。此操作无法撤销。",
+		"itemCount_other": "{{count}} 个项目",
+		"empty": "空文件夹"
+	},
+	"explorer": {
+		"closeSidebarAriaLabel": "关闭侧边栏",
+		"folderDialogLabel": "文件夹 - {{title}}",
+		"emptyFolder": "这是一个空文件夹",
+		"foldersLabel": "文件夹"
+	},
+	"bookmarkForm": {
+		"urlPlaceholder": "URL (https://...)",
+		"namePlaceholder": "名称",
+		"editTitle": "编辑书签"
+	},
+	"folderForm": {
+		"namePlaceholder": "文件夹名称",
+		"editTitle": "编辑文件夹名称"
+	},
+	"itemForm": {
+		"addBookmarkTitle": "添加新书签",
+		"addFolderTitle": "创建新文件夹",
+		"createFolderSubmit": "创建"
+	},
+	"settings": {
+		"title": "设置",
+		"language": "语言"
+	}
+}

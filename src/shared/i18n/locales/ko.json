@@ -1,0 +1,64 @@
+{
+	"common": {
+		"cancel": "취소",
+		"save": "저장",
+		"add": "추가",
+		"delete": "삭제",
+		"edit": "수정",
+		"rename": "이름 변경",
+		"more": "더보기",
+		"bookmark": "북마크",
+		"folder": "폴더"
+	},
+	"header": {
+		"toggleTheme": "테마 변경",
+		"addBookmark": "북마크 추가"
+	},
+	"search": {
+		"bookmarkLabel": "북마크",
+		"bookmarkAriaLabel": "북마크 검색",
+		"bookmarkPlaceholder": "북마크 검색...",
+		"clearAriaLabel": "검색어 초기화",
+		"googleAriaLabel": "구글 검색",
+		"googleInputAriaLabel": "구글 검색창",
+		"googlePlaceholder": "검색어 또는 URL 입력...",
+		"submitTitle": "검색 버튼"
+	},
+	"app": {
+		"noSearchResults": "'<query>{{query}}</query>'에 대한 검색 결과가 없습니다."
+	},
+	"bookmark": {
+		"deleteConfirmTitle": "북마크 삭제",
+		"deleteConfirmDescription": "\"{{title}}\" 북마크가 삭제됩니다. 이 작업은 되돌릴 수 없습니다."
+	},
+	"folder": {
+		"deleteConfirmTitle": "폴더 삭제",
+		"deleteConfirmDescription": "\"{{title}}\" 폴더와 모든 항목이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.",
+		"itemCount_other": "{{count}}개 항목",
+		"empty": "비어 있음"
+	},
+	"explorer": {
+		"closeSidebarAriaLabel": "사이드바 닫기",
+		"folderDialogLabel": "폴더 - {{title}}",
+		"emptyFolder": "비어 있는 폴더입니다",
+		"foldersLabel": "폴더"
+	},
+	"bookmarkForm": {
+		"urlPlaceholder": "URL (https://...)",
+		"namePlaceholder": "이름",
+		"editTitle": "북마크 수정"
+	},
+	"folderForm": {
+		"namePlaceholder": "폴더 이름",
+		"editTitle": "폴더 이름 수정"
+	},
+	"itemForm": {
+		"addBookmarkTitle": "새 북마크 추가",
+		"addFolderTitle": "새 폴더 만들기",
+		"createFolderSubmit": "만들기"
+	},
+	"settings": {
+		"title": "설정",
+		"language": "언어"
+	}
+}
