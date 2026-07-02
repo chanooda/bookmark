@@ -1,11 +1,14 @@
-import { Bookmark, Moon, Plus, Sun } from 'lucide-react';
+import { Bookmark, Moon, Plus, Settings, Sun } from 'lucide-react';
 import { overlay } from 'overlay-kit';
+import { useTranslation } from 'react-i18next';
+import { SettingsDialog } from '@/features/settings';
 import { BOOKMARK_ROOT_ID } from '@/shared/config';
 import { useTheme } from '@/shared/libs/theme';
 import { Button } from '@/shared/shadcn/components/ui/button';
 import { ItemFormDialog } from '@/shared/ui/item-form-dialog';
 
 export const Header = () => {
+	const { t } = useTranslation();
 	const { theme, setTheme } = useTheme();
 
 	const handleClickAddBookmarkBtn = () => {
@@ -17,6 +20,12 @@ export const Header = () => {
 				parentId={String(BOOKMARK_ROOT_ID)}
 				unmount={unmount}
 			/>
+		));
+	};
+
+	const handleClickSettingsBtn = () => {
+		overlay.open(({ isOpen, close, unmount }) => (
+			<SettingsDialog close={close} isOpen={isOpen} unmount={unmount} />
 		));
 	};
 
@@ -47,7 +56,16 @@ export const Header = () => {
 
 				<div className='flex items-center gap-2'>
 					<Button
-						aria-label='테마 변경'
+						aria-label={t('settings.title')}
+						onClick={handleClickSettingsBtn}
+						size='icon'
+						type='button'
+						variant='ghost'
+					>
+						<Settings aria-hidden='true' className='h-4 w-4' />
+					</Button>
+					<Button
+						aria-label={t('header.toggleTheme')}
 						onClick={toggleTheme}
 						size='icon'
 						type='button'
@@ -65,7 +83,7 @@ export const Header = () => {
 						size='sm'
 						type='button'
 					>
-						<Plus aria-hidden='true' className='mr-1 h-3 w-3' /> 북마크 추가
+						<Plus aria-hidden='true' className='mr-1 h-3 w-3' /> {t('header.addBookmark')}
 					</Button>
 				</div>
 			</div>
