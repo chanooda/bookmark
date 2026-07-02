@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FolderIcon, PencilLine, Trash2 } from 'lucide-react';
 import { overlay } from 'overlay-kit';
 import type { MouseEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Bookmark } from '@/entities/bookmark';
 import { mutations, queries } from '@/shared/api';
 import { DeleteConfirmDialog } from '@/shared/ui/delete-confirm-dialog';
@@ -13,6 +14,7 @@ interface ExplorerFolderCardProps {
 }
 
 export const ExplorerFolderCard = ({ bookmark, onClick }: ExplorerFolderCardProps) => {
+	const { t } = useTranslation();
 	const childCount = bookmark.children?.length ?? 0;
 
 	const queryClient = useQueryClient();
@@ -43,10 +45,10 @@ export const ExplorerFolderCard = ({ bookmark, onClick }: ExplorerFolderCardProp
 		overlay.open(({ isOpen, close, unmount }) => (
 			<DeleteConfirmDialog
 				close={close}
-				description={`"${bookmark.title}" 폴더와 모든 항목이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.`}
+				description={t('folder.deleteConfirmDescription', { title: bookmark.title })}
 				isOpen={isOpen}
 				onConfirm={() => deleteFolder({ id: bookmark.id })}
-				title='폴더 삭제'
+				title={t('folder.deleteConfirmTitle')}
 				unmount={unmount}
 			/>
 		));
@@ -59,7 +61,7 @@ export const ExplorerFolderCard = ({ bookmark, onClick }: ExplorerFolderCardProp
 				<button
 					className='flex h-6 w-6 items-center justify-center rounded-md text-foreground/50 transition-all duration-150 hover:bg-foreground/20 hover:text-foreground'
 					onClick={handleEdit}
-					title='이름 변경'
+					title={t('common.rename')}
 					type='button'
 				>
 					<PencilLine className='h-3 w-3' />
@@ -67,7 +69,7 @@ export const ExplorerFolderCard = ({ bookmark, onClick }: ExplorerFolderCardProp
 				<button
 					className='flex h-6 w-6 items-center justify-center rounded-md text-foreground/50 transition-all duration-150 hover:bg-red-500/20 hover:text-red-400'
 					onClick={handleDelete}
-					title='삭제'
+					title={t('common.delete')}
 					type='button'
 				>
 					<Trash2 className='h-3 w-3' />
@@ -129,7 +131,7 @@ export const ExplorerFolderCard = ({ bookmark, onClick }: ExplorerFolderCardProp
 
 				{/* item count */}
 				<p className='relative z-10 text-[11px] text-foreground/30'>
-					{childCount > 0 ? `${childCount}개 항목` : '비어 있음'}
+					{childCount > 0 ? t('folder.itemCount', { count: childCount }) : t('folder.empty')}
 				</p>
 			</button>
 		</div>

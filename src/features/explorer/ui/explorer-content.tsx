@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { FolderIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { findById } from '@/entities/bookmark/libs/findBookmarkById';
 import { queries } from '@/shared/api';
 import { useExplorerStore } from '../model/explorer.store';
@@ -7,23 +8,26 @@ import { ExplorerBookmarkCard } from './explorer-bookmark-card';
 import { ExplorerContentHeader } from './explorer-content-header';
 import { ExplorerFolderCard } from './explorer-folder-card';
 
-const EmptyState = () => (
-	<div className='flex h-full flex-col items-center justify-center gap-3 pb-8'>
-		<div
-			className='flex size-12 items-center justify-center rounded-2xl'
-			style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
-		>
-			<FolderIcon
-				className='size-5'
-				fill='currentColor'
-				style={{ color: 'rgba(255,255,255,0.25)' }}
-			/>
+const EmptyState = () => {
+	const { t } = useTranslation();
+	return (
+		<div className='flex h-full flex-col items-center justify-center gap-3 pb-8'>
+			<div
+				className='flex size-12 items-center justify-center rounded-2xl'
+				style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+			>
+				<FolderIcon
+					className='size-5'
+					fill='currentColor'
+					style={{ color: 'rgba(255,255,255,0.25)' }}
+				/>
+			</div>
+			<p className='text-[13px]' style={{ color: 'rgba(255,255,255,0.3)' }}>
+				{t('explorer.emptyFolder')}
+			</p>
 		</div>
-		<p className='text-[13px]' style={{ color: 'rgba(255,255,255,0.3)' }}>
-			비어 있는 폴더입니다
-		</p>
-	</div>
-);
+	);
+};
 
 const SkeletonCard = () => (
 	<div

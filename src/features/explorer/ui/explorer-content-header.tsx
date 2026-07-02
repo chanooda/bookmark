@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ChevronLeft, ChevronRight, Menu, PencilLine, Plus, Trash2, X } from 'lucide-react';
 import { overlay } from 'overlay-kit';
+import { useTranslation } from 'react-i18next';
 import { findById } from '@/entities/bookmark/libs/findBookmarkById';
 import { mutations, queries } from '@/shared/api';
 import { DialogClose } from '@/shared/shadcn/components/ui/dialog';
@@ -11,6 +12,7 @@ import { findPath } from '../lib/find-path';
 import { useExplorerStore } from '../model/explorer.store';
 
 export const ExplorerContentHeader = () => {
+	const { t } = useTranslation();
 	const rootId = useExplorerStore((s) => s.rootId);
 	const currentId = useExplorerStore((s) => s.currentId);
 	const navigate = useExplorerStore((s) => s.navigate);
@@ -102,7 +104,7 @@ export const ExplorerContentHeader = () => {
 							/>
 						))
 					}
-					title='폴더 이름 수정'
+					title={t('folderForm.editTitle')}
 					type='button'
 				>
 					<PencilLine className='h-3.5 w-3.5' />
@@ -113,15 +115,17 @@ export const ExplorerContentHeader = () => {
 						overlay.open(({ isOpen, close, unmount }) => (
 							<DeleteConfirmDialog
 								close={close}
-								description={`"${currentFolder?.title}" 폴더와 모든 항목이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.`}
+								description={t('folder.deleteConfirmDescription', {
+									title: currentFolder?.title,
+								})}
 								isOpen={isOpen}
 								onConfirm={() => deleteFolder({ id: currentId })}
-								title='폴더 삭제'
+								title={t('folder.deleteConfirmTitle')}
 								unmount={unmount}
 							/>
 						))
 					}
-					title='폴더 삭제'
+					title={t('folder.deleteConfirmTitle')}
 					type='button'
 				>
 					<Trash2 className='h-3.5 w-3.5' />
@@ -145,7 +149,7 @@ export const ExplorerContentHeader = () => {
 					type='button'
 				>
 					<Plus className='h-3.5 w-3.5' />
-					폴더
+					{t('common.folder')}
 				</button>
 				<button
 					className='flex h-7 items-center gap-1 rounded-lg px-2 text-muted-foreground text-xs transition-colors hover:bg-accent hover:text-foreground'
@@ -163,7 +167,7 @@ export const ExplorerContentHeader = () => {
 					type='button'
 				>
 					<Plus className='h-3.5 w-3.5' />
-					북마크
+					{t('common.bookmark')}
 				</button>
 
 				<div className='mx-2 h-4 w-px bg-border' />

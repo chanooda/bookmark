@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { VisuallyHidden } from 'radix-ui';
 import { useLayoutEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { findById } from '@/entities/bookmark/libs/findBookmarkById';
 import { queries } from '@/shared/api';
 import {
@@ -18,6 +19,7 @@ interface ExplorerProps {
 }
 
 export const Explorer = ({ id }: ExplorerProps) => {
+	const { t } = useTranslation();
 	const init = useExplorerStore((s) => s.init);
 
 	const { data } = useQuery({
@@ -33,6 +35,8 @@ export const Explorer = ({ id }: ExplorerProps) => {
 		init(id);
 	}, [id, init]);
 
+	const folderDialogLabel = t('explorer.folderDialogLabel', { title: bookmark?.title });
+
 	return (
 		<DialogContent
 			className='w-full overflow-hidden rounded-4xl bg-background/95 p-0 shadow-2xl ring-1 ring-border/50 backdrop-blur-2xl sm:max-w-[90dvw]'
@@ -40,14 +44,14 @@ export const Explorer = ({ id }: ExplorerProps) => {
 		>
 			<VisuallyHidden.Root>
 				<DialogHeader>
-					<DialogTitle>folder - {bookmark?.title}</DialogTitle>
-					<DialogDescription>folder - {bookmark?.title}</DialogDescription>
+					<DialogTitle>{folderDialogLabel}</DialogTitle>
+					<DialogDescription>{folderDialogLabel}</DialogDescription>
 				</DialogHeader>
 			</VisuallyHidden.Root>
 			<div className='relative flex h-[82dvh] w-full overflow-hidden'>
 				{/* Mobile backdrop */}
 				<button
-					aria-label='사이드바 닫기'
+					aria-label={t('explorer.closeSidebarAriaLabel')}
 					className={`absolute inset-0 z-10 bg-black/50 transition-opacity md:hidden ${
 						sidebarOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
 					}`}

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { GlobeIcon, SquarePen, Trash2 } from 'lucide-react';
 import { overlay } from 'overlay-kit';
 import type { MouseEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Bookmark } from '@/entities/bookmark';
 import { mutations, queries } from '@/shared/api';
 import { extractFavicon } from '@/shared/libs/chrome';
@@ -13,6 +14,7 @@ interface ExplorerBookmarkCardProps {
 }
 
 export const ExplorerBookmarkCard = ({ bookmark }: ExplorerBookmarkCardProps) => {
+	const { t } = useTranslation();
 	const faviconUrl = extractFavicon(bookmark.url);
 
 	let hostname = '';
@@ -53,10 +55,10 @@ export const ExplorerBookmarkCard = ({ bookmark }: ExplorerBookmarkCardProps) =>
 		overlay.open(({ isOpen, close, unmount }) => (
 			<DeleteConfirmDialog
 				close={close}
-				description={`"${bookmark.title}" 북마크가 삭제됩니다. 이 작업은 되돌릴 수 없습니다.`}
+				description={t('bookmark.deleteConfirmDescription', { title: bookmark.title })}
 				isOpen={isOpen}
 				onConfirm={() => deleteBookmark({ id: bookmark.id })}
-				title='북마크 삭제'
+				title={t('bookmark.deleteConfirmTitle')}
 				unmount={unmount}
 			/>
 		));
@@ -69,7 +71,7 @@ export const ExplorerBookmarkCard = ({ bookmark }: ExplorerBookmarkCardProps) =>
 				<button
 					className='flex h-6 w-6 items-center justify-center rounded-md text-foreground/50 transition-all duration-150 hover:bg-foreground/20 hover:text-foreground'
 					onClick={handleEdit}
-					title='수정'
+					title={t('common.edit')}
 					type='button'
 				>
 					<SquarePen className='h-3 w-3' />
@@ -77,7 +79,7 @@ export const ExplorerBookmarkCard = ({ bookmark }: ExplorerBookmarkCardProps) =>
 				<button
 					className='flex h-6 w-6 items-center justify-center rounded-md text-foreground/50 transition-all duration-150 hover:bg-red-500/20 hover:text-red-400'
 					onClick={handleDelete}
-					title='삭제'
+					title={t('common.delete')}
 					type='button'
 				>
 					<Trash2 className='h-3 w-3' />

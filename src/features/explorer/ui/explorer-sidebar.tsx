@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { ChevronRight, FolderIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Bookmark } from '@/entities/bookmark';
 import { queries } from '@/shared/api';
 import { useExplorerStore } from '../model/explorer.store';
 
 export const ExplorerLeftSideBar = () => {
+	const { t } = useTranslation();
 	const currentId = useExplorerStore((s) => s.currentId);
 	const navigate = useExplorerStore((s) => s.navigate);
 
@@ -20,7 +22,7 @@ export const ExplorerLeftSideBar = () => {
 		<div className='flex h-full w-52 shrink-0 flex-col overflow-auto border-r bg-background'>
 			<div className='flex h-12 items-center border-b px-4'>
 				<span className='font-semibold text-[10px] text-muted-foreground/50 uppercase tracking-widest'>
-					폴더
+					{t('explorer.foldersLabel')}
 				</span>
 			</div>
 			<div className='h-full flex-1 overflow-y-auto p-2'>
