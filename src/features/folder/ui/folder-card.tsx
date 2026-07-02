@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FolderIcon, MoreVerticalIcon, PencilLine, Trash2 } from 'lucide-react';
 import { overlay } from 'overlay-kit';
 import { memo, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Bookmark } from '@/entities/bookmark';
 import { mutations, queries } from '@/shared/api';
 import { extractFavicon } from '@/shared/libs/chrome';
@@ -24,6 +25,7 @@ interface FolderCard {
 }
 
 const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
+	const { t } = useTranslation();
 	const queryClient = useQueryClient();
 
 	const { ref, sortable } = useSortable({
@@ -60,9 +62,9 @@ const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<button
-								className='flex h-6 w-6 items-center justify-center rounded-md text-foreground/50 transition-all duration-150 hover:bg-foreground/20 hover:text-foreground'
+								className='flex h-6 w-6 items-center justify-center rounded-md text-white/50 transition-all duration-150 hover:bg-white/20 hover:text-white'
 								onClick={(e) => e.stopPropagation()}
-								title='더보기'
+								title={t('common.more')}
 								type='button'
 							>
 								<MoreVerticalIcon aria-hidden='true' className='h-3 w-3' />
@@ -84,7 +86,7 @@ const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
 								}
 							>
 								<PencilLine className='h-3.5 w-3.5' />
-								이름 변경
+								{t('common.rename')}
 							</DropdownMenuItem>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem
@@ -92,10 +94,10 @@ const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
 									overlay.open(({ isOpen, close, unmount }) => (
 										<DeleteConfirmDialog
 											close={close}
-											description={`"${bookmark.title}" 폴더와 모든 항목이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.`}
+											description={t('folder.deleteConfirmDescription', { title: bookmark.title })}
 											isOpen={isOpen}
 											onConfirm={() => deleteFolder({ id: bookmark.id })}
-											title='폴더 삭제'
+											title={t('folder.deleteConfirmTitle')}
 											unmount={unmount}
 										/>
 									))
@@ -103,7 +105,7 @@ const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
 								variant='destructive'
 							>
 								<Trash2 className='h-3.5 w-3.5' />
-								삭제
+								{t('common.delete')}
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
@@ -135,16 +137,16 @@ const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
 					<div className='content relative z-10 flex h-full flex-col'>
 						<div className='flex items-center gap-3'>
 							<FolderIcon className='size-6 text-blue-200/80' fill='currentColor' />
-							<p className='line-clamp-2 shrink-0 font-semibold text-[13px] text-foreground/85 leading-snug'>
+							<p className='line-clamp-2 shrink-0 font-semibold text-[13px] text-white/85 leading-snug'>
 								{bookmark.title}
 							</p>
 						</div>
-						<div className='my-2 h-px w-full bg-foreground/15' />
+						<div className='my-2 h-px w-full bg-white/15' />
 						<ul className='flex w-full flex-col gap-3'>
 							{bookmark?.children?.slice(0, 6).map((child) => {
 								if (!child.children)
 									return (
-										<li className='flex w-full gap-2 text-foreground/75 text-xs' key={child.id}>
+										<li className='flex w-full gap-2 text-white/75 text-xs' key={child.id}>
 											<img
 												alt={`${child.title} favicon`}
 												className='h-4 w-4'
@@ -154,7 +156,7 @@ const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
 										</li>
 									);
 								return (
-									<li className='flex w-full gap-2 text-foreground/75 text-xs' key={child.id}>
+									<li className='flex w-full gap-2 text-white/75 text-xs' key={child.id}>
 										<FolderIcon className='size-4 text-blue-200/80' fill='currentColor' />
 										<p className='line-clamp-1'>{child.title}</p>
 									</li>
