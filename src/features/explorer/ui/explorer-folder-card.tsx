@@ -57,34 +57,16 @@ export const ExplorerFolderCard = ({ bookmark, onClick }: ExplorerFolderCardProp
 			{/* action buttons */}
 			<div className='absolute top-2 right-2 z-20 flex items-center gap-0.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100'>
 				<button
-					className='flex h-6 w-6 items-center justify-center rounded-md transition-all duration-150'
+					className='flex h-6 w-6 items-center justify-center rounded-md text-foreground/50 transition-all duration-150 hover:bg-foreground/20 hover:text-foreground'
 					onClick={handleEdit}
-					onMouseEnter={(e) => {
-						e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
-						e.currentTarget.style.color = 'rgba(255,255,255,0.9)';
-					}}
-					onMouseLeave={(e) => {
-						e.currentTarget.style.background = 'transparent';
-						e.currentTarget.style.color = 'rgba(255,255,255,0.45)';
-					}}
-					style={{ color: 'rgba(255,255,255,0.45)' }}
 					title='이름 변경'
 					type='button'
 				>
 					<PencilLine className='h-3 w-3' />
 				</button>
 				<button
-					className='flex h-6 w-6 items-center justify-center rounded-md transition-all duration-150'
+					className='flex h-6 w-6 items-center justify-center rounded-md text-foreground/50 transition-all duration-150 hover:bg-red-500/20 hover:text-red-400'
 					onClick={handleDelete}
-					onMouseEnter={(e) => {
-						e.currentTarget.style.background = 'rgba(239,68,68,0.2)';
-						e.currentTarget.style.color = 'rgba(252,165,165,0.9)';
-					}}
-					onMouseLeave={(e) => {
-						e.currentTarget.style.background = 'transparent';
-						e.currentTarget.style.color = 'rgba(255,255,255,0.45)';
-					}}
-					style={{ color: 'rgba(255,255,255,0.45)' }}
 					title='삭제'
 					type='button'
 				>
@@ -134,25 +116,19 @@ export const ExplorerFolderCard = ({ bookmark, onClick }: ExplorerFolderCardProp
 							fill='currentColor'
 							style={{ color: 'rgba(251,191,36,0.8)' }}
 						/>
-						<p
-							className='line-clamp-2 font-semibold text-[13px] leading-snug'
-							style={{ color: 'rgba(255,255,255,0.85)' }}
-						>
+						<p className='line-clamp-2 font-semibold text-[13px] text-foreground/85 leading-snug'>
 							{bookmark.title}
 						</p>
 					</div>
 					{childCount > 0 && (
-						<span
-							className='shrink-0 rounded-full px-1.5 py-0.5 font-mono text-[10px] tabular-nums'
-							style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.4)' }}
-						>
+						<span className='shrink-0 rounded-full bg-foreground/20 px-1.5 py-0.5 font-mono text-[10px] text-foreground/40 tabular-nums'>
 							{childCount}
 						</span>
 					)}
 				</div>
 
 				{/* item count */}
-				<p className='relative z-10 text-[11px]' style={{ color: 'rgba(255,255,255,0.28)' }}>
+				<p className='relative z-10 text-[11px] text-foreground/30'>
 					{childCount > 0 ? `${childCount}개 항목` : '비어 있음'}
 				</p>
 			</button>

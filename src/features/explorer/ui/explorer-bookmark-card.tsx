@@ -67,34 +67,16 @@ export const ExplorerBookmarkCard = ({ bookmark }: ExplorerBookmarkCardProps) =>
 			{/* action buttons */}
 			<div className='absolute top-2 right-2 z-20 flex items-center gap-0.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100'>
 				<button
-					className='flex h-6 w-6 items-center justify-center rounded-md transition-all duration-150'
+					className='flex h-6 w-6 items-center justify-center rounded-md text-foreground/50 transition-all duration-150 hover:bg-foreground/20 hover:text-foreground'
 					onClick={handleEdit}
-					onMouseEnter={(e) => {
-						e.currentTarget.style.background = 'rgba(255,255,255,0.15)';
-						e.currentTarget.style.color = 'rgba(255,255,255,0.9)';
-					}}
-					onMouseLeave={(e) => {
-						e.currentTarget.style.background = 'transparent';
-						e.currentTarget.style.color = 'rgba(255,255,255,0.45)';
-					}}
-					style={{ color: 'rgba(255,255,255,0.45)' }}
 					title='수정'
 					type='button'
 				>
 					<SquarePen className='h-3 w-3' />
 				</button>
 				<button
-					className='flex h-6 w-6 items-center justify-center rounded-md transition-all duration-150'
+					className='flex h-6 w-6 items-center justify-center rounded-md text-foreground/50 transition-all duration-150 hover:bg-red-500/20 hover:text-red-400'
 					onClick={handleDelete}
-					onMouseEnter={(e) => {
-						e.currentTarget.style.background = 'rgba(239,68,68,0.2)';
-						e.currentTarget.style.color = 'rgba(252,165,165,0.9)';
-					}}
-					onMouseLeave={(e) => {
-						e.currentTarget.style.background = 'transparent';
-						e.currentTarget.style.color = 'rgba(255,255,255,0.45)';
-					}}
-					style={{ color: 'rgba(255,255,255,0.45)' }}
 					title='삭제'
 					type='button'
 				>
@@ -149,21 +131,15 @@ export const ExplorerBookmarkCard = ({ bookmark }: ExplorerBookmarkCardProps) =>
 							src={faviconUrl}
 						/>
 					) : (
-						<GlobeIcon className='size-4 shrink-0' style={{ color: 'rgba(255,255,255,0.35)' }} />
+						<GlobeIcon className='size-4 shrink-0 text-foreground/35' />
 					)}
-					<p
-						className='line-clamp-2 font-semibold text-[13px] leading-snug'
-						style={{ color: 'rgba(255,255,255,0.85)' }}
-					>
+					<p className='line-clamp-2 font-semibold text-[13px] text-foreground/85 leading-snug'>
 						{bookmark.title}
 					</p>
 				</div>
 
 				{/* hostname */}
-				<p
-					className='relative z-10 truncate font-mono text-[11px]'
-					style={{ color: 'rgba(255,255,255,0.28)' }}
-				>
+				<p className='relative z-10 truncate font-mono text-[11px] text-foreground/30'>
 					{hostname}
 				</p>
 			</a>

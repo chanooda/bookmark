@@ -17,7 +17,7 @@ export const ExplorerLeftSideBar = () => {
 	const bookmarks = data.tree;
 
 	return (
-		<div className='flex h-full w-52 shrink-0 flex-col overflow-auto border-r bg-black'>
+		<div className='flex h-full w-52 shrink-0 flex-col overflow-auto border-r bg-background'>
 			<div className='flex h-12 items-center border-b px-4'>
 				<span className='font-semibold text-[10px] text-muted-foreground/50 uppercase tracking-widest'>
 					폴더

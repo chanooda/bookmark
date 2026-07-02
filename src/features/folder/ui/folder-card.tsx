@@ -60,7 +60,7 @@ const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<button
-								className='flex h-6 w-6 items-center justify-center rounded-md text-white/50 transition-all duration-150 hover:bg-white/20 hover:text-white'
+								className='flex h-6 w-6 items-center justify-center rounded-md text-foreground/50 transition-all duration-150 hover:bg-foreground/20 hover:text-foreground'
 								onClick={(e) => e.stopPropagation()}
 								title='더보기'
 								type='button'
@@ -135,16 +135,16 @@ const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
 					<div className='content relative z-10 flex h-full flex-col'>
 						<div className='flex items-center gap-3'>
 							<FolderIcon className='size-6 text-blue-200/80' fill='currentColor' />
-							<p className='line-clamp-2 shrink-0 font-semibold text-[13px] text-white/85 leading-snug'>
+							<p className='line-clamp-2 shrink-0 font-semibold text-[13px] text-foreground/85 leading-snug'>
 								{bookmark.title}
 							</p>
 						</div>
-						<div className='my-2 h-px w-full bg-white/15' />
+						<div className='my-2 h-px w-full bg-foreground/15' />
 						<ul className='flex w-full flex-col gap-3'>
 							{bookmark?.children?.slice(0, 6).map((child) => {
 								if (!child.children)
 									return (
-										<li className='flex w-full gap-2 text-white/75 text-xs' key={child.id}>
+										<li className='flex w-full gap-2 text-foreground/75 text-xs' key={child.id}>
 											<img
 												alt={`${child.title} favicon`}
 												className='h-4 w-4'
@@ -154,7 +154,7 @@ const _FolderCard = ({ index, bookmark, onClick }: FolderCard) => {
 										</li>
 									);
 								return (
-									<li className='flex w-full gap-2 text-white/75 text-xs' key={child.id}>
+									<li className='flex w-full gap-2 text-foreground/75 text-xs' key={child.id}>
 										<FolderIcon className='size-4 text-blue-200/80' fill='currentColor' />
 										<p className='line-clamp-1'>{child.title}</p>
 									</li>

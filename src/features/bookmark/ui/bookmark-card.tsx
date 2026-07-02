@@ -83,7 +83,7 @@ const _BookmarkCard = ({ bookmark, index }: BookmarkCardProps) => {
 				{/* Action buttons */}
 				<div className='absolute top-2 right-2 z-20 flex items-center gap-0.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100'>
 					<button
-						className='flex h-6 w-6 items-center justify-center rounded-md text-white/50 transition-all duration-150 hover:bg-white/20 hover:text-white'
+						className='flex h-6 w-6 items-center justify-center rounded-md text-foreground/50 transition-all duration-150 hover:bg-foreground/20 hover:text-foreground'
 						onClick={handleClickEditButton}
 						title='수정'
 						type='button'
@@ -91,7 +91,7 @@ const _BookmarkCard = ({ bookmark, index }: BookmarkCardProps) => {
 						<SquarePen aria-hidden='true' className='h-3 w-3' />
 					</button>
 					<button
-						className='flex h-6 w-6 items-center justify-center rounded-md text-white/50 transition-all duration-150 hover:bg-red-500/20 hover:text-red-400'
+						className='flex h-6 w-6 items-center justify-center rounded-md text-foreground/50 transition-all duration-150 hover:bg-red-500/20 hover:text-red-400'
 						onClick={handleClickDeleteButton}
 						title='삭제'
 						type='button'
@@ -129,19 +129,19 @@ const _BookmarkCard = ({ bookmark, index }: BookmarkCardProps) => {
 							{faviconUrl ? (
 								<img alt='test' className='block aspect-square h-6 w-6' src={faviconUrl} />
 							) : (
-								<GlobeIcon className='h-6 w-6 text-white' />
+								<GlobeIcon className='h-6 w-6 text-foreground' />
 							)}
 						</div>
 						{/* Title */}
-						<p className='line-clamp-2 shrink-0 font-semibold text-[13px] text-white/85 leading-snug'>
+						<p className='line-clamp-2 shrink-0 font-semibold text-[13px] text-foreground/85 leading-snug'>
 							{bookmark.title}
 						</p>
 						{/* URL */}
-						<p className='shrink-0 truncate font-mono text-[11px] text-white/30 tracking-tight'>
+						<p className='shrink-0 truncate font-mono text-[11px] text-foreground/30 tracking-tight'>
 							{bookmark.url}
 						</p>
 						{/* Description */}
-						<p className='line-clamp-3 shrink-0 text-[12px] text-white/50'>{bookmark.title}</p>
+						<p className='line-clamp-3 shrink-0 text-[12px] text-foreground/50'>{bookmark.title}</p>
 						<div className='flex flex-wrap gap-1'>
 							{tags.map((tag) => {
 								return (
