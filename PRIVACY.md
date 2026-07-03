@@ -1,6 +1,6 @@
 # Privacy Policy for mark.
 
-**Last updated: March 16, 2026**
+**Last updated: July 3, 2026**
 
 ## Overview
 
@@ -8,15 +8,14 @@ mark. is a Chrome extension that replaces the new tab page with a personal bookm
 
 ## Data We Collect
 
-mark. stores only the data you explicitly provide:
+mark. does not maintain a separate data store of its own. It only accesses data that Chrome already manages on your device:
 
-- **Bookmarks** — URLs, titles, and descriptions you save
-- **Tags and folders** — organizational labels you create
-- **App settings** — view mode, language, and theme preferences
+- **Bookmarks** — URLs, titles, and folder structure, read directly from Chrome's native bookmarks
+- **App settings** — view mode, language, and theme preferences, kept in your browser's local storage
 
 ## How Your Data Is Stored
 
-**All data is stored exclusively on your device** using `chrome.storage.local`.
+**All data stays exclusively on your device.**
 
 - No data is ever transmitted to external servers
 - No data is collected passively or without your action
@@ -26,9 +25,7 @@ mark. stores only the data you explicitly provide:
 
 | Permission | Purpose |
 |---|---|
-| `storage` | Save your bookmarks, tags, folders, and settings locally on your device |
 | `bookmarks` | Read and sync with Chrome's native bookmarks (import and two-way sync) |
-| `identity` | Google OAuth sign-in for optional cloud sync (currently unavailable) |
 
 ## Data Sharing
 
@@ -37,6 +34,7 @@ We do not:
 - Sell your data to any third party
 - Share your data with any third party
 - Use your data for advertising or marketing
+- Use your data to determine creditworthiness or for lending purposes
 
 ## Data Deletion
 

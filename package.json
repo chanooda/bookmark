@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:ext": "vite build --mode extension",
+    "build:ext": "vite build --mode extension && rm -f mark-extension.zip && cd dist && zip -rq ../mark-extension.zip . && cd ..",
     "preview": "vite preview",
     "check": "biome check --write --unsafe --max-diagnostics=none",
     "format": "biome format --write",

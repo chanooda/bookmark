@@ -6,7 +6,7 @@ import { assertChromeBookmarks, getChromeBookmarks } from '../libs/chrome';
 // depth 3: inside depth-2 folders
 // depth 4: inside depth-3 folders (deepest)
 const mock = [
-	// --- 루트 레벨 북마크 ---
+	// --- root-level bookmarks ---
 	{
 		id: 'm001',
 		parentId: '1',
@@ -36,12 +36,12 @@ const mock = [
 		syncing: true,
 	},
 
-	// --- depth 1: 개발 폴더 (depth 2~4 중첩 테스트) ---
+	// --- depth 1: Development folder (depth 2~4 nesting test) ---
 	{
 		id: 'm100',
 		parentId: '1',
 		index: 3,
-		title: '개발',
+		title: 'Development',
 		dateAdded: 1773320674234,
 		dateGroupModified: 1773552992532,
 		syncing: true,
@@ -51,7 +51,7 @@ const mock = [
 				parentId: 'm100',
 				index: 0,
 				title: 'MDN Web Docs',
-				url: 'https://developer.mozilla.org/ko/',
+				url: 'https://developer.mozilla.org/en-US/',
 				dateAdded: 1769039901306,
 				syncing: true,
 			},
@@ -65,12 +65,12 @@ const mock = [
 				syncing: true,
 			},
 
-			// depth 2: 프론트엔드 폴더
+			// depth 2: Frontend folder
 			{
 				id: 'm110',
 				parentId: 'm100',
 				index: 2,
-				title: '프론트엔드',
+				title: 'Frontend',
 				dateAdded: 1773320674241,
 				dateGroupModified: 1773552992526,
 				syncing: true,
@@ -80,7 +80,7 @@ const mock = [
 						parentId: 'm110',
 						index: 0,
 						title: 'React',
-						url: 'https://ko.react.dev/',
+						url: 'https://react.dev/',
 						dateAdded: 1729556147827,
 						syncing: true,
 					},
@@ -94,12 +94,12 @@ const mock = [
 						syncing: true,
 					},
 
-					// depth 3: 프레임워크 폴더
+					// depth 3: Frameworks folder
 					{
 						id: 'm120',
 						parentId: 'm110',
 						index: 2,
-						title: '프레임워크',
+						title: 'Frameworks',
 						dateAdded: 1773320674241,
 						dateGroupModified: 1773552992526,
 						syncing: true,
@@ -108,8 +108,8 @@ const mock = [
 								id: 'm121',
 								parentId: 'm120',
 								index: 0,
-								title: 'Next.js 한글 문서',
-								url: 'https://nextjs-ko.org/docs',
+								title: 'Next.js Docs',
+								url: 'https://nextjs.org/docs',
 								dateAdded: 1729556122895,
 								syncing: true,
 							},
@@ -123,12 +123,12 @@ const mock = [
 								syncing: true,
 							},
 
-							// depth 4: 상태관리 폴더
+							// depth 4: State Management folder
 							{
 								id: 'm130',
 								parentId: 'm120',
 								index: 2,
-								title: '상태관리',
+								title: 'State Management',
 								dateAdded: 1773320674244,
 								dateGroupModified: 1773552992513,
 								syncing: true,
@@ -165,12 +165,12 @@ const mock = [
 						],
 					},
 
-					// depth 3: UI 라이브러리 폴더
+					// depth 3: UI Libraries folder
 					{
 						id: 'm140',
 						parentId: 'm110',
 						index: 3,
-						title: 'UI 라이브러리',
+						title: 'UI Libraries',
 						dateAdded: 1773320674244,
 						dateGroupModified: 1773552992517,
 						syncing: true,
@@ -207,12 +207,12 @@ const mock = [
 				],
 			},
 
-			// depth 2: 백엔드 폴더
+			// depth 2: Backend folder
 			{
 				id: 'm150',
 				parentId: 'm100',
 				index: 3,
-				title: '백엔드',
+				title: 'Backend',
 				dateAdded: 1773320674239,
 				dateGroupModified: 1773552992530,
 				syncing: true,
@@ -222,7 +222,7 @@ const mock = [
 						parentId: 'm150',
 						index: 0,
 						title: 'FastAPI',
-						url: 'https://fastapi.tiangolo.com/ko/',
+						url: 'https://fastapi.tiangolo.com/en/',
 						dateAdded: 1735300399861,
 						syncing: true,
 					},
@@ -236,12 +236,12 @@ const mock = [
 						syncing: true,
 					},
 
-					// depth 3: 데이터베이스 폴더
+					// depth 3: Database folder
 					{
 						id: 'm160',
 						parentId: 'm150',
 						index: 2,
-						title: '데이터베이스',
+						title: 'Database',
 						dateAdded: 1773320674239,
 						dateGroupModified: 1773552992530,
 						syncing: true,
@@ -265,7 +265,7 @@ const mock = [
 								syncing: true,
 							},
 
-							// depth 4: ORM 폴더
+							// depth 4: ORM folder
 							{
 								id: 'm170',
 								parentId: 'm160',
@@ -302,7 +302,7 @@ const mock = [
 		],
 	},
 
-	// --- depth 1: AI 폴더 (depth 2~3 중첩) ---
+	// --- depth 1: AI folder (depth 2~3 nesting) ---
 	{
 		id: 'm200',
 		parentId: '1',
@@ -331,7 +331,7 @@ const mock = [
 				syncing: true,
 			},
 
-			// depth 2: API 폴더
+			// depth 2: API folder
 			{
 				id: 'm210',
 				parentId: 'm200',
@@ -369,12 +369,12 @@ const mock = [
 						syncing: true,
 					},
 
-					// depth 3: 도구 폴더
+					// depth 3: Toolkits folder
 					{
 						id: 'm220',
 						parentId: 'm210',
 						index: 3,
-						title: '도구',
+						title: 'Toolkits',
 						dateAdded: 1773320674239,
 						dateGroupModified: 1773552992530,
 						syncing: true,
@@ -404,12 +404,12 @@ const mock = [
 		],
 	},
 
-	// --- depth 1: 도구 폴더 (depth 2만) ---
+	// --- depth 1: Tools folder (depth 2 only) ---
 	{
 		id: 'm300',
 		parentId: '1',
 		index: 5,
-		title: '도구',
+	title: 'Tools',
 		dateAdded: 1773320674242,
 		dateGroupModified: 1773552992521,
 		syncing: true,
@@ -442,12 +442,12 @@ const mock = [
 				syncing: true,
 			},
 
-			// depth 2: 변환 폴더
+			// depth 2: Converters folder
 			{
 				id: 'm310',
 				parentId: 'm300',
 				index: 3,
-				title: '변환',
+				title: 'Converters',
 				dateAdded: 1773320674242,
 				dateGroupModified: 1773552992523,
 				syncing: true,
@@ -475,7 +475,7 @@ const mock = [
 		],
 	},
 
-	// --- 루트 레벨 단일 북마크 ---
+	// --- single root-level bookmark ---
 	{
 		id: 'm400',
 		parentId: '1',

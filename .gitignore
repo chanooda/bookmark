@@ -1,5 +1,6 @@
 node_modules
 dist/
+mark-extension.zip
 .turbo
 .vercel
 .env
